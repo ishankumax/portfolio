@@ -78,24 +78,24 @@ function GitHubCard({ data, loading }) {
           />
         )}
         <div>
-          <p className="text-sm font-bold leading-tight" style={{ color: '#fff' }}>
+          <p className="text-sm font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>
             {loading && !data ? <span className="animate-pulse">Loading…</span> : (data?.name || 'Ishan Kumar')}
           </p>
-          <p className="text-[11px]" style={{ color: '#6b7280' }}>
+          <p className="text-[11px]" style={{ color: 'var(--text-secondary)' }}>
             @{data?.username || 'ishankumax'}
           </p>
         </div>
-        <FaGithub size={16} style={{ color: '#fff', opacity: 0.5, marginLeft: 'auto' }} />
+        <FaGithub size={16} style={{ color: 'var(--text-primary)', opacity: 0.5, marginLeft: 'auto' }} />
       </div>
 
       {data?.bio && (
-        <p className="text-[11px] mb-2.5 leading-relaxed" style={{ color: '#9ca3af' }}>
+        <p className="text-[11px] mb-2.5 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           {data.bio.length > 70 ? data.bio.slice(0, 70) + '…' : data.bio}
         </p>
       )}
 
       {data?.location && (
-        <p className="text-[10px] mb-2.5 flex items-center gap-1" style={{ color: '#6b7280' }}>
+        <p className="text-[10px] mb-2.5 flex items-center gap-1" style={{ color: 'var(--text-secondary)' }}>
           📍 {data.location}
         </p>
       )}
@@ -110,14 +110,14 @@ function GitHubCard({ data, loading }) {
           { label: 'Contribs', value: data?.contributions_total },
         ].map(s => (
           <div key={s.label} className="flex flex-col">
-            <span className="text-sm font-bold leading-none" style={{ color: '#39ff14' }}>
+            <span className="text-sm font-bold leading-none" style={{ color: 'var(--accent)' }}>
               {loading && s.value == null ? (
-                <span className="animate-pulse text-xs" style={{ color: '#4b5563' }}>…</span>
+                <span className="animate-pulse text-xs" style={{ color: 'var(--text-muted)' }}>…</span>
               ) : (
                 s.value ?? '—'
               )}
             </span>
-            <span className="text-[9px] mt-0.5 uppercase tracking-wide" style={{ color: '#6b7280' }}>
+            <span className="text-[9px] mt-0.5 uppercase tracking-wide" style={{ color: 'var(--text-secondary)' }}>
               {s.label}
             </span>
           </div>
@@ -140,12 +140,12 @@ function LinkedInCard() {
           style={{ borderColor: 'rgba(10,102,194,0.4)' }}
         />
         <div>
-          <p className="text-sm font-bold leading-tight" style={{ color: '#fff' }}>Ishan Kumar</p>
-          <p className="text-[11px]" style={{ color: '#6b7280' }}>@ishankumax</p>
+          <p className="text-sm font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>Ishan Kumar</p>
+          <p className="text-[11px]" style={{ color: 'var(--text-secondary)' }}>@ishankumax</p>
         </div>
         <FaLinkedin size={16} style={{ color: '#0a66c2', marginLeft: 'auto' }} />
       </div>
-      <p className="text-[11px] mb-2.5 leading-relaxed" style={{ color: '#9ca3af' }}>{s.bio}</p>
+      <p className="text-[11px] mb-2.5 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{s.bio}</p>
       <div
         className="grid grid-cols-2 gap-2 border-t pt-2.5"
         style={{ borderColor: 'rgba(255,255,255,0.06)' }}
@@ -155,8 +155,8 @@ function LinkedInCard() {
           { label: 'Posts', value: s.posts },
         ].map(stat => (
           <div key={stat.label} className="flex flex-col">
-            <span className="text-sm font-bold leading-none" style={{ color: '#fff' }}>{stat.value}</span>
-            <span className="text-[9px] mt-0.5 uppercase tracking-wide" style={{ color: '#6b7280' }}>{stat.label}</span>
+            <span className="text-sm font-bold leading-none" style={{ color: 'var(--text-primary)' }}>{stat.value}</span>
+            <span className="text-[9px] mt-0.5 uppercase tracking-wide" style={{ color: 'var(--text-secondary)' }}>{stat.label}</span>
           </div>
         ))}
       </div>
@@ -177,12 +177,12 @@ function TwitterCard() {
           style={{ borderColor: 'rgba(255,255,255,0.12)' }}
         />
         <div>
-          <p className="text-sm font-bold leading-tight" style={{ color: '#fff' }}>Ishan Kumar</p>
-          <p className="text-[11px]" style={{ color: '#6b7280' }}>@ishankumax</p>
+          <p className="text-sm font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>Ishan Kumar</p>
+          <p className="text-[11px]" style={{ color: 'var(--text-secondary)' }}>@ishankumax</p>
         </div>
-        <FaXTwitter size={16} style={{ color: '#fff', opacity: 0.7, marginLeft: 'auto' }} />
+        <FaXTwitter size={16} style={{ color: 'var(--text-primary)', opacity: 0.7, marginLeft: 'auto' }} />
       </div>
-      <p className="text-[11px] mb-2.5 leading-relaxed" style={{ color: '#9ca3af' }}>{s.bio}</p>
+      <p className="text-[11px] mb-2.5 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{s.bio}</p>
       <div
         className="grid grid-cols-3 gap-2 border-t pt-2.5"
         style={{ borderColor: 'rgba(255,255,255,0.06)' }}
@@ -193,8 +193,8 @@ function TwitterCard() {
           { label: 'Posts', value: s.posts },
         ].map(stat => (
           <div key={stat.label} className="flex flex-col">
-            <span className="text-sm font-bold leading-none" style={{ color: '#fff' }}>{stat.value}</span>
-            <span className="text-[9px] mt-0.5 uppercase tracking-wide" style={{ color: '#6b7280' }}>{stat.label}</span>
+            <span className="text-sm font-bold leading-none" style={{ color: 'var(--text-primary)' }}>{stat.value}</span>
+            <span className="text-[9px] mt-0.5 uppercase tracking-wide" style={{ color: 'var(--text-secondary)' }}>{stat.label}</span>
           </div>
         ))}
       </div>
@@ -215,12 +215,12 @@ function InstagramCard() {
           style={{ borderColor: 'rgba(225,48,108,0.4)' }}
         />
         <div>
-          <p className="text-sm font-bold leading-tight" style={{ color: '#fff' }}>ishankumax</p>
-          <p className="text-[11px]" style={{ color: '#6b7280' }}>@ishankumax</p>
+          <p className="text-sm font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>ishankumax</p>
+          <p className="text-[11px]" style={{ color: 'var(--text-secondary)' }}>@ishankumax</p>
         </div>
         <FaInstagram size={16} style={{ color: '#e1306c', marginLeft: 'auto' }} />
       </div>
-      <p className="text-[11px] mb-2.5 leading-relaxed whitespace-pre-line" style={{ color: '#9ca3af' }}>{s.bio}</p>
+      <p className="text-[11px] mb-2.5 leading-relaxed whitespace-pre-line" style={{ color: 'var(--text-secondary)' }}>{s.bio}</p>
       <div
         className="grid grid-cols-2 gap-2 border-t pt-2.5"
         style={{ borderColor: 'rgba(255,255,255,0.06)' }}
@@ -230,8 +230,8 @@ function InstagramCard() {
           { label: 'Posts', value: s.posts },
         ].map(stat => (
           <div key={stat.label} className="flex flex-col">
-            <span className="text-sm font-bold leading-none" style={{ color: '#fff' }}>{stat.value}</span>
-            <span className="text-[9px] mt-0.5 uppercase tracking-wide" style={{ color: '#6b7280' }}>{stat.label}</span>
+            <span className="text-sm font-bold leading-none" style={{ color: 'var(--text-primary)' }}>{stat.value}</span>
+            <span className="text-[9px] mt-0.5 uppercase tracking-wide" style={{ color: 'var(--text-secondary)' }}>{stat.label}</span>
           </div>
         ))}
       </div>
@@ -335,18 +335,17 @@ export default function SocialHoverCard({ platform, href, children }) {
             height: 0,
             borderLeft: '6px solid transparent',
             borderRight: '6px solid transparent',
-            borderTop: '6px solid #161616',
+            borderTop: '6px solid var(--bg-elevated)',
           }}
         />
         {/* Card body */}
         <div
           style={{
-            background: '#111111',
-            border: '1px solid rgba(255,255,255,0.07)',
+            background: 'var(--bg-elevated)',
+            border: '1px solid var(--border-card)',
             borderRadius: 12,
             padding: '14px',
-            boxShadow:
-              '0 24px 64px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.04)',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.2), 0 0 0 1px var(--border-subtle)',
             backdropFilter: 'blur(20px)',
           }}
         >
