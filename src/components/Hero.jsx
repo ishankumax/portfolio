@@ -6,7 +6,11 @@ function Hero() {
     <div className="flex flex-col md:flex-row gap-8 md:gap-16 mb-24 items-start">
       {/* Profile Image */}
       <div className="shrink-0 mx-auto md:mx-0">
-        <div className="w-40 h-40 md:w-48 md:h-48 bg-gray-200 rounded-lg grayscale"></div>
+        <img 
+          src="/pfp.jpg" 
+          alt="Ishan Kumar" 
+          className="w-40 h-40 md:w-48 md:h-48 rounded-lg object-cover grayscale hover:grayscale-0 transition-all duration-300"
+        />
       </div>
 
       {/* Profile Content */}
@@ -15,13 +19,13 @@ function Hero() {
         <p className="text-gray-500 mb-6">@ishankumax</p>
         
         <div className="flex justify-center md:justify-start gap-4 mb-8">
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all">
+          <a href="https://www.instagram.com/ishankumax/" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all">
             <FaInstagram size={18} />
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all">
+          <a href="https://www.linkedin.com/in/ishankumax/" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all">
             <FaLinkedin size={18} />
           </a>
-          <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all">
+          <a href="https://x.com/ishankumax" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all">
             <FaXTwitter size={18} />
           </a>
         </div>

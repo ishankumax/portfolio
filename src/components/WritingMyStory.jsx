@@ -38,11 +38,69 @@ function WritingMyStory() {
           className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          <div className="shrink-0 w-64 h-80 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer"></div>
-          <div className="shrink-0 w-64 h-80 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer"></div>
-          <div className="shrink-0 w-64 h-80 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer"></div>
-          <div className="shrink-0 w-64 h-80 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer"></div>
-          <div className="shrink-0 w-64 h-80 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer"></div>
+          {/* InTheBox Founder - Latest */}
+          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
+            <img src="/InTheBox founder.jpg" alt="InTheBox Founder" className="h-48 w-full object-cover" />
+            <div className="p-4">
+              <p className="text-sm text-gray-400">InTheBox Founder</p>
+            </div>
+          </div>
+
+          {/* Registered Startup */}
+          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
+            <img src="/registered my startup.jpg" alt="Registered My Startup" className="h-48 w-full object-cover" />
+            <div className="p-4">
+              <p className="text-sm text-gray-400">Registered My Startup</p>
+            </div>
+          </div>
+
+          {/* Winner at Microsoft */}
+          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
+            <img src="/winner at microsoft.jpg" alt="Winner at Microsoft" className="h-48 w-full object-cover" />
+            <div className="p-4">
+              <p className="text-sm text-gray-400">Winner at Microsoft</p>
+            </div>
+          </div>
+
+          {/* Featured in Hindustan Times */}
+          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
+            <img src="/featured in hindustan times.jpg" alt="Featured in Hindustan Times" className="h-48 w-full object-cover" />
+            <div className="p-4">
+              <p className="text-sm text-gray-400">Featured in Hindustan Times</p>
+            </div>
+          </div>
+
+          {/* Entrepreneurship Journey */}
+          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
+            <img src="/entrepunarship journey.jpg" alt="Entrepreneurship Journey" className="h-48 w-full object-cover" />
+            <div className="p-4">
+              <p className="text-sm text-gray-400">Entrepreneurship Journey</p>
+            </div>
+          </div>
+
+          {/* HQ Mentor */}
+          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
+            <img src="/HQ Mentor.jpg" alt="HQ Mentor" className="h-48 w-full object-cover" />
+            <div className="p-4">
+              <p className="text-sm text-gray-400">HQ Mentor</p>
+            </div>
+          </div>
+
+          {/* Devlearn Founding Member */}
+          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
+            <img src="/Devlearn Founding Member.jpg" alt="Devlearn Founding Member" className="h-48 w-full object-cover" />
+            <div className="p-4">
+              <p className="text-sm text-gray-400">Devlearn Founding Member</p>
+            </div>
+          </div>
+
+          {/* ACM Marketing Head */}
+          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
+            <img src="/ACM Marketing Head.jpg" alt="ACM Marketing Head" className="h-48 w-full object-cover" />
+            <div className="p-4">
+              <p className="text-sm text-gray-400">ACM Marketing Head</p>
+            </div>
+          </div>
         </div>
 
         {/* Right Arrow */}

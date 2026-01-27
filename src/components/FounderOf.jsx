@@ -8,8 +8,14 @@ function FounderOf() {
       </h2>
       
       <div className="flex flex-col md:flex-row gap-8 items-start">
-        {/* Logo Placeholder */}
-        <div className="shrink-0 w-24 h-24 border-2 border-white rounded-lg mx-auto md:mx-0"></div>
+        {/* Logo */}
+        <div className="shrink-0 mx-auto md:mx-0">
+          <img 
+            src="/intheboxpvt_logo.jpg" 
+            alt="InTheBox Logo" 
+            className="w-24 h-24 rounded-lg object-cover"
+          />
+        </div>
         
         <div className="flex-1 w-full text-center md:text-left">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-baseline mb-2">
