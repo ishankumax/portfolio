@@ -17,7 +17,7 @@ function WritingMyStory() {
   }
 
   return (
-    <section className="mb-20">
+    <section id="highlights" className="mb-20">
       <h2 className="text-xl md:text-2xl font-bold mb-8 flex items-center gap-2">
         <span className="text-gray-600">#</span> writing my story
       </h2>
