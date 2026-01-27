@@ -4,6 +4,7 @@ import './index.css'
 import Home from './components/Home'
 import Specs from './components/Specs'
 import About from './components/About'
+import Insights from './components/Insights'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/specs" element={<Specs />} />
         <Route path="/about" element={<About />} />
+        <Route path="/insights" element={<Insights />} />
       </Routes>
     </Router>
   )

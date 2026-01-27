@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 function Navbar() {
   return (
     <nav className="flex flex-wrap justify-center md:justify-start gap-6 md:gap-12 mb-20 text-sm md:text-base text-gray-500">
-      <a href="#insights" className="hover:text-white transition-colors">[i] insights</a>
+      <Link to="/insights" className="hover:text-white transition-colors">[i] insights</Link>
       <Link to="/specs" className="hover:text-white transition-colors">[s] specs</Link>
       <Link to="/#highlights" className="hover:text-white transition-colors">[h] highlights</Link>
       <Link to="/about" className="hover:text-white transition-colors">[a] about me</Link>
