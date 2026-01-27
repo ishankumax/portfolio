@@ -1,22 +1,17 @@
 import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css'
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import FounderOf from './components/FounderOf'
-import WritingMyStory from './components/WritingMyStory'
-import Footer from './components/Footer'
+import Home from './components/Home'
+import Specs from './components/Specs'
 
 function App() {
   return (
-    <div className="min-h-screen bg-black text-white font-mono selection:bg-white selection:text-black">
-      <div className="max-w-4xl mx-auto px-6 py-12 md:py-20">
-        <Navbar />
-        <Hero />
-        <FounderOf />
-        <WritingMyStory />
-        <Footer />
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/specs" element={<Specs />} />
+      </Routes>
+    </Router>
   )
 }
 
