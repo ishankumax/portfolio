@@ -7,7 +7,7 @@ function Navbar() {
       <a href="#insights" className="hover:text-white transition-colors">[i] insights</a>
       <Link to="/specs" className="hover:text-white transition-colors">[s] specs</Link>
       <a href="#highlights" className="hover:text-white transition-colors">[h] highlights</a>
-      <a href="#about" className="hover:text-white transition-colors">[a] about me</a>
+      <Link to="/about" className="hover:text-white transition-colors">[a] about me</Link>
       <a href="mailto:ishankumax@gmail.com" className="hover:text-white transition-colors">[n] network</a>
     </nav>
   )
