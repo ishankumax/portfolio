@@ -3,3 +3,8 @@
 body {
   font-family: 'JetBrains Mono', monospace;
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
