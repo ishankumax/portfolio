@@ -1,5 +1,13 @@
 import React, { useState, useRef } from 'react';
 
+// ============================================================================
+// DATA STRUCTURE: timelineData
+// ----------------------------------------------------------------------------
+// This array defines your chronological history, neatly grouped by year.
+// Storing data like this keeps your main component completely clean and allows 
+// you to map over it naturally. Each item contains specific data nodes (role,
+// company, date, bullets) that populate the expanding frosted glass cards.
+// ============================================================================
 const timelineData = [
   {
     year: '2025',
@@ -121,52 +129,85 @@ const timelineData = [
   }
 ];
 
+// ============================================================================
+// COMPONENT: Timeline
+// ----------------------------------------------------------------------------
+// Re-usable vertical scrolling timeline that tracks 'active states' and elegantly
+// handles scrolling document flow.
+// ============================================================================
 function Timeline() {
+  
+  // ============================================================================
+  // STATE: activeId
+  // Stores the unique string ID of whichever timeline item your mouse is currently on.
+  // When an ID updates here, React immediately transitions that specific item's 
+  // nested details card from 'grid-rows-[0fr]' (hidden) to 'grid-rows-[1fr]' (visible).
+  // ============================================================================
   const [activeId, setActiveId] = useState(null);
+
+  // ============================================================================
+  // REFS: isScrolling, scrollTimeout, itemRefs
+  // - isScrolling: A boolean "lock". It prevents hover collisions if the 
+  //   browser is already busy smoothly scrolling the page.
+  // - itemRefs: A dictionary object storing direct HTML DOM elements. This allows
+  //   us to target exact role entries and scroll straight to them.
+  // ============================================================================
   const isScrolling = useRef(false);
   const scrollTimeout = useRef(null);
   const itemRefs = useRef({});
 
+  // ============================================================================
+  // FUNCTION: handleMouseEnter(id)
+  // ----------------------------------------------------------------------------
+  // Fired instantly when your cursor touches any minimal role heading.
+  // 1. Assigns the `activeId` state so the accordion opens for this item.
+  // 2. Instructs the browser to smoothly scroll the page globally so the newly
+  //    opened card naturally glides precisely to the center of your screen.
+  // ============================================================================
   const handleMouseEnter = (id) => {
-    // If the browser is currently executing our smooth scroll, bypass triggering new hovers.
-    // This perfectly prevents the jittering and unwanted cascading layout shifts!
+    // If a smooth scroll is currently executing, politely ignore any new hovers 
+    // passing underneath the mouse to completely prevent stuttering and jumping.
     if (isScrolling.current) return;
     
+    // Set the role ID to trigger the CSS accordion expansion
     setActiveId(id);
     
-    // Once hovered, instruct the browser to elegantly scroll this item to the center
-    // aligning visually with the fixed center-right card location.
+    // Lookup the exact DOM block for this specific timeline item
     const el = itemRefs.current[id];
+    
     if (el) {
+      // Engage the scrolling lock
       isScrolling.current = true;
+      
+      // Execute a buttery smooth native browser shift bringing this item to dead-center
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       
       if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
       
-      // Unlock hovers after scrolling resolves. 800ms covers standard modern smooth native scrolling.
+      // Auto-release the scrolling lock after 800ms (the standard time a scroll completes)
       scrollTimeout.current = setTimeout(() => {
         isScrolling.current = false;
       }, 800);
     }
   };
 
-  const activeItem = timelineData.flatMap(y => y.items).find(i => i.id === activeId);
-
   return (
+    // The outermost wrapper monitors when the mouse physical leaves the entire component.
+    // If you stray outside, it sets activeId to null, elegantly collapsing any open cards!
     <div 
       className="relative font-mono py-6 w-full"
       onMouseLeave={() => setActiveId(null)}
     >
-      {/* Timeline List (Scrolling Left side) */}
+      
       <div className="relative flex flex-col w-full">
-        {/* Primary Vertical Track Line */}
+        {/* The single vertical gray timeline track running behind all points */}
         <div className="absolute left-[70px] top-10 bottom-10 w-px bg-gradient-to-b from-transparent via-gray-700 to-transparent"></div>
 
         <div className="flex flex-col gap-6">
           {timelineData.map((yearGroup, yIndex) => (
             <div key={yearGroup.year} className="relative z-10">
               
-              {/* Year Node (Only render once per year block) */}
+              {/* Yearly Marker (e.g. "2025" + Glowing Dot) */}
               <div className="absolute left-0 top-3 flex items-center w-[70px] justify-between pr-4 bg-black/80 backdrop-blur-sm z-20">
                 <span className={`text-[13px] font-mono transition-colors duration-300 ${yIndex === 0 ? 'text-white font-bold' : 'text-gray-500'}`}>
                   {yearGroup.year}
@@ -176,31 +217,34 @@ function Timeline() {
                 </div>
               </div>
 
-              {/* Role List for the Year */}
+              {/* The array block for all the distinct professional roles matching that exact year */}
               <div className="flex flex-col">
                 {yearGroup.items.map((item) => {
                   const isActive = activeId === item.id;
                   
                   return (
+                    // We bind the ref callback to save this DOM wrapper permanently for scrolling mapping context
                     <div 
                       key={item.id} 
                       ref={el => itemRefs.current[item.id] = el}
                       className="relative border-b border-gray-800/60 last:border-transparent cursor-pointer"
                       onMouseEnter={() => handleMouseEnter(item.id)}
                     >
-                      {/* Minimal Role Heading */}
+                      {/* Very subtle clickable header you see prior to hovering anything */}
                       <div className={`pl-[100px] py-5 pr-4 transition-colors duration-300 ${isActive ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'}`}>
                         <span className={`font-mono text-sm transition-colors duration-300 ${isActive ? 'text-white font-bold' : 'text-gray-500'}`}>
                           {item.role}
                         </span>
                       </div>
 
-                      {/* Expanded Inline Card (Accordion effect) */}
+                      {/* The fluid expanding Details Card. 
+                          It is structurally bound inside the role so it intrinsically pushes other elements down linearly */}
                       <div className={`grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${isActive ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                         <div className="overflow-hidden">
+                          
+                          {/* Inner detailed custom UI mapping. Very highly styled with dark frosted styling matching product landers */}
                           <div className="ml-[100px] mr-6 mb-6 mt-1 bg-[#0b0c10]/95 backdrop-blur-xl border border-gray-700/50 rounded-xl p-5 shadow-[0_20px_40px_rgba(0,0,0,0.8)] relative overflow-hidden">
                             
-                            {/* Subtle Glow Highlight Inside Card */}
                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-[40px] rounded-full pointer-events-none"></div>
 
                             <div className="relative z-10">
@@ -212,6 +256,7 @@ function Timeline() {
                               <h4 className="text-white font-semibold text-sm mb-3 tracking-wide">{item.role}</h4>
                               
                               <ul className="flex flex-col gap-2">
+                                {/* Auto-loops your specific achievement pointers so they populate perfectly aligned below your timeline marker */}
                                 {item.bullets.map((bullet, i) => (
                                   <li key={i} className="flex items-start text-[11px] text-gray-400 leading-relaxed font-sans">
                                     <span className="mr-2.5 text-gray-600 mt-[2px]">•</span>
@@ -234,8 +279,6 @@ function Timeline() {
           ))}
         </div>
       </div>
-
-      {/* Hover details now expand inline beneath the headings to strictly prevent overlapping main profile content on the right side. */}
 
     </div>
   );
