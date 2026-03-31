@@ -1,109 +1,154 @@
 import React, { useState } from 'react';
-import { FiBox, FiUsers, FiAward, FiFileText, FiCode, FiTrendingUp, FiFlag } from 'react-icons/fi';
 
 const timelineData = [
   {
-    year: '2025',
-    label: '2025 - Present',
-    entries: [
-      {
-        icon: <FiBox />,
-        title: 'Founder @ InTheBox',
-        description: 'Building premium packaging solutions',
-      },
-      {
-        icon: <FiUsers />,
-        title: 'Community Lead',
-        description: 'Managing tech events & ecosystem',
-      }
-    ]
+    id: 1,
+    company: "InTheBox",
+    role: "Chief Marketing Officer",
+    date: "Nov 2024 - Present",
+    location: "Chandigarh, India",
+    description: "Driving innovation and excellence in packaging, ensuring that every product's first impression speaks volumes. Focused on quality, sustainability, and customer-centric solutions.",
+    skills: "Team Leadership, Operations Management"
   },
   {
-    year: '2024',
-    label: '2024',
-    entries: [
-      {
-        icon: <FiAward />,
-        title: 'Winner at Microsoft',
-        description: 'Secured top position at hackathon',
-      },
-      {
-        icon: <FiFileText />,
-        title: 'Press Feature',
-        description: 'Covered in Hindustan Times',
-      },
-      {
-        icon: <FiCode />,
-        title: 'Founding Member',
-        description: 'Devlearn developer community',
-      }
-    ]
+    id: 2,
+    company: "ACM Chapter",
+    role: "Head of Marketing",
+    date: "Nov 2024 - Jul 2025",
+    location: "Chitkara Univ.",
+    description: "Organised Annual ACM-W India Lady Ada & Lady Ada Facilitation.",
+    skills: "Event Planning, Execution"
   },
   {
-    year: '2023',
-    label: '2023',
-    entries: [
-      {
-        icon: <FiTrendingUp />,
-        title: 'Marketing Head',
-        description: 'Led growth for ACM student chapter',
-      },
-      {
-        icon: <FiFlag />,
-        title: 'Entrepreneurship Journey',
-        description: 'Entered the startup ecosystem',
-      }
-    ]
+    id: 3,
+    company: "ACM Chapter",
+    role: "Marketing Exec.",
+    date: "Sep 2024 - Nov 2024",
+    location: "Chitkara Univ.",
+    description: "Organised ISCCSC and 1st ICSCCS.",
+    skills: "Marketing, Outreach"
+  },
+  {
+    id: 4,
+    company: "Coding Blocks",
+    role: "Graphics Exec.",
+    date: "Dec 2023 - May 2025",
+    location: "CUIET",
+    description: "Organised India's biggest Web3 Hackathon. Honoured for graphic achievements.",
+    skills: "Graphic Design, Web UI"
+  },
+  {
+    id: 5,
+    company: "DevLearn",
+    role: "Ecosystem Mgr.",
+    date: "May 2024 - Feb 2025",
+    location: "Chandigarh, India",
+    description: "Managed overall community ecosystem and organised the Co Learning Camp.",
+    skills: "Operations Management"
+  },
+  {
+    id: 6,
+    company: "DevLearn",
+    role: "Graphics Head",
+    date: "Feb 2024 - May 2024",
+    location: "Chandigarh, India",
+    description: "Led graphic and web design initiatives.",
+    skills: "Graphic Design, Web Design"
+  },
+  {
+    id: 7,
+    company: "Kotlin Delhi",
+    role: "Campus Ambassador",
+    date: "Jun 2024 - Jul 2024",
+    location: "Delhi, India",
+    description: "Promoted KotlinConfDelhi and managed local student outreach.",
+    skills: "Student Outreach"
+  },
+  {
+    id: 8,
+    company: "GFG CUIET",
+    role: "Design & Branding",
+    date: "Jan 2024 - Jul 2024",
+    location: "Rajpura, Punjab",
+    description: "Managed the 23-24 Team branding and general graphic design.",
+    skills: "Graphic Design, Branding"
+  },
+  {
+    id: 9,
+    company: "Coding Ninjas",
+    role: "Outreach Exec.",
+    date: "Jan 2024 - Feb 2024",
+    location: "CUIET Chapter",
+    description: "Managed outreach campaigns for Utkrishti 2024.",
+    skills: "Student Outreach"
   }
 ];
 
 function Timeline() {
-  const [hoveredYear, setHoveredYear] = useState(null);
+  const [hoveredId, setHoveredId] = useState(null);
 
   return (
-    <div className="relative flex flex-col w-full h-full pt-12 font-mono">
-      {/* Background Line - strictly at 60px distance */}
-      <div className="absolute left-[60px] top-0 bottom-12 w-px bg-gradient-to-b from-transparent via-gray-800 to-transparent"></div>
+    <div className="relative flex flex-col w-full font-mono py-12">
+      {/* Vertical Track Line */}
+      <div className="absolute left-[130px] top-12 bottom-12 w-px bg-gradient-to-b from-transparent via-gray-800 to-transparent z-0"></div>
       
-      {timelineData.map((item, index) => {
-        const isHovered = hoveredYear === item.year;
-        const isCurrent = item.year === '2025';
+      {timelineData.map((item) => {
+        const isHovered = hoveredId === item.id;
         
         return (
           <div 
-            key={item.year} 
-            className="relative flex items-center mb-24 cursor-pointer group"
-            onMouseEnter={() => setHoveredYear(item.year)}
-            onMouseLeave={() => setHoveredYear(null)}
+            key={item.id} 
+            className="relative flex group"
+            onMouseEnter={() => setHoveredId(item.id)}
+            onMouseLeave={() => setHoveredId(null)}
           >
-            {/* Year Text */}
-            <div className={`w-[60px] text-right pr-6 text-sm transition-all duration-300 ${(isHovered || isCurrent) ? 'text-white font-bold' : 'text-gray-600'}`}>
-              {item.year}
+            {/* Left Side: Company & Date Context */}
+            <div className="w-[130px] text-right pr-5 pt-1 shrink-0 z-10 bg-black/50 backdrop-blur-sm relative">
+              <div className={`text-xs font-bold transition-colors duration-300 ${isHovered ? 'text-white' : 'text-gray-500'}`}>
+                {item.company}
+              </div>
+              <div className="text-[10px] text-gray-600 mt-1 uppercase tracking-wider">
+                {item.date.split('-')[0].trim()}
+              </div>
             </div>
 
-            {/* Dot & Glow - perfectly centered on the line */}
-            <div className="absolute left-[60px] -translate-x-1/2 flex items-center justify-center">
-              <div className={`w-[6px] h-[6px] rounded-full transition-all duration-300 ${(isHovered || isCurrent) ? 'bg-white scale-150 shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'bg-gray-700 group-hover:bg-gray-500'}`}></div>
+            {/* Center Node / Dot */}
+            <div className="absolute left-[130px] top-2.5 -translate-x-1/2 flex items-center justify-center z-20">
+              <div 
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  isHovered ? 'bg-white scale-[1.7] shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'bg-gray-700'
+                }`}
+              ></div>
             </div>
 
-            {/* Expander Box (Card) hover popup */}
-            {/* Starts at 80px, taking 280px width. Total reserved space = 360px */}
-            <div 
-              className={`absolute left-[80px] top-1/2 -translate-y-1/2 w-[280px] bg-black border border-gray-800 rounded-xl p-5 shadow-[0_0_40px_rgba(0,0,0,0.9)] transition-all duration-500 origin-left z-50 
-                ${isHovered ? 'opacity-100 scale-100 translate-x-0' : 'opacity-0 scale-95 -translate-x-2 pointer-events-none'}`}
-            >
-              <h3 className="text-gray-300 text-xs tracking-wider uppercase font-bold mb-4">{item.label}</h3>
+            {/* Right Side: Accordion Content */}
+            <div className="pl-6 pb-5 flex-1 text-left z-10 relative bg-black/50 backdrop-blur-sm">
+              <h3 className={`text-sm font-semibold transition-colors duration-300 ${isHovered ? 'text-gray-100' : 'text-gray-400'}`}>
+                {item.role}
+              </h3>
               
-              <div className="flex flex-col gap-4">
-                {item.entries.map((entry, i) => (
-                  <div key={i} className="flex items-start gap-4 hover:translate-x-1 transition-transform duration-300">
-                    <div className="text-gray-400 text-[18px] shrink-0 mt-0.5">{entry.icon}</div>
-                    <div>
-                      <h4 className="text-gray-100 text-sm font-semibold mb-1">{entry.title}</h4>
-                      <p className="text-gray-500 text-xs leading-relaxed">{entry.description}</p>
-                    </div>
+              {/* Accordion Logic: grid-rows-[1fr] expands safely without floating overlaps */}
+              <div 
+                className={`grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                  isHovered ? 'grid-rows-[1fr] opacity-100 mt-2' : 'grid-rows-[0fr] opacity-0 mt-0'
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <div className="flex flex-col gap-2 pb-2">
+                    <p className="text-[10px] text-gray-500 uppercase tracking-widest bg-gray-900 w-fit px-2 py-0.5 rounded">
+                      {item.date} {item.location && `• ${item.location}`}
+                    </p>
+                    <p className="text-[11px] text-gray-400 leading-relaxed pr-2">
+                      {item.description}
+                    </p>
+                    {item.skills && (
+                      <p className="text-[10px] text-gray-300 mt-1">
+                        <span className="text-gray-600 font-bold uppercase tracking-wider">Skills: </span> 
+                        {item.skills}
+                      </p>
+                    )}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
