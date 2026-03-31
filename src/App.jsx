@@ -5,7 +5,6 @@ import Home from './components/Home'
 import Specs from './components/Specs'
 import About from './components/About'
 import Insights from './components/Insights'
-import { Analytics } from "@vercel/analytics/next"
 
 function App() {
   return (

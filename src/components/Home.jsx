@@ -22,7 +22,7 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-black text-white font-mono selection:bg-white selection:text-black">
-      <div className="max-w-4xl mx-auto px-6 py-12 md:py-20">
+      <div className="max-w-6xl mx-auto px-6 py-12 md:py-20">
         <Navbar />
         <Hero />
         <FounderOf />

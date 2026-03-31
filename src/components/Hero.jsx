@@ -30,7 +30,7 @@ function Hero() {
           </a>
         </div>
 
-        <p className="text-gray-400 leading-relaxed text-sm md:text-base max-w-2xl">
+        <p className="text-gray-400 leading-relaxed text-sm md:text-base max-w-4xl">
           i'm a 20 y/o cs undergrad. i love building businesses and solving problems. interested in growth, startups, networking and infra. when i'm not cooking stuff, i'm prolly locking another client for my business - inthebox.
         </p>
       </div>
