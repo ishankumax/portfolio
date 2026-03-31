@@ -27,7 +27,7 @@ function Home() {
         
         {/* Left Sidebar - Timeline */}
         <aside className="hidden xl:block w-[360px] shrink-0 relative z-50">
-          <div className="sticky top-20 tracking-tighter">
+          <div className="pt-20 tracking-tighter">
             <Timeline />
           </div>
         </aside>
