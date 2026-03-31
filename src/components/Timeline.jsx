@@ -130,6 +130,42 @@ const timelineData = [
 ];
 
 // ============================================================================
+// UTILITY: Custom Easing Scroll
+// ----------------------------------------------------------------------------
+// Browsers natively execute `scrollIntoView` too abruptly for premium layouts.
+// This function mathematically interpolates the scroll physically pixel-by-pixel 
+// using a beautiful 'cubic' easing curve for ultra-soft, slow transitions.
+// ============================================================================
+let scrollRafId = null;
+
+const softScrollTo = (targetY, duration = 1200) => {
+  // Seamlessly cancel any currently running scroll animation so it redirects natively!
+  if (scrollRafId) window.cancelAnimationFrame(scrollRafId);
+
+  const startY = window.scrollY;
+  const difference = targetY - startY;
+  let startTime = null;
+
+  // Easing function: easeInOutQuart
+  // Starts extremely slow, accelerates, and gracefully decelerates to a halt.
+  const ease = (t) => t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
+
+  const step = (currentTime) => {
+    if (!startTime) startTime = currentTime;
+    const progress = currentTime - startTime;
+    const normalizedTime = Math.min(progress / duration, 1);
+    
+    window.scrollTo(0, startY + difference * ease(normalizedTime));
+
+    if (progress < duration) {
+      scrollRafId = window.requestAnimationFrame(step);
+    }
+  };
+
+  scrollRafId = window.requestAnimationFrame(step);
+};
+
+// ============================================================================
 // COMPONENT: Timeline
 // ----------------------------------------------------------------------------
 // Re-usable vertical scrolling timeline that tracks 'active states' and elegantly
@@ -147,13 +183,12 @@ function Timeline() {
 
   // ============================================================================
   // REFS: isScrolling, scrollTimeout, itemRefs
-  // - isScrolling: A boolean "lock". It prevents hover collisions if the 
-  //   browser is already busy smoothly scrolling the page.
+  // - hoverTimeout: Adds a tiny imperceptible delay to stabilize transitions and 
+  //   completely eliminate flickering when rapidly dragging the mouse across items.
   // - itemRefs: A dictionary object storing direct HTML DOM elements. This allows
   //   us to target exact role entries and scroll straight to them.
   // ============================================================================
-  const isScrolling = useRef(false);
-  const scrollTimeout = useRef(null);
+  const hoverTimeout = useRef(null);
   const itemRefs = useRef({});
 
   // ============================================================================
@@ -161,34 +196,31 @@ function Timeline() {
   // ----------------------------------------------------------------------------
   // Fired instantly when your cursor touches any minimal role heading.
   // 1. Assigns the `activeId` state so the accordion opens for this item.
-  // 2. Instructs the browser to smoothly scroll the page globally so the newly
-  //    opened card naturally glides precisely to the center of your screen.
+  // 2. Instructs the custom math function to exquisitely glide the entire webpage 
+  //    so the target centers itself flawlessly over 1.4 seconds.
   // ============================================================================
   const handleMouseEnter = (id) => {
-    // If a smooth scroll is currently executing, politely ignore any new hovers 
-    // passing underneath the mouse to completely prevent stuttering and jumping.
-    if (isScrolling.current) return;
+    // Clear any existing timeouts to prevent race conditions if rapidly scrubbing
+    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
     
-    // Set the role ID to trigger the CSS accordion expansion
-    setActiveId(id);
-    
-    // Lookup the exact DOM block for this specific timeline item
-    const el = itemRefs.current[id];
-    
-    if (el) {
-      // Engage the scrolling lock
-      isScrolling.current = true;
+    // Add a stabilizing 60ms delay before capturing the hover
+    hoverTimeout.current = setTimeout(() => {
+      // Instantly assign the state to open the exact hovered item (closes all others)
+      setActiveId(id);
       
-      // Execute a buttery smooth native browser shift bringing this item to dead-center
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      
-      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-      
-      // Auto-release the scrolling lock after 800ms (the standard time a scroll completes)
-      scrollTimeout.current = setTimeout(() => {
-        isScrolling.current = false;
-      }, 800);
-    }
+      const el = itemRefs.current[id];
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const elementAbsoluteTop = rect.top + window.scrollY;
+        
+        // Drop this point directly into the dead center of the user's active screen real estate
+        const targetY = elementAbsoluteTop - (window.innerHeight / 2) + (rect.height / 2);
+        
+        // Because softScrollTo automatically cancels previous animations, 
+        // it seamlessly and gracefully redirects the physical scroll!
+        softScrollTo(targetY, 1400); 
+      }
+    }, 60);
   };
 
   return (
@@ -196,7 +228,10 @@ function Timeline() {
     // If you stray outside, it sets activeId to null, elegantly collapsing any open cards!
     <div 
       className="relative font-mono py-6 w-full"
-      onMouseLeave={() => setActiveId(null)}
+      onMouseLeave={() => {
+        if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+        setActiveId(null);
+      }}
     >
       
       <div className="relative flex flex-col w-full">
