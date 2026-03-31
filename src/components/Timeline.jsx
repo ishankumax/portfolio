@@ -153,7 +153,10 @@ function Timeline() {
   const activeItem = timelineData.flatMap(y => y.items).find(i => i.id === activeId);
 
   return (
-    <div className="relative font-mono py-6 w-full">
+    <div 
+      className="relative font-mono py-6 w-full"
+      onMouseLeave={() => setActiveId(null)}
+    >
       {/* Timeline List (Scrolling Left side) */}
       <div className="relative flex flex-col w-full">
         {/* Primary Vertical Track Line */}
