@@ -1,159 +1,197 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const timelineData = [
   {
-    id: 1,
-    company: "InTheBox",
-    role: "Chief Marketing Officer",
-    date: "Nov 2024 - Present",
-    location: "Chandigarh, India",
-    description: "Driving innovation and excellence in packaging, ensuring that every product's first impression speaks volumes. Focused on quality, sustainability, and customer-centric solutions.",
-    skills: "Team Leadership, Operations Management"
+    year: '2025',
+    items: [
+      {
+        id: '1',
+        role: 'Chief Marketing Officer',
+        company: 'InTheBox',
+        date: 'NOV 2024 - PRESENT',
+        bullets: [
+          'Driving innovation and packaging excellence',
+          'Focusing on quality and sustainability',
+          'Delivering customer-centric solutions'
+        ]
+      },
+      {
+        id: '2',
+        role: 'Head of Marketing',
+        company: 'ACM Student Chapter',
+        date: 'NOV 2024 - JUL 2025',
+        bullets: [
+          'Organised Annual ACM-W India Lady Ada',
+          'Managed Lady Ada Facilitation'
+        ]
+      },
+      {
+        id: '3',
+        role: 'Ecosystem Manager',
+        company: 'DevLearn',
+        date: 'MAY 2024 - FEB 2025',
+        bullets: [
+          'Managed community and ecosystem',
+          'Organised the Co Learning Camp',
+          'Handled event and operations management'
+        ]
+      },
+      {
+        id: '4',
+        role: 'Graphics Exec.',
+        company: 'Coding Blocks',
+        date: 'DEC 2023 - MAY 2025',
+        bullets: [
+          "Organised India's biggest Web3 Hackathon",
+          'Honoured for graphic design and web design'
+        ]
+      }
+    ]
   },
   {
-    id: 2,
-    company: "ACM Chapter",
-    role: "Head of Marketing",
-    date: "Nov 2024 - Jul 2025",
-    location: "Chitkara Univ.",
-    description: "Organised Annual ACM-W India Lady Ada & Lady Ada Facilitation.",
-    skills: "Event Planning, Execution"
+    year: '2024',
+    items: [
+      {
+        id: '5',
+        role: 'Marketing Exec.',
+        company: 'ACM Student Chapter',
+        date: 'SEP 2024 - NOV 2024',
+        bullets: [
+          'Organised ISCCSC',
+          'Organised 1st ICSCCS',
+          'Managed marketing and student outreach'
+        ]
+      },
+      {
+        id: '6',
+        role: 'Campus Ambassador',
+        company: 'Kotlin Delhi',
+        date: 'JUN 2024 - JUL 2024',
+        bullets: [
+          'Promoted KotlinConfDelhi',
+          'Managed selection mails and outreach'
+        ]
+      },
+      {
+        id: '7',
+        role: 'Design & Branding',
+        company: 'GFG CUIET',
+        date: 'JAN 2024 - JUL 2024',
+        bullets: [
+          'Managed branding for 23-24 Team',
+          'Led group photo graphic design'
+        ]
+      },
+      {
+        id: '8',
+        role: 'Graphics Head',
+        company: 'DevLearn',
+        date: 'FEB 2024 - MAY 2024',
+        bullets: [
+          'Led graphic design team',
+          'Managed web design initiatives'
+        ]
+      },
+      {
+        id: '9',
+        role: 'Outreach Exec.',
+        company: 'Coding Ninjas',
+        date: 'JAN 2024 - FEB 2024',
+        bullets: [
+          'Managed outreach for Utkrishti 2024',
+          'Led student outreach initiatives'
+        ]
+      }
+    ]
   },
   {
-    id: 3,
-    company: "ACM Chapter",
-    role: "Marketing Exec.",
-    date: "Sep 2024 - Nov 2024",
-    location: "Chitkara Univ.",
-    description: "Organised ISCCSC and 1st ICSCCS.",
-    skills: "Marketing, Outreach"
-  },
-  {
-    id: 4,
-    company: "Coding Blocks",
-    role: "Graphics Exec.",
-    date: "Dec 2023 - May 2025",
-    location: "CUIET",
-    description: "Organised India's biggest Web3 Hackathon. Honoured for graphic achievements.",
-    skills: "Graphic Design, Web UI"
-  },
-  {
-    id: 5,
-    company: "DevLearn",
-    role: "Ecosystem Mgr.",
-    date: "May 2024 - Feb 2025",
-    location: "Chandigarh, India",
-    description: "Managed overall community ecosystem and organised the Co Learning Camp.",
-    skills: "Operations Management"
-  },
-  {
-    id: 6,
-    company: "DevLearn",
-    role: "Graphics Head",
-    date: "Feb 2024 - May 2024",
-    location: "Chandigarh, India",
-    description: "Led graphic and web design initiatives.",
-    skills: "Graphic Design, Web Design"
-  },
-  {
-    id: 7,
-    company: "Kotlin Delhi",
-    role: "Campus Ambassador",
-    date: "Jun 2024 - Jul 2024",
-    location: "Delhi, India",
-    description: "Promoted KotlinConfDelhi and managed local student outreach.",
-    skills: "Student Outreach"
-  },
-  {
-    id: 8,
-    company: "GFG CUIET",
-    role: "Design & Branding",
-    date: "Jan 2024 - Jul 2024",
-    location: "Rajpura, Punjab",
-    description: "Managed the 23-24 Team branding and general graphic design.",
-    skills: "Graphic Design, Branding"
-  },
-  {
-    id: 9,
-    company: "Coding Ninjas",
-    role: "Outreach Exec.",
-    date: "Jan 2024 - Feb 2024",
-    location: "CUIET Chapter",
-    description: "Managed outreach campaigns for Utkrishti 2024.",
-    skills: "Student Outreach"
+    year: '2023',
+    items: [
+      {
+        id: '10',
+        role: 'Graphics Exec.',
+        company: 'DevLearn',
+        date: 'NOV 2023 - FEB 2024',
+        bullets: [
+          'Executed remote graphic design tasks',
+          'Supported community visual identity'
+        ]
+      }
+    ]
   }
 ];
 
 function Timeline() {
-  const [hoveredId, setHoveredId] = useState(null);
-
   return (
-    <div className="relative flex flex-col w-full font-mono py-12">
-      {/* Vertical Track Line */}
-      <div className="absolute left-[130px] top-12 bottom-12 w-px bg-gradient-to-b from-transparent via-gray-800 to-transparent z-0"></div>
-      
-      {timelineData.map((item) => {
-        const isHovered = hoveredId === item.id;
-        
-        return (
-          <div 
-            key={item.id} 
-            className="relative flex group"
-            onMouseEnter={() => setHoveredId(item.id)}
-            onMouseLeave={() => setHoveredId(null)}
-          >
-            {/* Left Side: Company & Date Context */}
-            <div className="w-[130px] text-right pr-5 pt-1 shrink-0 z-10 bg-black/50 backdrop-blur-sm relative">
-              <div className={`text-xs font-bold transition-colors duration-300 ${isHovered ? 'text-white' : 'text-gray-500'}`}>
-                {item.company}
-              </div>
-              <div className="text-[10px] text-gray-600 mt-1 uppercase tracking-wider">
-                {item.date.split('-')[0].trim()}
+    <div className="relative flex flex-col w-full font-mono py-6">
+      {/* Primary Vertical Track Line */}
+      <div className="absolute left-[70px] top-10 bottom-10 w-px bg-gradient-to-b from-transparent via-gray-700 to-transparent"></div>
+
+      <div className="flex flex-col gap-6">
+        {timelineData.map((yearGroup, yIndex) => (
+          <div key={yearGroup.year} className="relative">
+            
+            {/* Year Node (Only render once per year block) */}
+            <div className="absolute left-0 top-3 flex items-center w-[70px] justify-between pr-4 z-10">
+              <span className={`text-[13px] font-mono transition-colors duration-300 ${yIndex === 0 ? 'text-white font-bold' : 'text-gray-500'}`}>
+                {yearGroup.year}
+              </span>
+              <div className="relative flex justify-center items-center w-2 h-2 translate-x-[5px]">
+                <div className={`w-1.5 h-1.5 rounded-full ${yIndex === 0 ? 'bg-white shadow-[0_0_8px_rgba(255,255,255,0.9)] scale-125' : 'bg-gray-600'}`}></div>
               </div>
             </div>
 
-            {/* Center Node / Dot */}
-            <div className="absolute left-[130px] top-2.5 -translate-x-1/2 flex items-center justify-center z-20">
-              <div 
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  isHovered ? 'bg-white scale-[1.7] shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'bg-gray-700'
-                }`}
-              ></div>
-            </div>
-
-            {/* Right Side: Accordion Content */}
-            <div className="pl-6 pb-5 flex-1 text-left z-10 relative bg-black/50 backdrop-blur-sm">
-              <h3 className={`text-sm font-semibold transition-colors duration-300 ${isHovered ? 'text-gray-100' : 'text-gray-400'}`}>
-                {item.role}
-              </h3>
-              
-              {/* Accordion Logic: grid-rows-[1fr] expands safely without floating overlaps */}
-              <div 
-                className={`grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-                  isHovered ? 'grid-rows-[1fr] opacity-100 mt-2' : 'grid-rows-[0fr] opacity-0 mt-0'
-                }`}
-              >
-                <div className="overflow-hidden">
-                  <div className="flex flex-col gap-2 pb-2">
-                    <p className="text-[10px] text-gray-500 uppercase tracking-widest bg-gray-900 w-fit px-2 py-0.5 rounded">
-                      {item.date} {item.location && `• ${item.location}`}
-                    </p>
-                    <p className="text-[11px] text-gray-400 leading-relaxed pr-2">
-                      {item.description}
-                    </p>
-                    {item.skills && (
-                      <p className="text-[10px] text-gray-300 mt-1">
-                        <span className="text-gray-600 font-bold uppercase tracking-wider">Skills: </span> 
-                        {item.skills}
-                      </p>
-                    )}
+            {/* Role List for the Year */}
+            <div className="flex flex-col">
+              {yearGroup.items.map((item) => (
+                <div 
+                  key={item.id} 
+                  className="relative group border-b border-gray-800/60 last:border-transparent cursor-pointer"
+                >
+                  
+                  {/* Minimal Role Heading */}
+                  <div className="pl-[100px] py-4 pr-4 transition-colors duration-300 group-hover:bg-white/[0.03]">
+                    <span className="text-gray-500 font-mono text-sm transition-colors duration-300 group-hover:text-gray-200">
+                      {item.role}
+                    </span>
                   </div>
+
+                  {/* Expanded Hover Overlay Card */}
+                  <div className="absolute left-[120px] top-1/2 -translate-y-1/2 w-[340px] z-50 pointer-events-none transition-all duration-300 origin-left opacity-0 scale-[0.97] group-hover:opacity-100 group-hover:scale-100 group-hover:translate-x-4">
+                    <div className="bg-[#0b0c10]/95 backdrop-blur-xl border border-gray-700/50 rounded-xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative overflow-hidden">
+                      
+                      {/* Subtle Glow Highlight Inside Card */}
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-[40px] rounded-full pointer-events-none"></div>
+
+                      <div className="relative z-10">
+                        <h3 className="text-gray-100 font-semibold tracking-wide text-sm">{item.company}</h3>
+                        <p className="text-gray-500 font-mono text-[10px] mt-1.5 tracking-wider">{item.date}</p>
+                        
+                        <div className="my-3 border-t border-gray-800/80"></div>
+
+                        <h4 className="text-white font-semibold text-sm mb-3 tracking-wide">{item.role}</h4>
+                        
+                        <ul className="flex flex-col gap-2">
+                          {item.bullets.map((bullet, i) => (
+                            <li key={i} className="flex items-start text-[11px] text-gray-400 leading-relaxed font-sans">
+                              <span className="mr-2.5 text-gray-600 mt-[2px]">•</span>
+                              <span>{bullet}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                    </div>
+                  </div>
+
                 </div>
-              </div>
+              ))}
             </div>
+
           </div>
-        );
-      })}
+        ))}
+      </div>
+      
     </div>
   );
 }
