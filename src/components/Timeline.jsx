@@ -213,12 +213,22 @@ function Timeline() {
         const rect = el.getBoundingClientRect();
         const elementAbsoluteTop = rect.top + window.scrollY;
         
-        // Drop this point directly into the dead center of the user's active screen real estate
-        const targetY = elementAbsoluteTop - (window.innerHeight / 2) + (rect.height / 2);
+        // We calculate how far the element physically is from the exact center of the screen
+        const viewportCenter = window.innerHeight / 2;
+        const elementCenter = rect.top + (rect.height / 2);
+        const distanceFromCenter = Math.abs(viewportCenter - elementCenter);
         
-        // Because softScrollTo automatically cancels previous animations, 
-        // it seamlessly and gracefully redirects the physical scroll!
-        softScrollTo(targetY, 1400); 
+        // SAFE ZONE THRESHOLD:
+        // By setting this to 0.42, 84% of your entire screen is an absolute "safe zone".
+        // The page will now ONLY auto-scroll if you hover something literally squeezed into 
+        // the top 8% or bottom 8% of your physical monitor.
+        const safeZone = window.innerHeight * 0.42; 
+
+        if (distanceFromCenter > safeZone) {
+          // Only if it's too close to the absolute top/bottom boundaries do we glide the camera
+          const targetY = elementAbsoluteTop - (window.innerHeight / 2) + (rect.height / 2);
+          softScrollTo(targetY, 1400); 
+        }
       }
     }, 60);
   };
