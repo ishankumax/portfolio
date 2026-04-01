@@ -171,7 +171,7 @@ const softScrollTo = (targetY, duration = 1200) => {
 // Re-usable vertical scrolling timeline that tracks 'active states' and elegantly
 // handles scrolling document flow.
 // ============================================================================
-function Timeline() {
+function Timeline({ isMobileMode = false }) {
   
   // ============================================================================
   // STATE: activeId
@@ -224,8 +224,8 @@ function Timeline() {
         // the top 8% or bottom 8% of your physical monitor.
         const safeZone = window.innerHeight * 0.42; 
 
-        if (distanceFromCenter > safeZone) {
-          // Only if it's too close to the absolute top/bottom boundaries do we glide the camera
+        if (distanceFromCenter > safeZone && !isMobileMode) {
+          // Only glide the camera if it's explicitly not in a mobile drawer!
           const targetY = elementAbsoluteTop - (window.innerHeight / 2) + (rect.height / 2);
           softScrollTo(targetY, 1400); 
         }
@@ -273,7 +273,16 @@ function Timeline() {
                       key={item.id} 
                       ref={el => itemRefs.current[item.id] = el}
                       className="relative border-b border-gray-800/60 last:border-transparent cursor-pointer"
-                      onMouseEnter={() => handleMouseEnter(item.id)}
+                      onMouseEnter={() => !isMobileMode && handleMouseEnter(item.id)}
+                      onClick={() => {
+                        if (isMobileMode) {
+                          // Tap-friendly logic purely for mobile navigation
+                          setActiveId(prev => prev === item.id ? null : item.id);
+                        } else {
+                          // Just smoothly scroll into focus if clicked manually on desktop
+                          handleMouseEnter(item.id);
+                        }
+                      }}
                     >
                       {/* Very subtle clickable header you see prior to hovering anything */}
                       <div className={`pl-[100px] py-5 pr-4 transition-colors duration-300 ${isActive ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'}`}>
