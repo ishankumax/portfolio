@@ -11,9 +11,9 @@ function Home() {
   const location = useLocation()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
-  // Prevent background scrolling when mobile timeline drawer is open
+  // Prevent background scrolling strictly on small mobile screens when the panel takes up the whole screen
   useEffect(() => {
-    if (isDrawerOpen) {
+    if (isDrawerOpen && window.innerWidth < 768) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -32,63 +32,71 @@ function Home() {
   }, [location])
 
   return (
-    <div className="min-h-screen bg-black text-white font-mono selection:bg-white selection:text-black flex justify-center">
-      <div className="max-w-4xl w-full mx-auto px-6 py-12 md:py-20 relative">
+    <div className="min-h-screen bg-black text-white font-mono selection:bg-white selection:text-black flex justify-center overflow-x-hidden">
+      
+      {/* Flexible width wrapper that handles the sliding split layout shift */}
+      <div 
+        className="flex w-full transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform"
+        style={{
+          // Base main layout is ~896px. When opened, container expands dynamically to fit the 400px panel 
+          // forcing the main content block to beautifully slide left as the container stays centered!
+          maxWidth: isDrawerOpen ? '1300px' : '896px'
+        }}
+      >
         
-        {/* Main Content */}
-        <main className="w-full relative z-10 block">
-          <Navbar onToggleDrawer={() => setIsDrawerOpen(true)} />
+        {/* Main Content (Always stays full width of its allotted 896px space) */}
+        <main className="flex-1 min-w-0 w-full px-6 py-12 md:py-20 relative z-10 transition-transform duration-[400ms]">
+          <Navbar onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)} />
           <Hero />
           <FounderOf />
           <WritingMyStory />
           <Footer />
         </main>
         
-      </div>
-
-      {/* Universal Right Edge Drawer Overlay (For both Mobile & Desktop) */}
-      <div 
-        className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${isDrawerOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-        onClick={() => setIsDrawerOpen(false)}
-      >
-        <div 
-          className={`absolute top-0 right-0 w-full max-w-[400px] h-[100dvh] bg-[#0b0c10] border-l border-gray-800 p-6 sm:p-8 overflow-y-auto shadow-2xl transition-transform duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}
-          onClick={(e) => e.stopPropagation()} // Prevent clicks inside the drawer from closing the overlay
+        {/* Adjacent Slide-out Sidebar Panel (Instead of overlay overlay) */}
+        <aside 
+          className={`flex-shrink-0 border-gray-800 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] overflow-hidden ${isDrawerOpen ? 'w-full md:w-[400px] opacity-100 border-l' : 'w-0 opacity-0 border-l-transparent'}`}
         >
-          {/* Drawer Inner Header */}
-          <div className="flex justify-between items-center mb-10 pt-2">
-            <div>
-              <h2 className="text-xl font-bold tracking-tight text-white mb-1">ishan kumar</h2>
-              <p className="text-xs font-mono text-gray-500">@ishankumax</p>
+          {/* Inner fixed-width container acts identically to the drawer but flows natively adjacent to content.
+              Sticky top allowing independent independent scrolling! */}
+          <div className="w-full md:w-[400px] h-[100dvh] sticky top-0 bg-[#0b0c10] overflow-y-auto p-6 sm:p-8 no-scrollbar shadow-[-20px_0_40px_rgba(0,0,0,0.4)]">
+            
+            {/* Drawer Inner Header */}
+            <div className="flex justify-between items-center mb-10 pt-2">
+              <div>
+                <h2 className="text-xl font-bold tracking-tight text-white mb-1">ishan kumar</h2>
+                <p className="text-xs font-mono text-gray-500">@ishankumax</p>
+              </div>
+              {/* Close Button */}
+              <button 
+                onClick={() => setIsDrawerOpen(false)} 
+                className="text-gray-400 hover:text-white p-2 border border-gray-800 rounded-md transition-colors shadow-sm bg-black/50"
+              >
+                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                 </svg>
+              </button>
             </div>
-            {/* Close Button */}
-            <button 
-              onClick={() => setIsDrawerOpen(false)} 
-              className="text-gray-400 hover:text-white p-2 border border-gray-800 rounded-md transition-colors"
-            >
-               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
-               </svg>
-            </button>
-          </div>
 
-          {/* Filter / Category Toggle */}
-          <div className="flex bg-[#111216] rounded-[20px] p-1 border border-gray-800/60 mb-8 font-mono text-[11px]">
-             <div className="flex-1 py-1.5 text-center text-gray-500">Insights</div>
-             <div className="flex-1 py-1.5 text-center bg-gray-800/50 text-white rounded-2xl shadow-sm border border-gray-700/50">
-               experience
-             </div>
-          </div>
-          
-          <h3 className="text-white font-mono text-xs uppercase tracking-[0.2em] mb-4 pl-1">Experience</h3>
+            {/* Filter / Category Toggle */}
+            <div className="flex bg-[#111216] rounded-[20px] p-1 border border-gray-800/60 mb-8 font-mono text-[11px]">
+               <div className="flex-1 py-1.5 text-center text-gray-500">Insights</div>
+               <div className="flex-1 py-1.5 text-center bg-gray-800/50 text-white rounded-2xl shadow-sm border border-gray-700/50">
+                 experience
+               </div>
+            </div>
+            
+            <h3 className="text-white font-mono text-xs uppercase tracking-[0.2em] mb-4 pl-1">Experience</h3>
 
-          {/* Render Timeline Instance strictly for Mobile Clicks with no Hover locks! */}
-          <div className="relative transform -translate-x-[60px]">
-             <Timeline isMobileMode={true} />
+            {/* Render Timeline Instance safely */}
+            <div className="relative transform -translate-x-[60px]">
+               <Timeline isMobileMode={true} />
+            </div>
+
           </div>
-        </div>
+        </aside>
+
       </div>
-
     </div>
   )
 }
