@@ -38,14 +38,15 @@ function Home() {
       <div 
         className="flex w-full transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform"
         style={{
-          // Base main layout is ~896px. When opened, container expands dynamically to fit the 400px panel 
-          // forcing the main content block to beautifully slide left as the container stays centered!
-          maxWidth: isDrawerOpen ? '1300px' : '896px'
+          // Base main layout is ~896px. When opened, container expands dynamically to a full 100% viewport span 
+          // forcing the main content block to beautifully slide left as the container occupies all empty space!
+          maxWidth: isDrawerOpen ? '100vw' : '896px',
+          width: '100%'
         }}
       >
         
-        {/* Main Content (Always stays full width of its allotted 896px space) */}
-        <main className="flex-1 min-w-0 w-full px-6 py-12 md:py-20 relative z-10 transition-transform duration-[400ms]">
+        {/* Main Content (Always stays visually centered in its flexible remaining real estate) */}
+        <main className="flex-1 min-w-0 w-full max-w-4xl mx-auto px-6 py-12 md:py-20 relative z-10 transition-transform duration-[400ms]">
           <Navbar onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)} />
           <Hero />
           <FounderOf />
@@ -55,11 +56,11 @@ function Home() {
         
         {/* Adjacent Slide-out Sidebar Panel (Instead of overlay overlay) */}
         <aside 
-          className={`flex-shrink-0 border-gray-800 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] overflow-hidden ${isDrawerOpen ? 'w-full md:w-[400px] opacity-100 border-l' : 'w-0 opacity-0 border-l-transparent'}`}
+          className={`flex-shrink-0 border-gray-800 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] overflow-hidden ${isDrawerOpen ? 'w-full md:w-[420px] lg:w-[480px] xl:w-[500px] opacity-100 border-l' : 'w-0 opacity-0 border-l-transparent'}`}
         >
           {/* Inner fixed-width container acts identically to the drawer but flows natively adjacent to content.
               Sticky top allowing independent independent scrolling! */}
-          <div className="w-full md:w-[400px] h-[100dvh] sticky top-0 bg-[#0b0c10] overflow-y-auto p-6 sm:p-8 no-scrollbar shadow-[-20px_0_40px_rgba(0,0,0,0.4)]">
+          <div className="w-full md:w-[420px] lg:w-[480px] xl:w-[500px] h-[100dvh] sticky top-0 bg-[#0b0c10] overflow-y-auto p-6 sm:p-8 no-scrollbar shadow-[-20px_0_40px_rgba(0,0,0,0.4)]">
             
             {/* Drawer Inner Header */}
             <div className="flex justify-between items-center mb-10 pt-2">
@@ -90,7 +91,7 @@ function Home() {
 
             {/* Render Timeline Instance safely */}
             <div className="relative transform -translate-x-[60px]">
-               <Timeline isMobileMode={true} />
+               <Timeline isMobileMode={false} />
             </div>
 
           </div>

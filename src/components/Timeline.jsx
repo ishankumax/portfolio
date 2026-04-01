@@ -138,11 +138,12 @@ const timelineData = [
 // ============================================================================
 let scrollRafId = null;
 
-const softScrollTo = (targetY, duration = 1200) => {
+const softScrollTo = (targetY, duration = 1200, container = window) => {
   // Seamlessly cancel any currently running scroll animation so it redirects natively!
   if (scrollRafId) window.cancelAnimationFrame(scrollRafId);
 
-  const startY = window.scrollY;
+  const isWindow = container === window;
+  const startY = isWindow ? window.scrollY : container.scrollTop;
   const difference = targetY - startY;
   let startTime = null;
 
@@ -155,7 +156,13 @@ const softScrollTo = (targetY, duration = 1200) => {
     const progress = currentTime - startTime;
     const normalizedTime = Math.min(progress / duration, 1);
     
-    window.scrollTo(0, startY + difference * ease(normalizedTime));
+    const nextY = startY + difference * ease(normalizedTime);
+    
+    if (isWindow) {
+      window.scrollTo(0, nextY);
+    } else {
+      container.scrollTop = nextY;
+    }
 
     if (progress < duration) {
       scrollRafId = window.requestAnimationFrame(step);
@@ -210,24 +217,40 @@ function Timeline({ isMobileMode = false }) {
       
       const el = itemRefs.current[id];
       if (el) {
-        const rect = el.getBoundingClientRect();
-        const elementAbsoluteTop = rect.top + window.scrollY;
+        // Automatically find the specific scrolling container for sidebars (or fallback to window)
+        const container = el.closest('.overflow-y-auto') || window;
+        const isWindow = container === window;
         
-        // We calculate how far the element physically is from the exact center of the screen
-        const viewportCenter = window.innerHeight / 2;
+        const rect = el.getBoundingClientRect();
+        
+        // Calculate dynamic properties to find exactly where the element is relative to the *scrolling viewport*
+        let containerCenter = window.innerHeight / 2;
+        let currentScroll = window.scrollY;
+        let containerHeight = window.innerHeight;
+        
+        if (!isWindow) {
+           const containerRect = container.getBoundingClientRect();
+           containerCenter = containerRect.top + (containerRect.height / 2);
+           currentScroll = container.scrollTop;
+           containerHeight = containerRect.height;
+        }
+
         const elementCenter = rect.top + (rect.height / 2);
-        const distanceFromCenter = Math.abs(viewportCenter - elementCenter);
+        
+        // Measure physical geometric distance
+        const distanceFromCenter = Math.abs(containerCenter - elementCenter);
         
         // SAFE ZONE THRESHOLD:
-        // By setting this to 0.42, 84% of your entire screen is an absolute "safe zone".
-        // The page will now ONLY auto-scroll if you hover something literally squeezed into 
-        // the top 8% or bottom 8% of your physical monitor.
-        const safeZone = window.innerHeight * 0.42; 
+        // By setting this to 0.42, 84% of your entire container is an absolute "safe zone".
+        // The container will now ONLY auto-scroll if you hover something literally squeezed into 
+        // the top 8% or bottom 8% of your physical container viewport.
+        const safeZone = containerHeight * 0.42; 
 
         if (distanceFromCenter > safeZone && !isMobileMode) {
-          // Only glide the camera if it's explicitly not in a mobile drawer!
-          const targetY = elementAbsoluteTop - (window.innerHeight / 2) + (rect.height / 2);
-          softScrollTo(targetY, 1400); 
+          // If the element crosses the boundary top/bottom, glide it perfectly!
+          // We add the signed geometric difference exactly to current native scroll coordinate.
+          const targetY = currentScroll + (elementCenter - containerCenter);
+          softScrollTo(targetY, 1400, container); 
         }
       }
     }, 60);
@@ -253,12 +276,13 @@ function Timeline({ isMobileMode = false }) {
             <div key={yearGroup.year} className="relative z-10">
               
               {/* Yearly Marker (e.g. "2025" + Glowing Dot) */}
-              <div className="absolute left-0 top-3 flex items-center w-[70px] justify-between pr-4 bg-black/80 backdrop-blur-sm z-20">
-                <span className={`text-[13px] font-mono transition-colors duration-300 ${yIndex === 0 ? 'text-white font-bold' : 'text-gray-500'}`}>
+              {/* Force explicit Z-index and backdrop blur to definitively lock over the line */}
+              <div className="absolute left-0 top-3 flex items-center w-[84px] justify-between pr-[18px] bg-[#0b0c10]/95 backdrop-blur-md z-30 py-1.5 rounded-r-md">
+                <span className="text-[15px] font-mono tracking-widest text-white font-bold brightness-125">
                   {yearGroup.year}
                 </span>
-                <div className="relative flex justify-center items-center w-2 h-2 translate-x-[5px]">
-                  <div className={`w-1.5 h-1.5 rounded-full ${yIndex === 0 ? 'bg-white shadow-[0_0_8px_rgba(255,255,255,0.9)] scale-125' : 'bg-gray-600'}`}></div>
+                <div className="relative flex justify-center items-center w-2 h-2 translate-x-[11px]">
+                  <div className={`w-[7px] h-[7px] rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,1)] ${yIndex === 0 ? 'ring-4 ring-white/20' : ''}`}></div>
                 </div>
               </div>
 
