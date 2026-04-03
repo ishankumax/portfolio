@@ -277,7 +277,7 @@ function Timeline({ isMobileMode = false }) {
               
               {/* Yearly Marker (e.g. "2025" + Glowing Dot) */}
               {/* Force explicit Z-index and backdrop blur to definitively lock over the line */}
-              <div className="absolute left-0 top-3 flex items-center w-[84px] justify-between pr-[18px] bg-[#0b0c10]/95 backdrop-blur-md z-30 py-1.5 rounded-r-md">
+              <div className="absolute left-0 top-3 flex items-center w-[84px] justify-between pr-[18px] bg-black/95 backdrop-blur-md z-30 py-1.5 rounded-r-md">
                 <span className="text-[15px] font-mono tracking-widest text-white font-bold brightness-125">
                   {yearGroup.year}
                 </span>
@@ -321,7 +321,7 @@ function Timeline({ isMobileMode = false }) {
                         <div className="overflow-hidden">
                           
                           {/* Inner detailed custom UI mapping. Very highly styled with dark frosted styling matching product landers */}
-                          <div className="ml-[100px] mr-6 mb-6 mt-1 bg-[#0b0c10]/95 backdrop-blur-xl border border-gray-700/50 rounded-xl p-5 shadow-[0_20px_40px_rgba(0,0,0,0.8)] relative overflow-hidden">
+                          <div className="ml-[100px] mr-6 mb-6 mt-1 bg-black/95 backdrop-blur-xl border border-gray-700/50 rounded-xl p-5 shadow-[0_20px_40px_rgba(0,0,0,0.8)] relative overflow-hidden">
                             
                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-[40px] rounded-full pointer-events-none"></div>
 

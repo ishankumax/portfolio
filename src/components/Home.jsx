@@ -56,11 +56,11 @@ function Home() {
         
         {/* Adjacent Slide-out Sidebar Panel (Instead of overlay overlay) */}
         <aside 
-          className={`flex-shrink-0 border-gray-800 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] overflow-hidden ${isDrawerOpen ? 'w-full md:w-[420px] lg:w-[480px] xl:w-[500px] opacity-100 border-l' : 'w-0 opacity-0 border-l-transparent'}`}
+          className={`flex-shrink-0 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] overflow-hidden ${isDrawerOpen ? 'w-full md:w-[420px] lg:w-[480px] xl:w-[500px] opacity-100' : 'w-0 opacity-0'}`}
         >
           {/* Inner fixed-width container acts identically to the drawer but flows natively adjacent to content.
               Sticky top allowing independent independent scrolling! */}
-          <div className="w-full md:w-[420px] lg:w-[480px] xl:w-[500px] h-[100dvh] sticky top-0 bg-[#0b0c10] overflow-y-auto p-6 sm:p-8 no-scrollbar shadow-[-20px_0_40px_rgba(0,0,0,0.4)]">
+          <div className="w-full md:w-[420px] lg:w-[480px] xl:w-[500px] h-[100dvh] sticky top-0 bg-black overflow-y-auto pl-14 pr-6 py-6 sm:pl-20 sm:pr-8 sm:py-8 no-scrollbar">
             
             {/* Drawer Inner Header */}
             <div className="flex justify-between items-center mb-10 pt-2">
@@ -90,7 +90,7 @@ function Home() {
             <h3 className="text-white font-mono text-xs uppercase tracking-[0.2em] mb-4 pl-1">Experience</h3>
 
             {/* Render Timeline Instance safely */}
-            <div className="relative transform -translate-x-[60px]">
+            <div className="relative">
                <Timeline isMobileMode={false} />
             </div>
 
