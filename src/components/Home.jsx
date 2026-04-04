@@ -56,11 +56,14 @@ function Home() {
         
         {/* Adjacent Slide-out Sidebar Panel (Instead of overlay overlay) */}
         <aside 
-          className={`flex-shrink-0 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] overflow-hidden ${isDrawerOpen ? 'w-full md:w-[420px] lg:w-[480px] xl:w-[500px] opacity-100' : 'w-0 opacity-0'}`}
+          className={`
+            ${isDrawerOpen ? 'w-full md:w-[420px] lg:w-[480px] xl:w-[500px] opacity-100' : 'w-0 opacity-0 pointer-events-none'}
+            fixed inset-0 z-50 md:relative md:inset-auto md:z-auto md:pointer-events-auto
+            flex-shrink-0 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] overflow-hidden
+          `}
         >
-          {/* Inner fixed-width container acts identically to the drawer but flows natively adjacent to content.
-              Sticky top allowing independent independent scrolling! */}
-          <div className="w-full md:w-[420px] lg:w-[480px] xl:w-[500px] h-[100dvh] sticky top-0 bg-black overflow-y-auto pl-14 pr-6 py-6 sm:pl-20 sm:pr-8 sm:py-8 no-scrollbar">
+          {/* Inner fixed-width container: Full-screen on mobile, sticky sidebar on desktop. */}
+          <div className="w-full md:w-[420px] lg:w-[480px] xl:w-[500px] h-full md:h-[100dvh] md:sticky top-0 bg-black overflow-y-auto pl-8 pr-6 py-6 sm:pl-20 sm:pr-8 sm:py-8 no-scrollbar">
             
             {/* Drawer Inner Header */}
             <div className="flex justify-between items-center mb-10 pt-2">
@@ -81,7 +84,6 @@ function Home() {
 
             {/* Filter / Category Toggle */}
             <div className="flex bg-[#111216] rounded-[20px] p-1 border border-gray-800/60 mb-8 font-mono text-[11px]">
-               <div className="flex-1 py-1.5 text-center text-gray-500">Insights</div>
                <div className="flex-1 py-1.5 text-center bg-gray-800/50 text-white rounded-2xl shadow-sm border border-gray-700/50">
                  experience
                </div>
