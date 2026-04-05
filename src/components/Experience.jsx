@@ -36,17 +36,24 @@ function ImageMarquee({ images }) {
             className={`marquee-track flex gap-4 py-3 ${isPaused ? 'marquee-paused' : ''}`}
             style={{ width: 'max-content' }}
           >
-            {duplicated.map((src, i) => (
+            {duplicated.map((img, i) => (
               <div
                 key={i}
-                className="marquee-img-wrapper shrink-0 w-44 h-28 rounded-lg overflow-hidden shadow-lg shadow-black/40 cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_0_20px_rgba(255,255,255,0.12)] hover:z-20 relative"
+                className="marquee-img-wrapper shrink-0 w-44 cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_0_20px_rgba(255,255,255,0.12)] hover:z-20 relative"
               >
-                <img 
-                  src={src} 
-                  alt="" 
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
+                <div className="h-28 rounded-lg overflow-hidden shadow-lg shadow-black/40">
+                  <img 
+                    src={img.src} 
+                    alt={img.caption || ''} 
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                {img.caption && (
+                  <p className="text-[10px] text-gray-500 mt-1.5 leading-tight w-44 break-words overflow-hidden">
+                    {img.caption}
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -57,18 +64,25 @@ function ImageMarquee({ images }) {
           className="flex md:hidden gap-3 py-3 px-6 overflow-x-auto snap-x snap-mandatory"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
         >
-          {images.map((src, i) => (
+          {images.map((img, i) => (
             <div
               key={i}
-              className="shrink-0 w-40 h-26 rounded-lg overflow-hidden shadow-lg shadow-black/40 snap-start cursor-pointer active:scale-95 transition-transform duration-200"
-              onClick={() => setZoomedImg(src)}
+              className="shrink-0 w-40 snap-start cursor-pointer active:scale-95 transition-transform duration-200"
+              onClick={() => setZoomedImg(img.src)}
             >
-              <img 
-                src={src} 
-                alt="" 
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
+              <div className="h-26 rounded-lg overflow-hidden shadow-lg shadow-black/40">
+                <img 
+                  src={img.src} 
+                  alt={img.caption || ''} 
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              {img.caption && (
+                <p className="text-[10px] text-gray-500 mt-1.5 leading-tight w-40 break-words overflow-hidden">
+                  {img.caption}
+                </p>
+              )}
             </div>
           ))}
         </div>

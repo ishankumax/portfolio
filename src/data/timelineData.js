@@ -15,7 +15,13 @@ export const timelineData = [
         role: 'Chief Marketing Officer',
         company: 'InTheBox',
         date: 'NOV 2024 - PRESENT',
-        images: ['/InTheBox founder.jpg', '/ITB Reg..jpg', '/entrepunarship journey.jpg', '/featured in hindustan times.jpg', '/tieU.jpg'],
+        images: [
+          { src: '/InTheBox founder.jpg', caption: 'InTheBox Founder' },
+          { src: '/ITB Reg..jpg', caption: 'Registered My Startup' },
+          { src: '/entrepunarship journey.jpg', caption: 'Entrepreneurship Journey' },
+          { src: '/featured in hindustan times.jpg', caption: 'Featured in Hindustan Times' },
+          { src: '/tieU.jpg', caption: 'National Winner at TiE U' }
+        ],
         bullets: [
           'Driving innovation and packaging excellence',
           'Focusing on quality and sustainability',
@@ -28,7 +34,10 @@ export const timelineData = [
         role: 'Harvard YLC Coordinator',
         company: 'Chitkara University',
         date: 'Jan 2026',
-        images: ['/pfp.jpg', '/banner.jpg'],
+        images: [
+          { src: '/pfp.jpg', caption: 'At the Event' },
+          { src: '/banner.jpg', caption: 'YLC Coordination' }
+        ],
         bullets: [
           'Driving innovation and packaging excellence',
           'Focusing on quality and sustainability',
@@ -46,7 +55,11 @@ export const timelineData = [
         role: 'Head of Marketing',
         company: 'ACM Student Chapter',
         date: 'NOV 2024 - JUL 2025',
-        images: ['/ACM Marketing Head.jpg', '/pfp.jpg', '/banner.jpg'],
+        images: [
+          { src: '/ACM Marketing Head.jpg', caption: 'ACM Marketing Head' },
+          { src: '/pfp.jpg', caption: 'Leading the Team' },
+          { src: '/banner.jpg', caption: 'Lady Ada Event' }
+        ],
         bullets: [
           'Organised Annual ACM-W India Lady Ada',
           'Managed Lady Ada Facilitation'
@@ -58,7 +71,11 @@ export const timelineData = [
         role: 'Ecosystem Manager',
         company: 'DevLearn',
         date: 'MAY 2024 - FEB 2025',
-        images: ['/Devlearn Founding Member.jpg', '/HQ Mentor.jpg', '/workspace-1.jpg'],
+        images: [
+          { src: '/Devlearn Founding Member.jpg', caption: 'Founding Member' },
+          { src: '/HQ Mentor.jpg', caption: 'HQ Mentorship' },
+          { src: '/workspace-1.jpg', caption: 'Co Learning Camp' }
+        ],
         bullets: [
           'Managed community and ecosystem',
           'Organised the Co Learning Camp',
@@ -71,7 +88,11 @@ export const timelineData = [
         role: 'Graphics Exec.',
         company: 'Coding Blocks',
         date: 'DEC 2023 - MAY 2025',
-        images: ['/winner at microsoft.jpg', '/workspace-2.jpg', '/lapinlaptop.jpg'],
+        images: [
+          { src: '/winner at microsoft.jpg', caption: 'Winner at Microsoft' },
+          { src: '/workspace-2.jpg', caption: 'Web3 Hackathon' },
+          { src: '/lapinlaptop.jpg', caption: 'Design Work' }
+        ],
         bullets: [
           "Organised India's biggest Web3 Hackathon",
           'Honoured for graphic design and web design'
@@ -88,7 +109,10 @@ export const timelineData = [
         role: 'Marketing Exec.',
         company: 'ACM Student Chapter',
         date: 'SEP 2024 - NOV 2024',
-        images: ['/ACM Marketing Head.jpg', '/banner.jpg'],
+        images: [
+          { src: '/ACM Marketing Head.jpg', caption: 'ISCCSC Event' },
+          { src: '/banner.jpg', caption: 'Student Outreach' }
+        ],
         bullets: [
           'Organised ISCCSC',
           'Organised 1st ICSCCS',
@@ -101,7 +125,10 @@ export const timelineData = [
         role: 'Campus Ambassador',
         company: 'Kotlin Delhi',
         date: 'JUN 2024 - JUL 2024',
-        images: ['/delhi-train.png', '/workspace-1.jpg'],
+        images: [
+          { src: '/delhi-train.png', caption: 'KotlinConf Delhi' },
+          { src: '/workspace-1.jpg', caption: 'Campus Outreach' }
+        ],
         bullets: [
           'Promoted KotlinConfDelhi',
           'Managed selection mails and outreach'
@@ -113,7 +140,10 @@ export const timelineData = [
         role: 'Design & Branding',
         company: 'GFG CUIET',
         date: 'JAN 2024 - JUL 2024',
-        images: ['/workspace-2.jpg', '/lapinlaptop.jpg'],
+        images: [
+          { src: '/workspace-2.jpg', caption: 'Branding Work' },
+          { src: '/lapinlaptop.jpg', caption: 'Design Sessions' }
+        ],
         bullets: [
           'Managed branding for 23-24 Team',
           'Led group photo graphic design'
@@ -125,7 +155,11 @@ export const timelineData = [
         role: 'Graphics Head',
         company: 'DevLearn',
         date: 'FEB 2024 - MAY 2024',
-        images: ['/Devlearn Founding Member.jpg', '/HQ Mentor.jpg', '/workspace-1.jpg'],
+        images: [
+          { src: '/Devlearn Founding Member.jpg', caption: 'Leading Design' },
+          { src: '/HQ Mentor.jpg', caption: 'Team Mentoring' },
+          { src: '/workspace-1.jpg', caption: 'Web Design' }
+        ],
         bullets: [
           'Led graphic design team',
           'Managed web design initiatives'
@@ -137,7 +171,10 @@ export const timelineData = [
         role: 'Outreach Exec.',
         company: 'Coding Ninjas',
         date: 'JAN 2024 - FEB 2024',
-        images: ['/jaipur-.png', '/delhi-train.png'],
+        images: [
+          { src: '/jaipur-.png', caption: 'Utkrishti 2024' },
+          { src: '/delhi-train.png', caption: 'Outreach Drive' }
+        ],
         bullets: [
           'Managed outreach for Utkrishti 2024',
           'Led student outreach initiatives'
@@ -154,7 +191,10 @@ export const timelineData = [
         role: 'Graphics Exec.',
         company: 'DevLearn',
         date: 'NOV 2023 - FEB 2024',
-        images: ['/Devlearn Founding Member.jpg', '/workspace-2.jpg'],
+        images: [
+          { src: '/Devlearn Founding Member.jpg', caption: 'Community Design' },
+          { src: '/workspace-2.jpg', caption: 'Visual Identity' }
+        ],
         bullets: [
           'Executed remote graphic design tasks',
           'Supported community visual identity'
