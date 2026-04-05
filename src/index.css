@@ -8,3 +8,65 @@ body {
 .overflow-x-auto::-webkit-scrollbar {
   display: none;
 }
+
+/* Hide scrollbar utility (used in sidebar) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Highlight pulse animation for deep-linked experience sections */
+@keyframes highlight-pulse {
+  0% {
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.03);
+  }
+  50% {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.1), inset 0 0 30px rgba(255, 255, 255, 0.02);
+  }
+  100% {
+    border-color: rgba(75, 85, 99, 0.6);
+    box-shadow: none;
+  }
+}
+
+.experience-highlight {
+  animation: highlight-pulse 2s ease-out forwards;
+}
+
+/* ============================================================================
+   MARQUEE: Infinite horizontal scroll gallery
+   Uses transform/translateX for GPU-accelerated smooth performance
+   ============================================================================ */
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 25s linear infinite;
+  will-change: transform;
+}
+
+.marquee-paused {
+  animation-play-state: paused;
+}
+
+/* Hover glow on marquee images */
+.marquee-img-wrapper:hover {
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.12), 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* Hide mobile swipe scrollbar */
+.marquee-container div::-webkit-scrollbar {
+  display: none;
+}

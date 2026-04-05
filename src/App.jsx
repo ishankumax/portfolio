@@ -5,6 +5,7 @@ import Home from './components/Home'
 import Specs from './components/Specs'
 import About from './components/About'
 import Insights from './components/Insights'
+import Experience from './components/Experience'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/specs" element={<Specs />} />
         <Route path="/about" element={<About />} />
         <Route path="/insights" element={<Insights />} />
+        <Route path="/experience" element={<Experience />} />
       </Routes>
     </Router>
   )

@@ -1,149 +1,6 @@
 import React, { useState, useRef } from 'react';
-
-// ============================================================================
-// DATA STRUCTURE: timelineData
-// ----------------------------------------------------------------------------
-// This array defines your chronological history, neatly grouped by year.
-// Storing data like this keeps your main component completely clean and allows 
-// you to map over it naturally. Each item contains specific data nodes (role,
-// company, date, bullets) that populate the expanding frosted glass cards.
-// ============================================================================
-const timelineData = [
-  {
-    year: '2026',
-    items: [
-      {
-        id: '1',
-        role: 'Chief Marketing Officer',
-        company: 'InTheBox',
-        date: 'NOV 2024 - PRESENT',
-        bullets: [
-          'Driving innovation and packaging excellence',
-          'Focusing on quality and sustainability',
-          'Delivering customer-centric solutions'
-        ]
-      },
-      {
-        id: '2',
-        role: 'Harvard YLC Coordinator',
-        company: 'Chitkara University',
-        date: 'Jan 2026',
-        bullets: [
-          'Driving innovation and packaging excellence',
-          'Focusing on quality and sustainability',
-          'Delivering customer-centric solutions'
-        ]
-      },
-    ]
-  },
-  {
-    year: '2025',
-    items: [
-      {
-        id: '1',
-        role: 'Head of Marketing',
-        company: 'ACM Student Chapter',
-        date: 'NOV 2024 - JUL 2025',
-        bullets: [
-          'Organised Annual ACM-W India Lady Ada',
-          'Managed Lady Ada Facilitation'
-        ]
-      },
-      {
-        id: '2',
-        role: 'Ecosystem Manager',
-        company: 'DevLearn',
-        date: 'MAY 2024 - FEB 2025',
-        bullets: [
-          'Managed community and ecosystem',
-          'Organised the Co Learning Camp',
-          'Handled event and operations management'
-        ]
-      },
-      {
-        id: '3',
-        role: 'Graphics Exec.',
-        company: 'Coding Blocks',
-        date: 'DEC 2023 - MAY 2025',
-        bullets: [
-          "Organised India's biggest Web3 Hackathon",
-          'Honoured for graphic design and web design'
-        ]
-      }
-    ]
-  },
-  {
-    year: '2024',
-    items: [
-      {
-        id: '5',
-        role: 'Marketing Exec.',
-        company: 'ACM Student Chapter',
-        date: 'SEP 2024 - NOV 2024',
-        bullets: [
-          'Organised ISCCSC',
-          'Organised 1st ICSCCS',
-          'Managed marketing and student outreach'
-        ]
-      },
-      {
-        id: '6',
-        role: 'Campus Ambassador',
-        company: 'Kotlin Delhi',
-        date: 'JUN 2024 - JUL 2024',
-        bullets: [
-          'Promoted KotlinConfDelhi',
-          'Managed selection mails and outreach'
-        ]
-      },
-      {
-        id: '7',
-        role: 'Design & Branding',
-        company: 'GFG CUIET',
-        date: 'JAN 2024 - JUL 2024',
-        bullets: [
-          'Managed branding for 23-24 Team',
-          'Led group photo graphic design'
-        ]
-      },
-      {
-        id: '8',
-        role: 'Graphics Head',
-        company: 'DevLearn',
-        date: 'FEB 2024 - MAY 2024',
-        bullets: [
-          'Led graphic design team',
-          'Managed web design initiatives'
-        ]
-      },
-      {
-        id: '9',
-        role: 'Outreach Exec.',
-        company: 'Coding Ninjas',
-        date: 'JAN 2024 - FEB 2024',
-        bullets: [
-          'Managed outreach for Utkrishti 2024',
-          'Led student outreach initiatives'
-        ]
-      }
-    ]
-  },
-  {
-    year: '2023',
-    items: [
-      {
-        id: '10',
-        role: 'Graphics Exec.',
-        company: 'DevLearn',
-        date: 'NOV 2023 - FEB 2024',
-        bullets: [
-          'Executed remote graphic design tasks',
-          'Supported community visual identity'
-        ]
-      }
-    ]
-  }
-];
+import { useNavigate } from 'react-router-dom';
+import { timelineData } from '../data/timelineData';
 
 // ============================================================================
 // UTILITY: Custom Easing Scroll
@@ -164,7 +21,6 @@ const softScrollTo = (targetY, duration = 1200, container = window) => {
   let startTime = null;
 
   // Easing function: easeInOutQuart
-  // Starts extremely slow, accelerates, and gracefully decelerates to a halt.
   const ease = (t) => t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
 
   const step = (currentTime) => {
@@ -192,54 +48,31 @@ const softScrollTo = (targetY, duration = 1200, container = window) => {
 // COMPONENT: Timeline
 // ----------------------------------------------------------------------------
 // Re-usable vertical scrolling timeline that tracks 'active states' and elegantly
-// handles scrolling document flow.
+// handles scrolling document flow. Roles are clickable and navigate to /experience.
 // ============================================================================
 function Timeline({ isMobileMode = false }) {
   
-  // ============================================================================
-  // STATE: activeId
-  // Stores the unique string ID of whichever timeline item your mouse is currently on.
-  // When an ID updates here, React immediately transitions that specific item's 
-  // nested details card from 'grid-rows-[0fr]' (hidden) to 'grid-rows-[1fr]' (visible).
-  // ============================================================================
   const [activeId, setActiveId] = useState(null);
-
-  // ============================================================================
-  // REFS: isScrolling, scrollTimeout, itemRefs
-  // - hoverTimeout: Adds a tiny imperceptible delay to stabilize transitions and 
-  //   completely eliminate flickering when rapidly dragging the mouse across items.
-  // - itemRefs: A dictionary object storing direct HTML DOM elements. This allows
-  //   us to target exact role entries and scroll straight to them.
-  // ============================================================================
   const hoverTimeout = useRef(null);
   const itemRefs = useRef({});
+  const navigate = useNavigate();
 
   // ============================================================================
   // FUNCTION: handleMouseEnter(id)
-  // ----------------------------------------------------------------------------
-  // Fired instantly when your cursor touches any minimal role heading.
-  // 1. Assigns the `activeId` state so the accordion opens for this item.
-  // 2. Instructs the custom math function to exquisitely glide the entire webpage 
-  //    so the target centers itself flawlessly over 1.4 seconds.
   // ============================================================================
   const handleMouseEnter = (id) => {
-    // Clear any existing timeouts to prevent race conditions if rapidly scrubbing
     if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
     
-    // Add a stabilizing 60ms delay before capturing the hover
     hoverTimeout.current = setTimeout(() => {
-      // Instantly assign the state to open the exact hovered item (closes all others)
       setActiveId(id);
       
       const el = itemRefs.current[id];
       if (el) {
-        // Automatically find the specific scrolling container for sidebars (or fallback to window)
         const container = el.closest('.overflow-y-auto') || window;
         const isWindow = container === window;
         
         const rect = el.getBoundingClientRect();
         
-        // Calculate dynamic properties to find exactly where the element is relative to the *scrolling viewport*
         let containerCenter = window.innerHeight / 2;
         let currentScroll = window.scrollY;
         let containerHeight = window.innerHeight;
@@ -252,19 +85,10 @@ function Timeline({ isMobileMode = false }) {
         }
 
         const elementCenter = rect.top + (rect.height / 2);
-        
-        // Measure physical geometric distance
         const distanceFromCenter = Math.abs(containerCenter - elementCenter);
-        
-        // SAFE ZONE THRESHOLD:
-        // By setting this to 0.42, 84% of your entire container is an absolute "safe zone".
-        // The container will now ONLY auto-scroll if you hover something literally squeezed into 
-        // the top 8% or bottom 8% of your physical container viewport.
         const safeZone = containerHeight * 0.42; 
 
         if (distanceFromCenter > safeZone && !isMobileMode) {
-          // If the element crosses the boundary top/bottom, glide it perfectly!
-          // We add the signed geometric difference exactly to current native scroll coordinate.
           const targetY = currentScroll + (elementCenter - containerCenter);
           softScrollTo(targetY, 1400, container); 
         }
@@ -272,9 +96,15 @@ function Timeline({ isMobileMode = false }) {
     }, 60);
   };
 
+  // ============================================================================
+  // FUNCTION: handleRoleClick(item)
+  // Navigate to the dedicated experience page with the role's anchor
+  // ============================================================================
+  const handleRoleClick = (item) => {
+    navigate(`/experience#${item.slug}`);
+  };
+
   return (
-    // The outermost wrapper monitors when the mouse physical leaves the entire component.
-    // If you stray outside, it sets activeId to null, elegantly collapsing any open cards!
     <div 
       className="relative font-mono py-6 w-full"
       onMouseLeave={() => {
@@ -284,30 +114,30 @@ function Timeline({ isMobileMode = false }) {
     >
       
       <div className="relative flex flex-col w-full">
-        {/* The single vertical gray timeline track running behind all points */}
-        <div className="absolute left-[50px] md:left-[70px] top-10 bottom-10 w-px bg-gradient-to-b from-transparent via-gray-600 to-transparent"></div>
+        {/* The single vertical timeline track — centered precisely with the dots */}
+        <div className="absolute left-[50px] md:left-[70px] top-10 bottom-10 w-[2px] bg-gradient-to-b from-transparent via-gray-700/80 to-transparent shadow-[0_0_8px_rgba(255,255,255,0.08)]"></div>
+        
         <div className="flex flex-col gap-6">
           {timelineData.map((yearGroup, yIndex) => (
             <div key={yearGroup.year} className="relative z-10">
               
-              {/* Yearly Marker (e.g. "2025" + Glowing Dot) */}
-              {/* Force explicit Z-index and backdrop blur to definitively lock over the line */}
-              <div className="absolute left-0 top-3 flex items-center w-[60px] md:w-[84px] justify-between pr-[8px] md:pr-[18px] bg-black/95 backdrop-blur-md z-30 py-1.5 rounded-r-md">
+              {/* Yearly Marker (e.g. "2026" + Glowing Dot) */}
+              <div className="absolute left-0 top-3 flex items-center w-[60px] md:w-[84px] justify-between pr-[8px] md:pr-[12px] bg-black/95 backdrop-blur-md z-30 py-1.5 rounded-r-md">
                 <span className="text-[15px] font-mono tracking-widest text-white font-bold brightness-125">
                   {yearGroup.year}
                 </span>
-                <div className="relative flex justify-center items-center w-2 h-2 translate-x-[7px] md:translate-x-[11px]">
-                  <div className={`w-[7px] h-[7px] rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,1)] ${yIndex === 0 ? 'ring-4 ring-white/20' : ''}`}></div>
+                {/* Dot — precisely centered on the track */}
+                <div className="relative flex justify-center items-center">
+                  <div className={`w-[8px] h-[8px] rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.9)] ${yIndex === 0 ? 'ring-4 ring-white/20' : ''}`}></div>
                 </div>
               </div>
 
-              {/* The array block for all the distinct professional roles matching that exact year */}
+              {/* Role entries for this year */}
               <div className="flex flex-col">
                 {yearGroup.items.map((item) => {
                   const isActive = activeId === item.id;
                   
                   return (
-                    // We bind the ref callback to save this DOM wrapper permanently for scrolling mapping context
                     <div 
                       key={item.id} 
                       ref={el => itemRefs.current[item.id] = el}
@@ -315,27 +145,23 @@ function Timeline({ isMobileMode = false }) {
                       onMouseEnter={() => !isMobileMode && handleMouseEnter(item.id)}
                       onClick={() => {
                         if (isMobileMode) {
-                          // Tap-friendly logic purely for mobile navigation
                           setActiveId(prev => prev === item.id ? null : item.id);
                         } else {
-                          // Just smoothly scroll into focus if clicked manually on desktop
                           handleMouseEnter(item.id);
                         }
                       }}
                     >
-                      {/* Very subtle clickable header you see prior to hovering anything */}
+                      {/* Role heading */}
                       <div className={`pl-16 md:pl-[100px] py-5 pr-4 transition-colors duration-300 ${isActive ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'}`}>
                         <span className={`font-mono text-sm transition-colors duration-300 ${isActive ? 'text-white font-bold' : 'text-gray-500'}`}>
                           {item.role}
                         </span>
                       </div>
 
-                      {/* The fluid expanding Details Card. 
-                          It is structurally bound inside the role so it intrinsically pushes other elements down linearly */}
+                      {/* Expanding Details Card */}
                       <div className={`grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${isActive ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                         <div className="overflow-hidden">
                           
-                          {/* Inner detailed custom UI mapping. Very highly styled with dark frosted styling matching product landers */}
                           <div className="ml-16 md:ml-[100px] mr-4 md:mr-6 mb-6 mt-1 bg-black/95 backdrop-blur-xl border border-gray-700/50 rounded-xl p-4 md:p-5 shadow-[0_20px_40px_rgba(0,0,0,0.8)] relative overflow-hidden">
                             
                             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-[40px] rounded-full pointer-events-none"></div>
@@ -349,7 +175,6 @@ function Timeline({ isMobileMode = false }) {
                               <h4 className="text-white font-semibold text-sm mb-3 tracking-wide">{item.role}</h4>
                               
                               <ul className="flex flex-col gap-2">
-                                {/* Auto-loops your specific achievement pointers so they populate perfectly aligned below your timeline marker */}
                                 {item.bullets.map((bullet, i) => (
                                   <li key={i} className="flex items-start text-[11px] text-gray-400 leading-relaxed font-sans">
                                     <span className="mr-2.5 text-gray-600 mt-[2px]">•</span>
@@ -357,6 +182,18 @@ function Timeline({ isMobileMode = false }) {
                                   </li>
                                 ))}
                               </ul>
+
+                              {/* Deep dive link */}
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleRoleClick(item);
+                                }}
+                                className="mt-4 text-[10px] font-mono text-gray-500 hover:text-white transition-colors flex items-center gap-1.5 group/link"
+                              >
+                                <span>view details</span>
+                                <span className="group-hover/link:translate-x-1 transition-transform duration-300">→</span>
+                              </button>
                             </div>
 
                           </div>

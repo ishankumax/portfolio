@@ -1,5 +1,34 @@
 import React, { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
+import { storyToExperienceMap } from '../data/timelineData'
+
+// Reusable story card component — wraps with Link if a mapping exists
+function StoryCard({ imageSrc, altText, label }) {
+  const slug = storyToExperienceMap[label]
+  
+  const cardContent = (
+    <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden group">
+      <img src={imageSrc} alt={altText} className="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      <div className="p-4 flex items-center justify-between">
+        <p className="text-sm text-gray-400">{label}</p>
+        {slug && (
+          <span className="text-gray-600 group-hover:text-white text-xs transition-colors duration-300">→</span>
+        )}
+      </div>
+    </div>
+  )
+
+  if (slug) {
+    return (
+      <Link to={`/experience#${slug}`} className="shrink-0">
+        {cardContent}
+      </Link>
+    )
+  }
+
+  return cardContent
+}
 
 function WritingMyStory() {
   const scrollRef = useRef(null)
@@ -38,77 +67,51 @@ function WritingMyStory() {
           className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {/* InTheBox Founder - Latest */}
-          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
-            <img src="/InTheBox founder.jpg" alt="InTheBox Founder" className="h-48 w-full object-cover" />
-            <div className="p-4">
-              <p className="text-sm text-gray-400">InTheBox Founder</p>
-            </div>
-          </div>
-
-          {/* Registered Startup */}
-          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
-            <img src="/ITB Reg..jpg" alt="Registered My Startup" className="h-48 w-full object-cover" />
-            <div className="p-4">
-              <p className="text-sm text-gray-400">Registered My Startup</p>
-            </div>
-          </div>
-
-          {/* Winner at TiE U */}
-          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
-            <img src="/tieU.jpg" alt="National Winner at TiE U" className="h-48 w-full object-cover" />
-            <div className="p-4">
-              <p className="text-sm text-gray-400">National Winner at TiE U</p>
-            </div>
-          </div>
-
-          {/* Winner at Microsoft */}
-          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
-            <img src="/winner at microsoft.jpg" alt="Winner at Microsoft" className="h-48 w-full object-cover" />
-            <div className="p-4">
-              <p className="text-sm text-gray-400">Winner at Microsoft</p>
-            </div>
-          </div>
-
-          {/* Featured in Hindustan Times */}
-          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
-            <img src="/featured in hindustan times.jpg" alt="Featured in Hindustan Times" className="h-48 w-full object-cover" />
-            <div className="p-4">
-              <p className="text-sm text-gray-400">Featured in Hindustan Times</p>
-            </div>
-          </div>
-
-          {/* Entrepreneurship Journey */}
-          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
-            <img src="/entrepunarship journey.jpg" alt="Entrepreneurship Journey" className="h-48 w-full object-cover" />
-            <div className="p-4">
-              <p className="text-sm text-gray-400">Entrepreneurship Journey</p>
-            </div>
-          </div>
-
-          {/* HQ Mentor */}
-          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
-            <img src="/HQ Mentor.jpg" alt="HQ Mentor" className="h-48 w-full object-cover" />
-            <div className="p-4">
-              <p className="text-sm text-gray-400">HQ Mentor</p>
-            </div>
-          </div>
-
-          {/* Devlearn Founding Member */}
-          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
-            <img src="/Devlearn Founding Member.jpg" alt="Devlearn Founding Member" className="h-48 w-full object-cover" />
-            <div className="p-4">
-              <p className="text-sm text-gray-400">Devlearn Founding Member</p>
-            </div>
-          </div>
-
-          {/* ACM Marketing Head */}
-          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
-            <img src="/ACM Marketing Head.jpg" alt="ACM Marketing Head" className="h-48 w-full object-cover" />
-            <div className="p-4">
-              <p className="text-sm text-gray-400">ACM Marketing Head</p>
-            </div>
-          </div>
+          <StoryCard 
+            imageSrc="/InTheBox founder.jpg" 
+            altText="InTheBox Founder" 
+            label="InTheBox Founder" 
+          />
+          <StoryCard 
+            imageSrc="/ITB Reg..jpg" 
+            altText="Registered My Startup" 
+            label="Registered My Startup" 
+          />
+          <StoryCard 
+            imageSrc="/tieU.jpg" 
+            altText="National Winner at TiE U" 
+            label="National Winner at TiE U" 
+          />
+          <StoryCard 
+            imageSrc="/winner at microsoft.jpg" 
+            altText="Winner at Microsoft" 
+            label="Winner at Microsoft" 
+          />
+          <StoryCard 
+            imageSrc="/featured in hindustan times.jpg" 
+            altText="Featured in Hindustan Times" 
+            label="Featured in Hindustan Times" 
+          />
+          <StoryCard 
+            imageSrc="/entrepunarship journey.jpg" 
+            altText="Entrepreneurship Journey" 
+            label="Entrepreneurship Journey" 
+          />
+          <StoryCard 
+            imageSrc="/HQ Mentor.jpg" 
+            altText="HQ Mentor" 
+            label="HQ Mentor" 
+          />
+          <StoryCard 
+            imageSrc="/Devlearn Founding Member.jpg" 
+            altText="Devlearn Founding Member" 
+            label="Devlearn Founding Member" 
+          />
+          <StoryCard 
+            imageSrc="/ACM Marketing Head.jpg" 
+            altText="ACM Marketing Head" 
+            label="ACM Marketing Head" 
+          />
         </div>
 
         {/* Right Arrow */}
