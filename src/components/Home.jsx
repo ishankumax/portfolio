@@ -4,12 +4,15 @@ import Navbar from './Navbar'
 import Hero from './Hero'
 import FounderOf from './FounderOf'
 import WritingMyStory from './WritingMyStory'
+import TechStack from './TechStack'
 import Footer from './Footer'
 import Timeline from './Timeline'
+import Terminal, { useTerminal } from './Terminal'
 
 function Home() {
   const location = useLocation()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const { open: terminalOpen, setOpen: setTerminalOpen } = useTerminal()
 
   // Prevent background scrolling strictly on small mobile screens when the panel takes up the whole screen
   useEffect(() => {
@@ -34,27 +37,32 @@ function Home() {
   return (
     <div className="min-h-screen bg-black text-white font-mono selection:bg-white selection:text-black flex justify-center overflow-x-hidden">
       
+      {/* Terminal overlay */}
+      {terminalOpen && <Terminal onClose={() => setTerminalOpen(false)} />}
+
       {/* Flexible width wrapper that handles the sliding split layout shift */}
       <div 
         className="flex w-full transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform"
         style={{
-          // Base main layout is ~896px. When opened, container expands dynamically to a full 100% viewport span 
-          // forcing the main content block to beautifully slide left as the container occupies all empty space!
           maxWidth: isDrawerOpen ? '100vw' : '896px',
           width: '100%'
         }}
       >
         
-        {/* Main Content (Always stays visually centered in its flexible remaining real estate) */}
+        {/* Main Content */}
         <main className="flex-1 min-w-0 w-full max-w-4xl mx-auto px-6 py-12 md:py-20 relative z-10 transition-transform duration-[400ms]">
-          <Navbar onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)} />
+          <Navbar
+            onToggleDrawer={() => setIsDrawerOpen(!isDrawerOpen)}
+            onOpenTerminal={() => setTerminalOpen(true)}
+          />
           <Hero />
           <FounderOf />
+          <TechStack />
           <WritingMyStory />
           <Footer />
         </main>
         
-        {/* Adjacent Slide-out Sidebar Panel (Instead of overlay overlay) */}
+        {/* Adjacent Slide-out Sidebar Panel */}
         <aside 
           className={`
             ${isDrawerOpen ? 'w-full md:w-[420px] lg:w-[480px] xl:w-[500px] opacity-100' : 'w-0 opacity-0 pointer-events-none'}
@@ -62,7 +70,6 @@ function Home() {
             flex-shrink-0 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] overflow-hidden
           `}
         >
-          {/* Inner fixed-width container: Full-screen on mobile, sticky sidebar on desktop. */}
           <div className="w-full md:w-[420px] lg:w-[480px] xl:w-[500px] h-full md:h-[100dvh] md:sticky top-0 bg-black overflow-y-auto pl-8 pr-6 py-6 sm:pl-20 sm:pr-8 sm:py-8 no-scrollbar">
             
             {/* Drawer Inner Header */}
