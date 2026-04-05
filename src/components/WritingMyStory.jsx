@@ -48,9 +48,17 @@ function WritingMyStory() {
 
           {/* Registered Startup */}
           <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
-            <img src="/registered my startup.jpg" alt="Registered My Startup" className="h-48 w-full object-cover" />
+            <img src="/ITB Reg..jpg" alt="Registered My Startup" className="h-48 w-full object-cover" />
             <div className="p-4">
               <p className="text-sm text-gray-400">Registered My Startup</p>
+            </div>
+          </div>
+
+          {/* Winner at TiE U */}
+          <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden">
+            <img src="/tieU.jpg" alt="National Winner at TiE U" className="h-48 w-full object-cover" />
+            <div className="p-4">
+              <p className="text-sm text-gray-400">National Winner at TiE U</p>
             </div>
           </div>
 

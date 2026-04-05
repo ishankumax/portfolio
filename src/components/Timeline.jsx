@@ -10,7 +10,7 @@ import React, { useState, useRef } from 'react';
 // ============================================================================
 const timelineData = [
   {
-    year: '2025',
+    year: '2026',
     items: [
       {
         id: '1',
@@ -25,6 +25,22 @@ const timelineData = [
       },
       {
         id: '2',
+        role: 'Harvard YLC Coordinator',
+        company: 'Chitkara University',
+        date: 'Jan 2026',
+        bullets: [
+          'Driving innovation and packaging excellence',
+          'Focusing on quality and sustainability',
+          'Delivering customer-centric solutions'
+        ]
+      },
+    ]
+  },
+  {
+    year: '2025',
+    items: [
+      {
+        id: '1',
         role: 'Head of Marketing',
         company: 'ACM Student Chapter',
         date: 'NOV 2024 - JUL 2025',
@@ -34,7 +50,7 @@ const timelineData = [
         ]
       },
       {
-        id: '3',
+        id: '2',
         role: 'Ecosystem Manager',
         company: 'DevLearn',
         date: 'MAY 2024 - FEB 2025',
@@ -45,7 +61,7 @@ const timelineData = [
         ]
       },
       {
-        id: '4',
+        id: '3',
         role: 'Graphics Exec.',
         company: 'Coding Blocks',
         date: 'DEC 2023 - MAY 2025',
@@ -269,7 +285,7 @@ function Timeline({ isMobileMode = false }) {
       
       <div className="relative flex flex-col w-full">
         {/* The single vertical gray timeline track running behind all points */}
-        <div className="absolute left-[50px] md:left-[70px] top-10 bottom-10 w-px bg-gradient-to-b from-transparent via-gray-700 to-transparent"></div>
+        <div className="absolute left-[50px] md:left-[70px] top-10 bottom-10 w-px bg-gradient-to-b from-transparent via-gray-600 to-transparent"></div>
         <div className="flex flex-col gap-6">
           {timelineData.map((yearGroup, yIndex) => (
             <div key={yearGroup.year} className="relative z-10">
