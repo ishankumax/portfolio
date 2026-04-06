@@ -8,7 +8,7 @@ function Navbar({ onToggleDrawer, onOpenTerminal }) {
   const isActive = (path) => location.pathname === path
 
   const linkClass = (path) =>
-    `hover:text-white transition-colors whitespace-nowrap ${isActive(path) ? 'text-white underline underline-offset-4' : ''}`
+    `hover:text-white transition-colors whitespace-nowrap ${isActive(path) ? 'text-white decoration-[#818cf8] underline underline-offset-4 decoration-2' : ''}`
 
   return (
     <nav className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-4 items-center mb-16 text-sm md:text-base text-gray-500 w-full px-2">

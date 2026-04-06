@@ -62,8 +62,8 @@ function FounderOf() {
           {/* Impact metrics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {METRICS.map((m) => (
-              <div key={m.label} className="border border-gray-800/70 rounded-lg p-3 text-left hover:border-gray-600 transition-colors duration-300">
-                <p className="text-white font-bold text-lg font-mono">{m.value}</p>
+              <div key={m.label} className="border border-gray-800/70 rounded-lg p-3 text-left hover:border-indigo-500/40 hover:shadow-[0_0_15px_rgba(129,140,248,0.1)] transition-all duration-500 group/metric">
+                <p className="text-white font-bold text-lg font-mono group-hover/metric:text-indigo-300 transition-colors">{m.value}</p>
                 <p className="text-gray-600 text-[11px] font-mono mt-0.5">{m.label}</p>
               </div>
             ))}
@@ -72,16 +72,16 @@ function FounderOf() {
       </div>
 
       {/* Case Study toggle */}
-      <div className="border border-gray-800/60 rounded-xl overflow-hidden">
+      <div className="border border-gray-800/60 rounded-xl overflow-hidden group/case hover:border-indigo-500/20 transition-colors">
         <button
           onClick={() => setCaseOpen(!caseOpen)}
-          className="w-full flex items-center justify-between px-5 py-4 text-sm font-mono text-gray-400 hover:text-white hover:bg-white/[0.02] transition-all duration-300 group"
+          className="w-full flex items-center justify-between px-5 py-4 text-sm font-mono text-gray-400 hover:text-white hover:bg-white/[0.01] transition-all duration-300 group"
         >
           <span className="flex items-center gap-2">
-            <span className="text-gray-600 group-hover:text-gray-400 transition-colors">{'>'}</span>
+            <span className="text-gray-600 group-hover:text-[#818cf8] transition-colors">{'>'}</span>
             case study — how inthebox works
           </span>
-          <span className={`text-gray-600 transition-transform duration-300 ${caseOpen ? 'rotate-180' : ''}`}>
+          <span className={`text-gray-600 transition-transform duration-300 ${caseOpen ? 'rotate-180 text-[#818cf8]' : ''}`}>
             ↓
           </span>
         </button>

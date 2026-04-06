@@ -115,7 +115,7 @@ function Timeline({ isMobileMode = false }) {
       
       <div className="relative flex flex-col w-full">
         {/* The single vertical timeline track — centered precisely with the dots */}
-        <div className="absolute left-[50px] md:left-[70px] top-10 bottom-10 w-[2px] bg-gradient-to-b from-transparent via-gray-700/80 to-transparent shadow-[0_0_8px_rgba(255,255,255,0.08)]"></div>
+        <div className="absolute left-[50px] md:left-[70px] top-10 bottom-10 w-[2px] bg-gradient-to-b from-transparent via-[#818cf8]/40 to-transparent shadow-[0_0_10px_rgba(129,140,248,0.15)]"></div>
         
         <div className="flex flex-col gap-6">
           {timelineData.map((yearGroup, yIndex) => (
@@ -128,7 +128,7 @@ function Timeline({ isMobileMode = false }) {
                 </span>
                 {/* Dot — precisely centered on the track */}
                 <div className="relative flex justify-center items-center">
-                  <div className={`w-[8px] h-[8px] rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.9)] ${yIndex === 0 ? 'ring-4 ring-white/20' : ''}`}></div>
+                  <div className={`w-[8px] h-[8px] rounded-full bg-[#818cf8] shadow-[0_0_12px_rgba(129,140,248,0.8)] ${yIndex === 0 ? 'ring-4 ring-indigo-500/20' : ''}`}></div>
                 </div>
               </div>
 
@@ -153,22 +153,22 @@ function Timeline({ isMobileMode = false }) {
                     >
                     {/* Role heading — click navigates to /experience#slug */}
                       <div 
-                        className={`pl-16 md:pl-[100px] py-5 pr-4 transition-colors duration-300 group/row flex items-center justify-between ${
-                          isActive ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'
+                        className={`pl-16 md:pl-[100px] py-5 pr-4 transition-all duration-300 group/row flex items-center justify-between ${
+                          isActive ? 'bg-[#818cf8]/[0.07] border-l-2 border-[#818cf8]/50' : 'hover:bg-[#818cf8]/[0.03] border-l-2 border-transparent'
                         }`}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleRoleClick(item);
                         }}
                       >
-                        <span className={`font-mono text-sm transition-colors duration-300 ${isActive ? 'text-white font-bold' : 'text-gray-500'}`}>
+                        <span className={`font-mono text-sm transition-colors duration-300 ${isActive ? 'text-[#818cf8] font-bold' : 'text-gray-500 group-hover/row:text-gray-300'}`}>
                           {item.role}
                         </span>
                         {/* Nav arrow — visible on hover or active */}
                         <span className={`font-mono text-[10px] transition-all duration-300 ${
                           isActive
-                            ? 'text-gray-400 translate-x-0 opacity-100'
-                            : 'text-gray-700 -translate-x-1 opacity-0 group-hover/row:translate-x-0 group-hover/row:opacity-100'
+                            ? 'text-[#818cf8] translate-x-0 opacity-100'
+                            : 'text-gray-700 -translate-x-1 opacity-0 group-hover/row:translate-x-0 group-hover/row:opacity-60 group-hover/row:text-[#818cf8]'
                         }`}>
                           →
                         </span>
@@ -205,10 +205,10 @@ function Timeline({ isMobileMode = false }) {
                                   e.stopPropagation();
                                   handleRoleClick(item);
                                 }}
-                                className="mt-4 text-[10px] font-mono text-gray-500 hover:text-white transition-colors flex items-center gap-1.5 group/link"
+                                className="mt-4 text-[10px] font-mono text-gray-600 hover:text-[#818cf8] transition-colors flex items-center gap-1.5 group/link"
                               >
                                 <span>view details</span>
-                                <span className="group-hover/link:translate-x-1 transition-transform duration-300">→</span>
+                                <span className="group-hover/link:translate-x-1 group-hover/link:text-[#818cf8] transition-all duration-300">→</span>
                               </button>
                             </div>
 

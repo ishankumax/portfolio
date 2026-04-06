@@ -1,78 +1,317 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { FaGithub } from 'react-icons/fa'
 
-/**
- * GitHubActivity Component
- * Displays a high-quality SVG contribution graph for @ishankumax.
- * Uses a reliable SVG embed to avoid CORS and dependency-level fetch errors.
- */
-function GitHubActivity() {
-  const [isHovered, setIsHovered] = useState(false)
-  const username = 'ishankumax'
-  
-  // High-reliability SVG endpoint that renders the contribution graph
-  // We use a custom color (gray/white scale) to match the portfolio aesthetic.
-  const chartUrl = `https://ghchart.rshah.org/444444/${username}`
+// ─── Config ───────────────────────────────────────────────────────────────────
+const USERNAME    = 'ishankumax'
+const YEARS       = [2026, 2025, 2024, 2023]
+const CELL_SIZE   = 11   // px, size of each square
+const CELL_GAP    = 3    // px, gap between squares
+const WEEK_DAYS   = ['', 'Mon', '', 'Wed', '', 'Fri', '']
+const MONTHS      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
+// Purple gradient: 0 = empty, 1 = low, 2 = medium, 3 = high, 4 = max
+const LEVEL_COLORS = [
+  '#0f0f14',   // 0: near-black (empty)
+  '#2d1d6e',   // 1: deep violet
+  '#5b41c5',   // 2: mid-purple
+  '#818cf8',   // 3: indigo-400 (brand)
+  '#c4b5fd',   // 4: lavender bright
+]
+
+const LEVEL_LABELS = ['No activity', 'Low', 'Medium', 'High', 'Peak']
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function getLevel(count) {
+  if (count === 0) return 0
+  if (count <= 2)  return 1
+  if (count <= 6)  return 2
+  if (count <= 12) return 3
+  return 4
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return ''
+  const d = new Date(dateStr + 'T00:00:00')
+  return d.toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' })
+}
+
+// ─── Component ────────────────────────────────────────────────────────────────
+export default function GitHubActivity() {
+  const [selectedYear, setSelectedYear] = useState(YEARS[0])
+  const [data, setData]                 = useState([])   // array of { date, count, level }
+  const [total, setTotal]               = useState(0)
+  const [loading, setLoading]           = useState(true)
+  const [error, setError]               = useState(false)
+  const [tooltip, setTooltip]           = useState(null) // { x, y, count, date }
+  const containerRef                    = useRef(null)
+
+  // ── Fetch ──
+  const fetchData = useCallback(async (year) => {
+    setLoading(true)
+    setError(false)
+    setData([])
+    try {
+      const res = await fetch(
+        `https://github-contributions-api.jogruber.de/v4/${USERNAME}?y=${year}`,
+        { signal: AbortSignal.timeout(10000) }
+      )
+      if (!res.ok) throw new Error('bad response')
+      const json = await res.json()
+      const contributions = json.contributions || []
+      const cells = contributions.map(c => ({
+        date:  c.date,
+        count: c.count,
+        level: getLevel(c.count),
+      }))
+      setData(cells)
+      setTotal(cells.reduce((s, c) => s + c.count, 0))
+    } catch {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => { fetchData(selectedYear) }, [selectedYear, fetchData])
+
+  // ── Build grid (weeks × 7) ──
+  const weeks = []
+  if (data.length) {
+    // Pad start so first day aligns to correct weekday (Sun=0)
+    const firstDay = new Date(data[0].date + 'T00:00:00').getDay() // 0=Sun
+    const padded   = Array(firstDay).fill(null).concat(data)
+    for (let w = 0; w < Math.ceil(padded.length / 7); w++) {
+      weeks.push(padded.slice(w * 7, w * 7 + 7))
+    }
+  }
+
+  // ── Month label positions ──
+  const monthLabels = []
+  if (weeks.length) {
+    let lastMonth = -1
+    weeks.forEach((week, wi) => {
+      const firstCell = week.find(c => c !== null)
+      if (firstCell) {
+        const m = new Date(firstCell.date + 'T00:00:00').getMonth()
+        if (m !== lastMonth) {
+          monthLabels.push({ label: MONTHS[m], weekIndex: wi })
+          lastMonth = m
+        }
+      }
+    })
+  }
+
+  const STEP = CELL_SIZE + CELL_GAP
+  const gridW = weeks.length * STEP
+  const gridH = 7 * STEP
+
+  // ── Tooltip ──
+  const handleCellEnter = (e, cell) => {
+    if (!cell) return
+    const rect = e.target.getBoundingClientRect()
+    const parentRect = containerRef.current?.getBoundingClientRect() || { left: 0, top: 0 }
+    setTooltip({
+      x: rect.left - parentRect.left + CELL_SIZE / 2,
+      y: rect.top  - parentRect.top,
+      count: cell.count,
+      date:  cell.date,
+    })
+  }
 
   return (
-    <section className="mt-20 mb-16 pt-16 border-t border-gray-900/60 max-w-4xl mx-auto px-1">
-      <div className="flex items-center justify-between mb-8 group pl-2">
-        <div className="flex items-center gap-3">
-          <FaGithub className="text-gray-500 group-hover:text-white transition-colors duration-300" size={20} />
+    <section className="mt-20 mb-16 pt-16 border-t border-[#818cf8]/10 max-w-4xl mx-auto px-1">
+
+      {/* ── Header Row ── */}
+      <div className="flex items-center justify-between mb-7 pl-1">
+        <div className="flex items-center gap-3 group cursor-default">
+          <FaGithub
+            size={19}
+            className="text-gray-500 group-hover:text-[#818cf8] transition-colors duration-300"
+          />
           <h2 className="text-sm font-mono uppercase tracking-[0.2em] text-gray-400 group-hover:text-white transition-colors duration-300">
             Commit Activity
           </h2>
+          {!loading && !error && (
+            <span className="text-[10px] font-mono text-[#818cf8]/70 bg-[#818cf8]/10 border border-[#818cf8]/20 px-2 py-0.5 rounded-full">
+              {total} contributions
+            </span>
+          )}
         </div>
-        <a 
-          href={`https://github.com/${username}`} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-[10px] font-mono text-gray-600 hover:text-white transition-colors uppercase tracking-widest"
-        >
-          @{username}
-        </a>
+
+        {/* Year toggle */}
+        <div className="flex items-center gap-1 bg-[#0d0d12] border border-gray-800/60 rounded-xl p-1">
+          {YEARS.map(yr => (
+            <button
+              key={yr}
+              onClick={() => setSelectedYear(yr)}
+              className={`px-3 py-1 text-[11px] font-mono rounded-lg transition-all duration-200 ${
+                selectedYear === yr
+                  ? 'bg-[#818cf8] text-black font-bold shadow-[0_0_12px_rgba(129,140,248,0.4)]'
+                  : 'text-gray-500 hover:text-[#818cf8] hover:bg-[#818cf8]/10'
+              }`}
+            >
+              {yr}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div 
-        className="relative bg-[#0a0a0a] border border-gray-900 rounded-2xl p-6 md:p-8 overflow-hidden group hover:border-gray-800 transition-all duration-500 shadow-xl"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+      {/* ── Main Card ── */}
+      <div
+        ref={containerRef}
+        className="relative bg-[#09090e] border border-gray-900 rounded-2xl p-5 md:p-8 overflow-hidden transition-all duration-500 hover:border-[#818cf8]/25 hover:shadow-[0_0_40px_rgba(129,140,248,0.07)] group"
       >
-        {/* Subtle glow effect on hover */}
-        <div className={`absolute -top-10 -right-10 w-40 h-40 bg-white/[0.03] blur-[60px] rounded-full pointer-events-none transition-opacity duration-700 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
-        
-        {/* SVG Embed — Inverted for Dark Mode & Greyscale theme */}
-        <div className="github-chart-container overflow-hidden rounded-lg">
-          <div className="flex justify-center p-2 md:p-4 overflow-x-auto no-scrollbar">
-            <img 
-              src={chartUrl} 
-              alt={`${username}'s GitHub contribution chart`}
-              className="max-w-full h-auto min-w-[700px] md:min-w-0 invert brightness-150 opacity-80 group-hover:opacity-100 transition-all duration-700 filter grayscale"
-              onError={(e) => {
-                e.target.style.display = 'none';
-                e.target.parentElement.innerHTML = '<p class="text-gray-600 text-[10px] font-mono p-10 italic">Activity stream currently unavailable.</p>';
-              }}
-            />
-          </div>
-        </div>
+        {/* Ambient glow */}
+        <div className="absolute -top-16 -right-16 w-60 h-60 bg-[#818cf8]/[0.04] blur-[80px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-        {/* Legend / Info */}
-        <div className="flex justify-between items-center mt-6 px-1">
-          <p className="text-[10px] text-gray-600 font-mono italic opacity-60">
-            // public contributions tracked over the last 12 months
-          </p>
-          <div className="flex items-center gap-1.5 grayscale opacity-40">
-            <span className="text-[9px] text-gray-600 font-mono mr-1 lowercase">less</span>
-            <div className="w-2.5 h-2.5 bg-gray-900 rounded-sm" />
-            <div className="w-2.5 h-2.5 bg-gray-700 rounded-sm" />
-            <div className="w-2.5 h-2.5 bg-gray-500 rounded-sm" />
-            <div className="w-2.5 h-2.5 bg-gray-300 rounded-sm" />
-            <span className="text-[9px] text-gray-600 font-mono ml-1 lowercase">more</span>
+        {/* ── Loading skeleton ── */}
+        {loading && (
+          <div className="animate-pulse">
+            <div className="h-4 w-32 bg-gray-800/60 rounded mb-6" />
+            <div className="flex gap-[3px]">
+              {Array.from({ length: 53 }).map((_, wi) => (
+                <div key={wi} className="flex flex-col gap-[3px]">
+                  {Array.from({ length: 7 }).map((_, di) => (
+                    <div
+                      key={di}
+                      className="rounded-[2px] bg-gray-800/40"
+                      style={{ width: CELL_SIZE, height: CELL_SIZE }}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* ── Error ── */}
+        {error && !loading && (
+          <div className="flex flex-col items-center justify-center py-14 gap-4">
+            <p className="text-gray-600 text-[11px] font-mono italic">Failed to fetch contribution data.</p>
+            <button
+              onClick={() => fetchData(selectedYear)}
+              className="text-[10px] font-mono border border-[#818cf8]/30 text-[#818cf8]/70 hover:text-[#818cf8] hover:border-[#818cf8] hover:bg-[#818cf8]/10 px-5 py-1.5 rounded-full transition-all"
+            >
+              retry →
+            </button>
+          </div>
+        )}
+
+        {/* ── Graph ── */}
+        {!loading && !error && weeks.length > 0 && (
+          <div className="overflow-x-auto no-scrollbar">
+            <div style={{ minWidth: gridW + 40 }}>
+
+              {/* Month Labels */}
+              <div className="relative mb-2" style={{ marginLeft: 32, height: 16 }}>
+                {monthLabels.map(({ label, weekIndex }) => (
+                  <span
+                    key={label + weekIndex}
+                    className="absolute text-[10px] font-mono text-gray-500"
+                    style={{ left: weekIndex * STEP }}
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
+
+              {/* Weekday labels + Grid */}
+              <div className="flex gap-0">
+                {/* Day labels */}
+                <div className="flex flex-col justify-between mr-3 pb-[3px]" style={{ height: gridH, paddingTop: 0 }}>
+                  {WEEK_DAYS.map((d, i) => (
+                    <span
+                      key={i}
+                      className="text-[9px] font-mono text-gray-600 leading-none"
+                      style={{ height: CELL_SIZE, lineHeight: `${CELL_SIZE}px` }}
+                    >
+                      {d}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Columns of weeks */}
+                <div className="flex gap-[3px]">
+                  {weeks.map((week, wi) => (
+                    <div key={wi} className="flex flex-col gap-[3px]">
+                      {week.map((cell, di) => (
+                        <div
+                          key={di}
+                          style={{
+                            width:  CELL_SIZE,
+                            height: CELL_SIZE,
+                            borderRadius: 2,
+                            backgroundColor: cell ? LEVEL_COLORS[cell.level] : 'transparent',
+                            transition: 'transform 0.1s, box-shadow 0.15s',
+                            cursor: cell?.count > 0 ? 'pointer' : 'default',
+                          }}
+                          onMouseEnter={e => cell && handleCellEnter(e, cell)}
+                          onMouseLeave={() => setTooltip(null)}
+                          className={cell?.count > 0 ? 'hover:scale-125 hover:shadow-[0_0_6px_rgba(129,140,248,0.7)] hover:z-10 relative' : ''}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {/* ── Tooltip ── */}
+        {tooltip && (
+          <div
+            className="absolute z-50 pointer-events-none bg-[#12121a] border border-[#818cf8]/40 shadow-[0_4px_20px_rgba(0,0,0,0.6)] rounded-lg px-3 py-2 text-[11px] font-mono text-white"
+            style={{
+              left: tooltip.x,
+              top:  tooltip.y - 56,
+              transform: 'translateX(-50%)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <span className="text-[#818cf8] font-bold">{tooltip.count} commit{tooltip.count !== 1 ? 's' : ''}</span>
+            <span className="text-gray-500 mx-1">·</span>
+            <span className="text-gray-400">{formatDate(tooltip.date)}</span>
+            {/* Arrow */}
+            <div className="absolute bottom-[-5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-[#12121a] border-b border-r border-[#818cf8]/40 rotate-45" />
+          </div>
+        )}
+
+        {/* ── Legend ── */}
+        {!loading && !error && (
+          <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-900/60 px-1">
+            <p className="text-[10px] font-mono text-gray-700 italic">
+              // hover cells to inspect commits
+            </p>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[9px] font-mono text-gray-600 mr-1">less</span>
+              {LEVEL_COLORS.map((color, i) => (
+                <div
+                  key={i}
+                  title={LEVEL_LABELS[i]}
+                  className="rounded-[2px] transition-transform hover:scale-110"
+                  style={{ width: 10, height: 10, backgroundColor: color, border: '1px solid rgba(255,255,255,0.05)' }}
+                />
+              ))}
+              <span className="text-[9px] font-mono text-gray-600 ml-1">more</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Profile link */}
+      <div className="flex justify-end mt-3 pr-1">
+        <a
+          href={`https://github.com/${USERNAME}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[10px] font-mono text-gray-700 hover:text-[#818cf8] transition-colors uppercase tracking-widest flex items-center gap-1"
+        >
+          <FaGithub size={10} />
+          @{USERNAME}
+        </a>
       </div>
     </section>
   )
 }
-
-export default GitHubActivity
