@@ -14,6 +14,7 @@ export const timelineData = [
         slug: 'chief-marketing-officer',
         role: 'Chief Marketing Officer',
         company: 'InTheBox',
+        website: 'https://www.inthecube.in',
         date: 'NOV 2024 - PRESENT',
         images: [
           { src: '/InTheBox founder.jpg', caption: 'InTheBox Founder' },
@@ -33,6 +34,7 @@ export const timelineData = [
         slug: 'harvard-ylc-coordinator',
         role: 'Harvard YLC Coordinator',
         company: 'Chitkara University',
+        website: 'https://www.chitkara.edu.in',
         date: 'Jan 2026',
         images: [
           { src: '/pfp.jpg', caption: 'At the Event' },
@@ -54,6 +56,7 @@ export const timelineData = [
         slug: 'head-of-marketing',
         role: 'Head of Marketing',
         company: 'ACM Student Chapter',
+        website: 'https://www.acm.org',
         date: 'NOV 2024 - JUL 2025',
         images: [
           { src: '/ACM Marketing Head.jpg', caption: 'ACM Marketing Head' },
@@ -70,6 +73,7 @@ export const timelineData = [
         slug: 'ecosystem-manager',
         role: 'Ecosystem Manager',
         company: 'DevLearn',
+        website: 'https://devlearn.in',
         date: 'MAY 2024 - FEB 2025',
         images: [
           { src: '/Devlearn Founding Member.jpg', caption: 'Founding Member' },
@@ -87,6 +91,7 @@ export const timelineData = [
         slug: 'graphics-exec',
         role: 'Graphics Exec.',
         company: 'Coding Blocks',
+        website: 'https://codingblocks.com',
         date: 'DEC 2023 - MAY 2025',
         images: [
           { src: '/winner at microsoft.jpg', caption: 'Winner at Microsoft' },
@@ -108,6 +113,7 @@ export const timelineData = [
         slug: 'marketing-exec',
         role: 'Marketing Exec.',
         company: 'ACM Student Chapter',
+        website: 'https://www.acm.org',
         date: 'SEP 2024 - NOV 2024',
         images: [
           { src: '/ACM Marketing Head.jpg', caption: 'ISCCSC Event' },
@@ -124,6 +130,7 @@ export const timelineData = [
         slug: 'campus-ambassador',
         role: 'Campus Ambassador',
         company: 'Kotlin Delhi',
+        website: 'https://kotlinconf.com',
         date: 'JUN 2024 - JUL 2024',
         images: [
           { src: '/delhi-train.png', caption: 'KotlinConf Delhi' },
@@ -139,6 +146,7 @@ export const timelineData = [
         slug: 'design-and-branding',
         role: 'Design & Branding',
         company: 'GFG CUIET',
+        website: 'https://www.geeksforgeeks.org',
         date: 'JAN 2024 - JUL 2024',
         images: [
           { src: '/workspace-2.jpg', caption: 'Branding Work' },
@@ -154,6 +162,7 @@ export const timelineData = [
         slug: 'graphics-head',
         role: 'Graphics Head',
         company: 'DevLearn',
+        website: 'https://devlearn.in',
         date: 'FEB 2024 - MAY 2024',
         images: [
           { src: '/Devlearn Founding Member.jpg', caption: 'Leading Design' },
@@ -170,6 +179,7 @@ export const timelineData = [
         slug: 'outreach-exec',
         role: 'Outreach Exec.',
         company: 'Coding Ninjas',
+        website: 'https://www.codingninjas.com',
         date: 'JAN 2024 - FEB 2024',
         images: [
           { src: '/jaipur-.png', caption: 'Utkrishti 2024' },
@@ -190,6 +200,7 @@ export const timelineData = [
         slug: 'graphics-exec-devlearn',
         role: 'Graphics Exec.',
         company: 'DevLearn',
+        website: 'https://devlearn.in',
         date: 'NOV 2023 - FEB 2024',
         images: [
           { src: '/Devlearn Founding Member.jpg', caption: 'Community Design' },

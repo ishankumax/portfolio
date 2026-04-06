@@ -195,10 +195,35 @@ function Experience() {
                       </span>
                     </div>
 
-                    {/* Company */}
+                    {/* Company — external link if website is provided */}
                     <p className="text-sm text-gray-400 mb-5 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-gray-600 inline-block" />
-                      {item.company}
+                      <span className="w-1.5 h-1.5 rounded-full bg-gray-600 inline-block shrink-0" />
+                      {item.website ? (
+                        <a
+                          href={item.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="company-link"
+                        >
+                          {item.company}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                            className="company-link-icon"
+                          >
+                            <path d="M2 10L10 2M10 2H5M10 2v5" />
+                          </svg>
+                        </a>
+                      ) : (
+                        item.company
+                      )}
                     </p>
 
                     {/* Divider */}
