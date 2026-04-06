@@ -8,6 +8,7 @@ import TechStack from './TechStack'
 import Footer from './Footer'
 import Timeline from './Timeline'
 import Terminal, { useTerminal } from './Terminal'
+import GitHubActivity from './GitHubActivity'
 
 function Home() {
   const location = useLocation()
@@ -79,6 +80,7 @@ function Home() {
           <Hero />
           <FounderOf />
           <TechStack />
+          <GitHubActivity />
           <WritingMyStory />
           <Footer />
         </main>

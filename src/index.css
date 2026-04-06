@@ -105,3 +105,31 @@ body {
   opacity: 0.6;
   transform: translate(0, 0);
 }
+
+/* ============================================================================
+   GITHUB ACTIVITY: Calendar overrides
+   ============================================================================ */
+
+.github-calendar-wrapper {
+  overflow-x: auto;
+  padding: 4px;
+}
+
+.github-calendar-wrapper svg {
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* Optional: making the calendar blocks slightly more rounded */
+.github-calendar-wrapper rect {
+  rx: 2px;
+  ry: 2px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.github-calendar-wrapper rect:hover {
+  transform: scale(1.1);
+  transform-origin: center;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 1px;
+}
