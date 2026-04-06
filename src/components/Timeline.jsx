@@ -151,10 +151,26 @@ function Timeline({ isMobileMode = false }) {
                         }
                       }}
                     >
-                      {/* Role heading */}
-                      <div className={`pl-16 md:pl-[100px] py-5 pr-4 transition-colors duration-300 ${isActive ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'}`}>
+                    {/* Role heading — click navigates to /experience#slug */}
+                      <div 
+                        className={`pl-16 md:pl-[100px] py-5 pr-4 transition-colors duration-300 group/row flex items-center justify-between ${
+                          isActive ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRoleClick(item);
+                        }}
+                      >
                         <span className={`font-mono text-sm transition-colors duration-300 ${isActive ? 'text-white font-bold' : 'text-gray-500'}`}>
                           {item.role}
+                        </span>
+                        {/* Nav arrow — visible on hover or active */}
+                        <span className={`font-mono text-[10px] transition-all duration-300 ${
+                          isActive
+                            ? 'text-gray-400 translate-x-0 opacity-100'
+                            : 'text-gray-700 -translate-x-1 opacity-0 group-hover/row:translate-x-0 group-hover/row:opacity-100'
+                        }`}>
+                          →
                         </span>
                       </div>
 
