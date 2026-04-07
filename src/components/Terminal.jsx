@@ -191,7 +191,7 @@ function Terminal({ onClose }) {
           <div className="w-3 h-3 rounded-full bg-yellow-500/40" />
           <div className="w-3 h-3 rounded-full bg-green-500/40" />
           <span className="ml-3 text-[11px] text-gray-600 flex-1 text-center">ishankumax — portfolio terminal</span>
-          <span className="text-[10px] text-gray-700">` to close</span>
+          <span className="text-[10px] text-gray-700">` or Ctrl+K to close</span>
         </div>
 
         {/* Output */}
