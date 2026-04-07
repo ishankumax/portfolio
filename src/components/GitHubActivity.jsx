@@ -3,7 +3,7 @@ import { FaGithub } from 'react-icons/fa'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const USERNAME    = 'ishankumax'
-const YEARS       = [2026, 2025, 2024, 2023]
+const YEARS       = [2026]
 const CELL_SIZE   = 11   // px, size of each square
 const CELL_GAP    = 3    // px, gap between squares
 const WEEK_DAYS   = ['', 'Mon', '', 'Wed', '', 'Fri', '']
@@ -23,9 +23,9 @@ const LEVEL_LABELS = ['No activity', 'Low', 'Medium', 'High', 'Peak']
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function getLevel(count) {
   if (count === 0) return 0
-  if (count <= 2)  return 1
-  if (count <= 6)  return 2
-  if (count <= 12) return 3
+  if (count <= 4)  return 1
+  if (count <= 8)  return 2
+  if (count <= 16) return 3
   return 4
 }
 
