@@ -12,9 +12,9 @@ const MONTHS      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'
 // Purple gradient: 0 = empty, 1 = low, 2 = medium, 3 = high, 4 = max
 const LEVEL_COLORS = [
   '#0f0f14',   // 0: near-black (empty)
-  '#2d1d6e',   // 1: deep violet
-  '#5b41c5',   // 2: mid-purple
-  '#818cf8',   // 3: indigo-400 (brand)
+  '#491768ff',   // 1: deep violet
+  '#8b1fcaff',   // 2: mid-purple
+  '#ad57f8ff',   // 3: indigo-400 (brand)
   '#c4b5fd',   // 4: lavender bright
 ]
 
@@ -23,9 +23,9 @@ const LEVEL_LABELS = ['No activity', 'Low', 'Medium', 'High', 'Peak']
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function getLevel(count) {
   if (count === 0) return 0
-  if (count <= 4)  return 1
-  if (count <= 8)  return 2
-  if (count <= 16) return 3
+  if (count <= 2)  return 1
+  if (count <= 6)  return 2
+  if (count <= 12) return 3
   return 4
 }
 
