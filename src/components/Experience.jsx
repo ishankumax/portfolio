@@ -135,29 +135,31 @@ function Experience() {
   return (
     <div className="min-h-screen bg-black text-white font-mono">
       {/* Top Navigation */}
-      <header className="w-full relative z-50">
-        <div className="max-w-4xl mx-auto px-6 py-12 md:py-16">
+      <header className="w-full h-24 flex items-center">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full">
           <Link 
             to="/" 
-            className="text-gray-500 hover:text-white transition-colors flex items-center gap-2 w-fit group"
+            className="text-gray-500 hover:text-white transition-all flex items-center gap-2 w-fit group text-sm font-light tracking-widest"
           >
             <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
-            <span>back to home</span>
+            <span className="uppercase">[ back to home ]</span>
           </Link>
         </div>
       </header>
 
       {/* Page Title */}
-      <div className="max-w-4xl mx-auto px-6">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">experience</h1>
-        <p className="text-gray-500 text-sm md:text-base mb-16 max-w-xl leading-relaxed">
+      {/* Page Title & Intro — Centered for better balance */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 mt-12 mb-32 text-center">
+        <h1 className="text-5xl md:text-7xl font-bold mb-8 tracking-tighter text-white uppercase">experience</h1>
+        <div className="w-20 h-px bg-white/20 mx-auto mb-10" />
+        <p className="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed font-light brightness-110">
           a detailed look at every role, team, and community i've been part of — 
           from founding startups to leading campus chapters.
         </p>
       </div>
 
       {/* Two Column Layout — Detailed cards on left, Timeline on right */}
-      <div className="max-w-6xl mx-auto px-6 pb-24 flex flex-col lg:flex-row gap-12 relative">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pb-32 flex flex-col lg:flex-row gap-12 lg:gap-24 relative">
         
         {/* Detailed Role Cards (Main Content) */}
         <div className="flex-1 min-w-0 order-2 lg:order-1">
@@ -184,32 +186,32 @@ function Experience() {
                     key={item.id}
                     id={item.slug}
                     ref={el => sectionRefs.current[item.slug] = el}
-                    className="group relative bg-black border border-gray-800/60 rounded-xl p-6 md:p-8 transition-all duration-500 hover:border-gray-600/80 hover:bg-white/[0.02] overflow-hidden"
+                    className="group relative bg-black border border-white/5 rounded-2xl p-10 md:p-14 transition-all duration-700 hover:border-white/10 hover:bg-white/[0.01] overflow-hidden"
                   >
                     {/* Subtle ambient glow on hover */}
                     <div className="absolute top-0 right-0 w-40 h-40 bg-white/[0.03] blur-[60px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
                     <div className="relative z-10">
                       {/* Role Header */}
-                      <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 md:gap-4 mb-4">
-                        <h2 className="text-lg md:text-xl font-bold text-white tracking-wide">
+                      <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-4 mb-8">
+                        <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">
                           {item.role}
                         </h2>
-                        <span className="text-[10px] md:text-xs text-gray-500 font-mono tracking-wider shrink-0">
+                        <span className="text-[11px] md:text-xs text-gray-500 font-mono tracking-widest uppercase opacity-70">
                           {item.date}
                         </span>
                       </div>
 
                       {/* Company — external link if website is provided */}
-                      <p className="text-sm text-gray-400 mb-5 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-gray-600 inline-block shrink-0" />
+                      <p className="text-sm text-gray-400 mb-8 flex items-center gap-2 font-light">
+                        <span className="w-1.5 h-1.5 rounded-full bg-white/20 inline-block shrink-0" />
                         {item.website ? (
                           <a
                             href={item.website}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="company-link"
+                            className="company-link brightness-125"
                           >
                             {item.company}
                             <svg
@@ -235,10 +237,10 @@ function Experience() {
                       <div className="border-t border-gray-800/60 mb-5" />
 
                       {/* Bullets */}
-                      <ul className="flex flex-col gap-3">
+                      <ul className="flex flex-col gap-6 mb-12">
                         {item.bullets.map((bullet, i) => (
-                          <li key={i} className="flex items-start text-sm text-gray-400 leading-relaxed">
-                            <span className="mr-3 text-gray-600 mt-[3px] text-xs">▸</span>
+                          <li key={i} className="flex items-start text-sm md:text-base text-gray-400 leading-relaxed font-light">
+                            <span className="mr-5 text-white/20 mt-[10px] text-[10px]">/</span>
                             <span>{bullet}</span>
                           </li>
                         ))}
@@ -262,9 +264,9 @@ function Experience() {
         </div>
 
         {/* Sticky Timeline Sidebar — Desktop only, Right aligned */}
-        <aside className="hidden lg:block w-80 shrink-0 order-1 lg:order-2">
-          <div className="sticky top-12 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar py-4 border-l border-gray-800/40 pl-4">
-            <h3 className="text-white font-mono text-[10px] uppercase tracking-[0.3em] mb-6 pl-1 opacity-50">Timeline Overview</h3>
+        <aside className="hidden lg:block lg:w-[32%] max-w-lg shrink-0 order-1 lg:order-2">
+          <div className="sticky top-12 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar py-4 border-l border-white/5 pl-10">
+            <h3 className="text-white font-mono text-[10px] uppercase tracking-[0.5em] mb-10 opacity-30">Timeline Overview</h3>
             <Timeline isMobileMode={false} />
           </div>
         </aside>

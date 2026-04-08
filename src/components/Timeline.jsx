@@ -117,7 +117,7 @@ function Timeline({ isMobileMode = false }) {
         {/* The single vertical timeline track — centered precisely with the dots */}
         <div className="absolute left-[50px] md:left-[70px] top-10 bottom-10 w-[2px] bg-gradient-to-b from-transparent via-[#818cf8]/40 to-transparent shadow-[0_0_10px_rgba(129,140,248,0.15)]"></div>
         
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-16">
           {timelineData.map((yearGroup, yIndex) => (
             <div key={yearGroup.year} className="relative z-10">
               
@@ -153,7 +153,7 @@ function Timeline({ isMobileMode = false }) {
                     >
                     {/* Role heading — click navigates to /experience#slug */}
                       <div 
-                        className={`pl-16 md:pl-[100px] py-5 pr-4 transition-all duration-300 group/row flex items-center justify-between ${
+                        className={`pl-16 md:pl-[110px] py-7 pr-6 transition-all duration-300 group/row flex items-center justify-between ${
                           isActive ? 'bg-[#818cf8]/[0.07] border-l-2 border-[#818cf8]/50' : 'hover:bg-[#818cf8]/[0.03] border-l-2 border-transparent'
                         }`}
                         onClick={(e) => {
@@ -178,22 +178,22 @@ function Timeline({ isMobileMode = false }) {
                       <div className={`grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${isActive ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                         <div className="overflow-hidden">
                           
-                          <div className="ml-16 md:ml-[100px] mr-4 md:mr-6 mb-6 mt-1 bg-black/95 backdrop-blur-xl border border-gray-700/50 rounded-xl p-4 md:p-5 shadow-[0_20px_40px_rgba(0,0,0,0.8)] relative overflow-hidden">
+                          <div className="ml-16 md:ml-[110px] mr-4 md:mr-8 mb-10 mt-2 bg-black/95 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] relative overflow-hidden">
                             
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-[40px] rounded-full pointer-events-none"></div>
+                            <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 blur-[50px] rounded-full pointer-events-none"></div>
 
                             <div className="relative z-10">
-                              <h3 className="text-gray-100 font-semibold tracking-wide text-sm">{item.company}</h3>
-                              <p className="text-gray-500 font-mono text-[10px] mt-1.5 tracking-wider">{item.date}</p>
+                              <h3 className="text-gray-400/80 font-semibold tracking-widest text-[11px] uppercase opacity-70 mb-4">{item.company}</h3>
+                              <p className="text-gray-500 font-mono text-[11px] mb-8 tracking-wider">{item.date}</p>
                               
-                              <div className="my-3 border-t border-gray-800/80"></div>
+                              <div className="mb-10 border-t border-white/5"></div>
 
-                              <h4 className="text-white font-semibold text-sm mb-3 tracking-wide">{item.role}</h4>
+                              <h4 className="text-white font-bold text-2xl mb-10 tracking-tight leading-[1.3]">{item.role}</h4>
                               
-                              <ul className="flex flex-col gap-2">
+                              <ul className="flex flex-col gap-6 mb-8">
                                 {item.bullets.map((bullet, i) => (
-                                  <li key={i} className="flex items-start text-[11px] text-gray-400 leading-relaxed font-sans">
-                                    <span className="mr-2.5 text-gray-600 mt-[2px]">•</span>
+                                  <li key={i} className="flex items-start text-sm text-gray-400/90 leading-relaxed font-sans">
+                                    <span className="mr-4 text-[#818cf8] mt-[6px] opacity-60 text-xs">/</span>
                                     <span>{bullet}</span>
                                   </li>
                                 ))}
@@ -205,7 +205,7 @@ function Timeline({ isMobileMode = false }) {
                                   e.stopPropagation();
                                   handleRoleClick(item);
                                 }}
-                                className="mt-4 text-[10px] font-mono text-gray-600 hover:text-[#818cf8] transition-colors flex items-center gap-1.5 group/link"
+                                className="mt-8 text-[11px] font-mono text-gray-500 hover:text-[#818cf8] transition-colors flex items-center gap-2 group/link uppercase tracking-widest"
                               >
                                 <span>view details</span>
                                 <span className="group-hover/link:translate-x-1 group-hover/link:text-[#818cf8] transition-all duration-300">→</span>
