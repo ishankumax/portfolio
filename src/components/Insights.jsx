@@ -79,7 +79,7 @@ const ESSAYS = [
     tag: 'community',
     title: 'What I learned running 3 campus communities',
     readTime: '5 min read',
-    preview: "ACM. DevLearn. Coding Ninjas. Three communities, three different cultures, one consistent observation: the bottleneck is never resources — it's always activation energy.",
+    preview: " DevLearn. Coding Ninjas. Three communities, three different cultures, one consistent observation: the bottleneck is never resources — it's always activation energy.",
     body: [
       "The first thing everyone gets wrong about campus communities is that they think the hard part is getting people to join. It's not. Students will sign up for anything. The hard part is getting them to show up the second time.",
       "At ACM, we had 200+ members on paper. Actual active contributors: about 30. That 15% number is remarkably consistent across every community I've been part of. The goal isn't to increase members — it's to increase the size of that 15%.",

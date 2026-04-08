@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaInstagram, FaLinkedin, FaXTwitter } from 'react-icons/fa6'
+import { FaInstagram, FaLinkedin, FaXTwitter, FaGithub } from 'react-icons/fa6'
 
 function Hero() {
   return (
@@ -18,19 +18,26 @@ function Hero() {
         <h1 className="text-4xl md:text-5xl font-bold mb-2">ishan kumar</h1>
         <p className="text-gray-500 mb-6">@ishankumax</p>
         
-        <div className="flex justify-center md:justify-start gap-4 mb-8">
-          <a href="https://www.instagram.com/ishankumax/" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all">
-            <FaInstagram size={18} />
-          </a>
-          <a href="https://www.linkedin.com/in/ishankumax/" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all">
-            <FaLinkedin size={18} />
-          </a>
-          <a href="https://x.com/ishankumax" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all">
-            <FaXTwitter size={18} />
-          </a>
-        </div>
+        <div className="flex items-center gap-3">
+                    <a href="https://github.com/ishankumax" target="_blank" rel="noopener noreferrer"
+                      className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
+                      <FaGithub size={16} />
+                    </a>
+                    <a href="https://www.linkedin.com/in/ishankumax/" target="_blank" rel="noopener noreferrer"
+                      className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
+                      <FaLinkedin size={16} />
+                    </a>
+                    <a href="https://x.com/ishankumax" target="_blank" rel="noopener noreferrer"
+                      className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
+                      <FaXTwitter size={16} />
+                    </a>
+                    <a href="https://www.instagram.com/ishankumax/" target="_blank" rel="noopener noreferrer"
+                      className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
+                      <FaInstagram size={16} />
+                    </a>
+                  </div>
 
-        <p className="text-gray-400 leading-relaxed text-sm md:text-base max-w-4xl">
+        <p className="text-gray-400 leading-relaxed text-sm md:text-base max-w-4xl pt-6">
           i'm a 20 y/o cs undergrad. i love building businesses and solving problems. interested in growth, startups, networking and infra. when i'm not cooking stuff, i'm prolly locking another client for my business - inthebox.
         </p>
       </div>

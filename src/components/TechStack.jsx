@@ -5,30 +5,30 @@ const STACK = [
     category: 'frontend',
     icon: '◈',
     items: [
-      { name: 'React', level: 90 },
-      { name: 'Vite', level: 85 },
-      { name: 'Tailwind CSS', level: 88 },
-      { name: 'JavaScript', level: 92 },
+      { name: 'React' },
+      { name: 'Vite' },
+      { name: 'Tailwind CSS' },
+      { name: 'JavaScript' },
     ]
   },
   {
     category: 'backend & infra',
     icon: '◇',
     items: [
-      { name: 'Node.js', level: 75 },
-      { name: 'Python', level: 78 },
-      { name: 'Supabase', level: 70 },
-      { name: 'REST APIs', level: 82 },
+      { name: 'Node.js' },
+      { name: 'Python' },
+      { name: 'Supabase' },
+      { name: 'REST APIs' },
     ]
   },
   {
     category: 'tools & workflows',
     icon: '◉',
     items: [
-      { name: 'Git / GitHub', level: 88 },
-      { name: 'Figma', level: 80 },
-      { name: 'VS Code', level: 95 },
-      { name: 'Linux / CLI', level: 72 },
+      { name: 'Git / GitHub' },
+      { name: 'Figma' },
+      { name: 'VS Code' },
+      { name: 'Linux / CLI' },
     ]
   },
 ]
@@ -38,7 +38,7 @@ function SkillBar({ name, level }) {
     <div className="group">
       <div className="flex justify-between items-center mb-1.5">
         <span className="text-xs font-mono text-gray-400 group-hover:text-white transition-colors duration-300">{name}</span>
-        <span className="text-[10px] font-mono text-gray-700 group-hover:text-gray-500 transition-colors duration-300">{level}%</span>
+        <span className="text-[10px] font-mono text-gray-700 group-hover:text-gray-500 transition-colors duration-300"></span>
       </div>
       <div className="h-px bg-gray-800 rounded-full overflow-hidden">
         <div
