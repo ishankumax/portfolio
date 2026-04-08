@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-function Navbar({ onToggleDrawer, onOpenTerminal }) {
+function Navbar({ onOpenTerminal }) {
   const location = useLocation()
 
   // Helper to detect an active route
@@ -18,17 +18,7 @@ function Navbar({ onToggleDrawer, onOpenTerminal }) {
       <Link to="/#highlights" className="hover:text-white transition-colors whitespace-nowrap">[h] highlights</Link>
       <Link to="/about" className={linkClass('/about')}>[a] about me</Link>
       <a href="mailto:ishankumax@gmail.com" className="hover:text-white transition-colors whitespace-nowrap">[n] network</a>
-
-      {/* Experience drawer toggle — only available on Home */}
-      {onToggleDrawer && (
-        <button 
-          onClick={onToggleDrawer}
-          className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer whitespace-nowrap"
-          aria-label="Toggle Experience Panel"
-        >
-          <span>[x] experience</span>
-        </button>
-      )}
+      <Link to="/experience" className={linkClass('/experience')}>[x] experience</Link>
 
       {/* Terminal trigger — only shown on Home */}
       {onOpenTerminal && (

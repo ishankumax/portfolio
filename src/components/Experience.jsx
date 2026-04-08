@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { timelineData } from '../data/timelineData'
+import Timeline from './Timeline'
 
 // ============================================================================
 // COMPONENT: ImageMarquee
@@ -155,105 +156,119 @@ function Experience() {
         </p>
       </div>
 
-      {/* Experience Sections grouped by year */}
-      <div className="max-w-4xl mx-auto px-6 pb-24">
-        {timelineData.map((yearGroup, groupIndex) => (
-          <div key={yearGroup.year} className="mb-16">
-            {/* Year Header */}
-            <div className="flex items-center gap-4 mb-8">
-              <div className="relative">
-                <span className="text-2xl md:text-3xl font-bold text-white tracking-widest">
-                  {yearGroup.year}
-                </span>
-                {groupIndex === 0 && (
-                  <div className="absolute -right-3 -top-1 w-2 h-2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] animate-pulse" />
-                )}
+      {/* Two Column Layout — Detailed cards on left, Timeline on right */}
+      <div className="max-w-6xl mx-auto px-6 pb-24 flex flex-col lg:flex-row gap-12 relative">
+        
+        {/* Detailed Role Cards (Main Content) */}
+        <div className="flex-1 min-w-0 order-2 lg:order-1">
+          <h3 className="lg:hidden text-white font-mono text-[10px] uppercase tracking-[0.3em] mb-8 opacity-50">Detailed Experience</h3>
+          {timelineData.map((yearGroup, groupIndex) => (
+            <div key={yearGroup.year} className="mb-16">
+              {/* Year Header */}
+              <div className="flex items-center gap-4 mb-8">
+                <div className="relative">
+                  <span className="text-2xl md:text-3xl font-bold text-white tracking-widest">
+                    {yearGroup.year}
+                  </span>
+                  {groupIndex === 0 && (
+                    <div className="absolute -right-3 -top-1 w-2 h-2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] animate-pulse" />
+                  )}
+                </div>
+                <div className="flex-1 h-px bg-gradient-to-r from-gray-700 to-transparent" />
               </div>
-              <div className="flex-1 h-px bg-gradient-to-r from-gray-700 to-transparent" />
-            </div>
 
-            {/* Role Cards */}
-            <div className="flex flex-col gap-6 pl-2 md:pl-4">
-              {yearGroup.items.map((item) => (
-                <section
-                  key={item.id}
-                  id={item.slug}
-                  ref={el => sectionRefs.current[item.slug] = el}
-                  className="group relative bg-black border border-gray-800/60 rounded-xl p-6 md:p-8 transition-all duration-500 hover:border-gray-600/80 hover:bg-white/[0.02] overflow-hidden"
-                >
-                  {/* Subtle ambient glow on hover */}
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-white/[0.03] blur-[60px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* Role Cards */}
+              <div className="flex flex-col gap-6 pl-2 md:pl-4">
+                {yearGroup.items.map((item) => (
+                  <section
+                    key={item.id}
+                    id={item.slug}
+                    ref={el => sectionRefs.current[item.slug] = el}
+                    className="group relative bg-black border border-gray-800/60 rounded-xl p-6 md:p-8 transition-all duration-500 hover:border-gray-600/80 hover:bg-white/[0.02] overflow-hidden"
+                  >
+                    {/* Subtle ambient glow on hover */}
+                    <div className="absolute top-0 right-0 w-40 h-40 bg-white/[0.03] blur-[60px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-                  <div className="relative z-10">
-                    {/* Role Header */}
-                    <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 md:gap-4 mb-4">
-                      <h2 className="text-lg md:text-xl font-bold text-white tracking-wide">
-                        {item.role}
-                      </h2>
-                      <span className="text-[10px] md:text-xs text-gray-500 font-mono tracking-wider shrink-0">
-                        {item.date}
-                      </span>
-                    </div>
+                    <div className="relative z-10">
+                      {/* Role Header */}
+                      <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 md:gap-4 mb-4">
+                        <h2 className="text-lg md:text-xl font-bold text-white tracking-wide">
+                          {item.role}
+                        </h2>
+                        <span className="text-[10px] md:text-xs text-gray-500 font-mono tracking-wider shrink-0">
+                          {item.date}
+                        </span>
+                      </div>
 
-                    {/* Company — external link if website is provided */}
-                    <p className="text-sm text-gray-400 mb-5 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-gray-600 inline-block shrink-0" />
-                      {item.website ? (
-                        <a
-                          href={item.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="company-link"
-                        >
-                          {item.company}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 12 12"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                            className="company-link-icon"
+                      {/* Company — external link if website is provided */}
+                      <p className="text-sm text-gray-400 mb-5 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-gray-600 inline-block shrink-0" />
+                        {item.website ? (
+                          <a
+                            href={item.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="company-link"
                           >
-                            <path d="M2 10L10 2M10 2H5M10 2v5" />
-                          </svg>
-                        </a>
-                      ) : (
-                        item.company
-                      )}
-                    </p>
+                            {item.company}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 12 12"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              aria-hidden="true"
+                              className="company-link-icon"
+                            >
+                              <path d="M2 10L10 2M10 2H5M10 2v5" />
+                            </svg>
+                          </a>
+                        ) : (
+                          item.company
+                        )}
+                      </p>
 
-                    {/* Divider */}
-                    <div className="border-t border-gray-800/60 mb-5" />
+                      {/* Divider */}
+                      <div className="border-t border-gray-800/60 mb-5" />
 
-                    {/* Bullets */}
-                    <ul className="flex flex-col gap-3">
-                      {item.bullets.map((bullet, i) => (
-                        <li key={i} className="flex items-start text-sm text-gray-400 leading-relaxed">
-                          <span className="mr-3 text-gray-600 mt-[3px] text-xs">▸</span>
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
+                      {/* Bullets */}
+                      <ul className="flex flex-col gap-3">
+                        {item.bullets.map((bullet, i) => (
+                          <li key={i} className="flex items-start text-sm text-gray-400 leading-relaxed">
+                            <span className="mr-3 text-gray-600 mt-[3px] text-xs">▸</span>
+                            <span>{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
 
-                    {/* Image Marquee Gallery */}
-                    <ImageMarquee images={item.images} />
-                  </div>
-                </section>
-              ))}
+                      {/* Image Marquee Gallery */}
+                      <ImageMarquee images={item.images} />
+                    </div>
+                  </section>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        {/* Footer Note */}
-        <div className="mt-12 pt-8 border-t border-gray-800/40 text-center">
-          <p className="text-gray-600 text-xs italic">
-            and the story continues...
-          </p>
+          {/* Footer Note */}
+          <div className="mt-12 pt-8 border-t border-gray-800/40 text-center">
+            <p className="text-gray-600 text-xs italic">
+              and the story continues...
+            </p>
+          </div>
         </div>
+
+        {/* Sticky Timeline Sidebar — Desktop only, Right aligned */}
+        <aside className="hidden lg:block w-80 shrink-0 order-1 lg:order-2">
+          <div className="sticky top-12 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar py-4 border-l border-gray-800/40 pl-4">
+            <h3 className="text-white font-mono text-[10px] uppercase tracking-[0.3em] mb-6 pl-1 opacity-50">Timeline Overview</h3>
+            <Timeline isMobileMode={false} />
+          </div>
+        </aside>
+
       </div>
     </div>
   )
