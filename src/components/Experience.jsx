@@ -264,7 +264,7 @@ function Experience() {
         </div>
 
         {/* Sticky Timeline Sidebar — Desktop only, Right aligned */}
-        <aside className="hidden lg:block lg:w-[32%] max-w-lg shrink-0 order-1 lg:order-2">
+        <aside className="hidden lg:block lg:w-[420px] xl:w-[480px] lg:-mr-10 xl:-mr-24 shrink-0 order-1 lg:order-2">
           <div className="sticky top-12 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar py-4 border-l border-white/5 pl-10">
             <h3 className="text-white font-mono text-[10px] uppercase tracking-[0.5em] mb-10 opacity-30">Timeline Overview</h3>
             <Timeline isMobileMode={false} />

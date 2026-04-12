@@ -178,7 +178,7 @@ function Timeline({ isMobileMode = false }) {
                       <div className={`grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${isActive ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                         <div className="overflow-hidden">
                           
-                          <div className="ml-16 md:ml-[110px] mr-4 md:mr-8 mb-10 mt-2 bg-black/95 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] relative overflow-hidden">
+                          <div className="ml-16 md:ml-[110px] mr-4 md:mr-0 mb-10 mt-2 bg-black/95 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-10 shadow-[0_30px_60px_rgba(0,0,0,0.8)] relative overflow-hidden">
                             
                             <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 blur-[50px] rounded-full pointer-events-none"></div>
 
