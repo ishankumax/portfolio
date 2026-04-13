@@ -142,7 +142,7 @@ function Experience() {
             className="text-gray-500 hover:text-white transition-all flex items-center gap-2 w-fit group text-sm font-light tracking-widest"
           >
             <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
-            <span className="uppercase">[ back to home ]</span>
+            <span className="uppercase">[ back to home.... ]</span>
           </Link>
         </div>
       </header>
