@@ -58,7 +58,7 @@ const FILES = {
     'instagram: @ishankumax',
     'github:    github.com/ishankumax',
     '',
-    "run 'open /contact' to visit the contact page.",
+    "run 'open /network' to visit the network page.",
   ],
 }
 
@@ -68,8 +68,8 @@ const COMMANDS = {
     '',
     '  whoami              — who am i?',
     '  ls                  — list all sections',
-    '  cat <file>          — read a file (skills, experience, contact)',
-    '  open <path>         — navigate to a page (/experience, /contact, /specs)',
+    '  cat <file>          — read a file (skills, experience, network)',
+    '  open <path>         — navigate to a page (/experience, /network, /specs)',
     '  clear               — clear the terminal',
     '  exit                — close the terminal',
     '',
@@ -79,12 +79,12 @@ const COMMANDS = {
     'drwxr-xr-x  /home',
     'drwxr-xr-x  /experience',
     'drwxr-xr-x  /specs',
-    'drwxr-xr-x  /contact',
+    'drwxr-xr-x  /network',
     'drwxr-xr-x  /insights',
     '-rw-r--r--  whoami',
     '-rw-r--r--  skills',
     '-rw-r--r--  experience',
-    '-rw-r--r--  contact',
+    '-rw-r--r--  network',
   ],
   clear: () => '__CLEAR__',
   exit: () => '__EXIT__',
@@ -132,14 +132,14 @@ function Terminal({ onClose }) {
 
     // open <path>
     if (cmd === 'open') {
-      const routes = ['/experience', '/contact', '/specs', '/insights', '/about', '/']
+      const routes = ['/experience', '/network', '/specs', '/insights', '/about', '/']
       const path = '/' + arg
       if (routes.includes(path) || path === '/home' || arg === 'home') {
         const target = path === '/home' ? '/' : path
         setLines(l => [...l, prompt, `navigating to ${target}...`, ''])
         setTimeout(() => { onClose(); navigate(target) }, 600)
       } else {
-        setLines(l => [...l, prompt, `open: ${arg}: unknown route — available: /experience /contact /specs /insights`, ''])
+        setLines(l => [...l, prompt, `open: ${arg}: unknown route — available: /experience /network /specs /insights`, ''])
       }
       return
     }

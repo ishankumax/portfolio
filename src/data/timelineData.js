@@ -14,7 +14,7 @@ export const timelineData = [
         slug: 'chief-marketing-officer',
         role: 'Chief Marketing Officer',
         company: 'InTheBox',
-        website: 'https://www.inthecube.in',
+        website: 'https://www.inthebox.co.in',
         date: 'NOV 2024 - PRESENT',
         images: [
           { src: '/InTheBox founder.jpg', caption: 'InTheBox Founder' },
@@ -34,7 +34,7 @@ export const timelineData = [
         slug: 'harvard-ylc-coordinator',
         role: 'Harvard YLC Coordinator',
         company: 'Chitkara University',
-        website: 'https://www.chitkara.edu.in',
+        website: 'https://www.chitkara.edu.in/harvard/',
         date: 'Jan 2026',
         images: [
           { src: '/pfp.jpg', caption: 'At the Event' },
@@ -69,11 +69,29 @@ export const timelineData = [
         ]
       },
       {
+        id: 'community-mgr-hackquest',
+        slug: 'community-manager',
+        role: 'Community Manager Intern',
+        company: 'HackQuest',
+        website: 'https://hackquest.io/',
+        date: 'FEB 2025 - MAR 2025',
+        images: [
+          { src: '/Devlearn Founding Member.jpg', caption: 'Founding Member' },
+          { src: '/HQ Mentor.jpg', caption: 'HQ Mentorship' },
+          { src: '/workspace-1.jpg', caption: 'Co Learning Camp' }
+        ],
+        bullets: [
+          'Managed community and ecosystem',
+          'Organised the Co Learning Camp',
+          'Handled event and operations management'
+        ]
+      },
+      {
         id: 'ecosystem-mgr-devlearn',
         slug: 'ecosystem-manager',
         role: 'Ecosystem Manager',
         company: 'DevLearn',
-        website: 'https://devlearn.in',
+        website: 'https://devlearnevent.vercel.app/',
         date: 'MAY 2024 - FEB 2025',
         images: [
           { src: '/Devlearn Founding Member.jpg', caption: 'Founding Member' },
@@ -162,7 +180,7 @@ export const timelineData = [
         slug: 'graphics-head',
         role: 'Graphics Head',
         company: 'DevLearn',
-        website: 'https://devlearn.in',
+        website: 'https://devlearnevent.vercel.app/',
         date: 'FEB 2024 - MAY 2024',
         images: [
           { src: '/Devlearn Founding Member.jpg', caption: 'Leading Design' },
@@ -200,7 +218,7 @@ export const timelineData = [
         slug: 'graphics-exec-devlearn',
         role: 'Graphics Exec.',
         company: 'DevLearn',
-        website: 'https://devlearn.in',
+        website: 'https://devlearnevent.vercel.app/',
         date: 'NOV 2023 - FEB 2024',
         images: [
           { src: '/Devlearn Founding Member.jpg', caption: 'Community Design' },

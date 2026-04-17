@@ -4,12 +4,7 @@ import { Link } from 'react-router-dom'
 function Specs() {
   return (
     <div className="min-h-screen bg-black text-white font-mono">
-      <div className="max-w-6xl mx-auto px-6 py-12 md:py-20">
-        
-        {/* Back to Home */}
-        <Link to="/" className="text-gray-500 hover:text-white transition-colors mb-12 inline-block">
-          ← back to home
-        </Link>
+      <div className="max-w-6xl mx-auto px-6 pt-4 md:pt-0 pb-12 md:pb-20">
 
         {/* My Profile Photos */}
         <section className="mb-16">

@@ -200,20 +200,7 @@ function Insights() {
 
   return (
     <div className="min-h-screen bg-black text-white font-mono">
-      {/* Header */}
-      <header className="w-full relative z-50">
-        <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-          <Link
-            to="/"
-            className="text-gray-500 hover:text-white transition-colors flex items-center gap-2 w-fit group"
-          >
-            <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
-            <span>back to home</span>
-          </Link>
-        </div>
-      </header>
-
-      <div className="max-w-2xl mx-auto px-6 pb-24">
+      <div className="max-w-2xl mx-auto px-6 pt-4 md:pt-0 pb-24">
         {/* Title */}
         <div className="mb-10">
           <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">insights</h1>

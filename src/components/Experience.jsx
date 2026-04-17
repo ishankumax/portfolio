@@ -134,23 +134,9 @@ function Experience() {
 
   return (
     <div className="min-h-screen bg-black text-white font-mono">
-      {/* Top Navigation */}
-      <header className="w-full h-24 flex items-center">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full">
-          <Link 
-            to="/" 
-            className="text-gray-500 hover:text-white transition-all flex items-center gap-2 w-fit group text-sm font-light tracking-widest"
-          >
-            <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
-            <span className="uppercase">[ back to home.... ]</span>
-          </Link>
-        </div>
-      </header>
-
-      {/* Page Title */}
       {/* Page Title & Intro — Centered for better balance */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mt-12 mb-32 text-center">
-        <h1 className="text-5xl md:text-7xl font-bold mb-8 tracking-tighter text-white uppercase">experience</h1>
+      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-32 text-center">
+        <h1 className="text-5xl md:text-7xl font-bold mb-8 tracking-tighter text-white lowercase">experience</h1>
         <div className="w-20 h-px bg-white/20 mx-auto mb-10" />
         <p className="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed font-light brightness-110">
           a detailed look at every role, team, and community i've been part of — 

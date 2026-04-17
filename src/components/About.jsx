@@ -4,12 +4,7 @@ import { Link } from 'react-router-dom'
 function About() {
   return (
     <div className="min-h-screen bg-black text-white font-mono">
-      <div className="max-w-5xl mx-auto px-6 py-12 md:py-20">
-        
-        {/* Back to Home */}
-        <Link to="/" className="text-gray-500 hover:text-white transition-colors mb-12 inline-block">
-          ← back to home
-        </Link>
+      <div className="max-w-5xl mx-auto px-6 pt-4 md:pt-0 pb-12 md:pb-20">
 
         {/* The Founder's Note */}
         <article className="border-2 border-gray-700 rounded-lg p-8 md:p-12 bg-black">

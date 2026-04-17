@@ -8,33 +8,61 @@ function Navbar({ onOpenTerminal }) {
   const isActive = (path) => location.pathname === path
 
   const linkClass = (path) =>
-    `hover:text-white transition-colors whitespace-nowrap ${isActive(path) ? 'text-white decoration-[#818cf8] underline underline-offset-4 decoration-2' : ''}`
+    `hover:text-[#818cf8] transition-colors whitespace-nowrap ${isActive(path) ? 'text-[#818cf8] font-bold' : 'text-gray-500'}`
 
   return (
-    <nav className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-4 items-center mb-16 text-sm md:text-base text-gray-500 w-full px-2">
-      
-      <Link to="/insights" className={linkClass('/insights')}>[i] insights</Link>
-      <Link to="/specs" className={linkClass('/specs')}>[s] specs</Link>
-      <Link to="/#highlights" className="hover:text-white transition-colors whitespace-nowrap">[h] highlights</Link>
-      <Link to="/about" className={linkClass('/about')}>[a] about me</Link>
-      <a href="mailto:ishankumax@gmail.com" className="hover:text-white transition-colors whitespace-nowrap">[n] network</a>
-      <Link to="/experience" className={linkClass('/experience')}>[x] experience</Link>
-
-      {/* Terminal trigger — only shown on Home */}
-      {onOpenTerminal && (
-        <button
-          onClick={onOpenTerminal}
-          className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer whitespace-nowrap group"
-          aria-label="Open Terminal"
-          title="Press ` or Ctrl+K"
+    <header className="fixed top-0 left-0 right-0 z-[100] bg-black/80 backdrop-blur-xl border-b border-white/5">
+      <nav className="w-full px-6 md:px-12 h-16 md:h-20 flex items-center justify-between font-mono text-sm md:text-base">
+        
+        {/* Left: Brand / Back to Home (Left-most corner) */}
+        <Link 
+          to="/" 
+          className="group flex flex-col justify-center shrink-0"
         >
-          <span className="text-gray-700 group-hover:text-gray-400 transition-colors">[</span>
-          <span className="font-mono">{'>'}_</span>
-          <span className="text-gray-700 group-hover:text-gray-400 transition-colors">]</span>
-          <span className="text-[10px] text-gray-700 group-hover:text-gray-500 transition-colors hidden md:inline ml-0.5">terminal</span>
-        </button>
-      )}
-    </nav>
+          <span className="text-white group-hover:text-[#818cf8] transition-colors font-bold tracking-tighter text-lg md:text-xl uppercase leading-none">
+            ishan kumar
+          </span>
+          <span className="text-[9px] md:text-[10px] text-gray-500 font-mono tracking-widest mt-1 opacity-60 group-hover:opacity-100 group-hover:text-[#818cf8]/80 transition-all">
+            @ishankumax
+          </span>
+        </Link>
+        
+        {/* Center/Main Links — Desktop */}
+        <div className="hidden md:flex items-center gap-6 lg:gap-8 text-gray-500">
+          <Link to="/insights" className={linkClass('/insights')}>[i] insights</Link>
+          <Link to="/specs" className={linkClass('/specs')}>[s] specs</Link>
+          <Link to="/#highlights" className="hover:text-[#818cf8] transition-colors whitespace-nowrap">[h] highlights</Link>
+          <Link to="/about" className={linkClass('/about')}>[a] about me</Link>
+          <Link to="/network" className={linkClass('/network')}>[n] network</Link>
+          <Link to="/experience" className={linkClass('/experience')}>[x] experience</Link>
+        </div>
+
+        {/* Right: Actions (Right-most corner) */}
+        <div className="flex items-center gap-6">
+          {/* Terminal trigger */}
+          <button
+            onClick={onOpenTerminal}
+            className="flex items-center gap-1.5 text-gray-500 hover:text-[#818cf8] transition-colors cursor-pointer whitespace-nowrap group"
+            aria-label="Open Terminal"
+            title="Press ` or Ctrl+K"
+          >
+            <span className="group-hover:text-[#818cf8] transition-colors">[</span>
+            <span className="font-mono group-hover:text-[#818cf8] transition-colors">{'>'}_</span>
+            <span className="group-hover:text-[#818cf8] transition-colors">]</span>
+            <span className="transition-colors hidden sm:inline ml-0.5">terminal</span>
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Links Row — expanded for better touch targets and scrolling */}
+      <div className="md:hidden flex overflow-x-auto no-scrollbar gap-8 px-6 pb-4 text-gray-500 text-[10px] uppercase tracking-[0.2em] border-t border-white/5 pt-4 bg-black/40">
+        <Link to="/insights" className={linkClass('/insights')}>insights</Link>
+        <Link to="/specs" className={linkClass('/specs')}>specs</Link>
+        <Link to="/about" className={linkClass('/about')}>about</Link>
+        <Link to="/network" className={linkClass('/network')}>network</Link>
+        <Link to="/experience" className={linkClass('/experience')}>experience</Link>
+      </div>
+    </header>
   )
 }
 

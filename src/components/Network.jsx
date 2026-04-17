@@ -83,37 +83,24 @@ function ContactCard({ item }) {
   )
 }
 
-function Contact() {
+function Network() {
   return (
     <div className="min-h-screen bg-black text-white font-mono">
-      {/* Header */}
-      <header className="w-full relative z-50">
-        <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
-          <Link
-            to="/"
-            className="text-gray-500 hover:text-white transition-colors flex items-center gap-2 w-fit group"
-          >
-            <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span>
-            <span>back to home</span>
-          </Link>
-        </div>
-      </header>
-
       {/* Page Content */}
-      <div className="max-w-2xl mx-auto px-6 pb-24">
+      <div className="max-w-2xl mx-auto px-6 pt-4 md:pt-0 pb-24">
         {/* Title */}
         <div className="mb-14">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">let's talk</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">network</h1>
           <p className="text-gray-500 text-sm leading-relaxed max-w-md">
-            open to collaborations, opportunities, startup chats, and everything in between.
-            pick the channel that works best for you.
+            building bridges across tech, design, and startups. 
+            reach out for collaborations, coffee chats, or just to say hi.
           </p>
         </div>
 
         {/* Status indicator */}
         <div className="flex items-center gap-2 mb-10 p-3 border border-gray-800/60 rounded-lg w-fit">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-xs text-gray-400 font-mono">available for opportunities</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#818cf8] animate-pulse" />
+          <span className="text-xs text-gray-400 font-mono">open for networking</span>
         </div>
 
         {/* Contact links */}
@@ -125,11 +112,11 @@ function Contact() {
 
         {/* Footer note */}
         <p className="mt-12 text-xs text-gray-700 text-center">
-          i usually reply within 24 hours — i don't ghost.
+          i'm most active on twitter and linkedin — let's connect.
         </p>
       </div>
     </div>
   )
 }
 
-export default Contact
+export default Network
