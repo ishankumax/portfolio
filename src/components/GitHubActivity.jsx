@@ -119,21 +119,20 @@ export default function GitHubActivity() {
   }
 
   return (
-    <section className="mt-20 mb-16 pt-16 border-t border-[#818cf8]/10 max-w-4xl mx-auto px-1">
-
+    <section className="mt-20 mb-16 pt-16 border-t border-[#818cf8]/10 max-w-4xl mx-auto px-4 md:px-6 w-full overflow-hidden">
       {/* ── Header Row ── */}
-      <div className="flex items-center justify-between mb-7 pl-1">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-3 group cursor-default">
           <FaGithub
-            size={19}
+            size={18}
             className="text-gray-500 group-hover:text-[#818cf8] transition-colors duration-300"
           />
-          <h2 className="text-sm font-mono uppercase tracking-[0.2em] text-gray-400 group-hover:text-white transition-colors duration-300">
+          <h2 className="text-xs md:text-sm font-mono uppercase tracking-[0.2em] text-gray-400 group-hover:text-white transition-colors duration-300">
             Commit Activity
           </h2>
           {!loading && !error && (
             <span className="text-[10px] font-mono text-[#818cf8]/70 bg-[#818cf8]/10 border border-[#818cf8]/20 px-2 py-0.5 rounded-full">
-              {total} contributions
+              {total}
             </span>
           )}
         </div>
@@ -144,10 +143,10 @@ export default function GitHubActivity() {
             <button
               key={yr}
               onClick={() => setSelectedYear(yr)}
-              className={`px-3 py-1 text-[11px] font-mono rounded-lg transition-all duration-200 ${
+              className={`px-3 py-1 text-[10px] md:text-[11px] font-mono rounded-lg transition-all duration-200 ${
                 selectedYear === yr
-                  ? 'bg-[#818cf8] text-black font-bold shadow-[0_0_12px_rgba(129,140,248,0.4)]'
-                  : 'text-gray-500 hover:text-[#818cf8] hover:bg-[#818cf8]/10'
+                  ? 'bg-[#818cf8] text-black font-bold'
+                  : 'text-gray-500 hover:text-[#818cf8]'
               }`}
             >
               {yr}
@@ -159,51 +158,27 @@ export default function GitHubActivity() {
       {/* ── Main Card ── */}
       <div
         ref={containerRef}
-        className="relative bg-[#09090e] border border-gray-900 rounded-2xl p-5 md:p-8 overflow-hidden transition-all duration-500 hover:border-[#818cf8]/25 hover:shadow-[0_0_40px_rgba(129,140,248,0.07)] group"
+        className="relative bg-[#09090e] border border-gray-900 rounded-2xl p-4 md:p-8 overflow-hidden transition-all duration-500 group"
       >
         {/* Ambient glow */}
         <div className="absolute -top-16 -right-16 w-60 h-60 bg-[#818cf8]/[0.04] blur-[80px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-        {/* ── Loading skeleton ── */}
-        {loading && (
-          <div className="animate-pulse">
-            <div className="h-4 w-32 bg-gray-800/60 rounded mb-6" />
-            <div className="flex gap-[3px]">
-              {Array.from({ length: 53 }).map((_, wi) => (
-                <div key={wi} className="flex flex-col gap-[3px]">
-                  {Array.from({ length: 7 }).map((_, di) => (
-                    <div
-                      key={di}
-                      className="rounded-[2px] bg-gray-800/40"
-                      style={{ width: CELL_SIZE, height: CELL_SIZE }}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
+        {/* ── Loading/Error/Graph ── */}
+        {loading ? (
+          <div className="flex items-center justify-center py-10">
+            <div className="w-5 h-5 border-2 border-[#818cf8]/30 border-t-[#818cf8] rounded-full animate-spin" />
           </div>
-        )}
-
-        {/* ── Error ── */}
-        {error && !loading && (
-          <div className="flex flex-col items-center justify-center py-14 gap-4">
-            <p className="text-gray-600 text-[11px] font-mono italic">Failed to fetch contribution data.</p>
-            <button
-              onClick={() => fetchData(selectedYear)}
-              className="text-[10px] font-mono border border-[#818cf8]/30 text-[#818cf8]/70 hover:text-[#818cf8] hover:border-[#818cf8] hover:bg-[#818cf8]/10 px-5 py-1.5 rounded-full transition-all"
-            >
-              retry →
-            </button>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-10 gap-3">
+            <p className="text-gray-600 text-[11px] font-mono">failed to fetch activity.</p>
+            <button onClick={() => fetchData(selectedYear)} className="text-[10px] text-[#818cf8] hover:underline">retry</button>
           </div>
-        )}
-
-        {/* ── Graph ── */}
-        {!loading && !error && weeks.length > 0 && (
-          <div className="overflow-x-auto no-scrollbar">
-            <div style={{ minWidth: gridW + 40 }}>
-
-              {/* Month Labels */}
-              <div className="relative mb-2" style={{ marginLeft: 32, height: 16 }}>
+        ) : (
+          <div className="overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing">
+            <div className="inline-block min-w-full pb-2">
+              <div style={{ width: gridW + 40, position: 'relative' }}>
+                {/* Month Labels */}
+                <div className="relative mb-3" style={{ marginLeft: 32, height: 16 }}>
                 {monthLabels.map(({ label, weekIndex }) => (
                   <span
                     key={label + weekIndex}
@@ -254,10 +229,10 @@ export default function GitHubActivity() {
                   ))}
                 </div>
               </div>
-
             </div>
           </div>
-        )}
+        </div>
+      )}
 
         {/* ── Tooltip ── */}
         {tooltip && (

@@ -17,7 +17,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="min-h-screen bg-black text-white font-mono selection:bg-white selection:text-black scroll-smooth">
+      <div className="min-h-screen bg-black text-white font-mono selection:bg-white selection:text-black scroll-smooth overflow-x-hidden">
         
         {/* Global Navigation */}
         <Navbar onOpenTerminal={() => setTerminalOpen(true)} />
