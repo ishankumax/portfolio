@@ -5,7 +5,10 @@ function Navbar({ onOpenTerminal }) {
   const location = useLocation()
 
   // Helper to detect an active route
-  const isActive = (path) => location.pathname === path
+  const isActive = (path) => {
+    if (path === '/network' && location.pathname === '/contact') return true
+    return location.pathname === path
+  }
 
   const linkClass = (path) =>
     `hover:text-[#818cf8] transition-colors whitespace-nowrap ${isActive(path) ? 'text-[#818cf8] font-bold' : 'text-gray-500'}`

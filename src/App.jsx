@@ -34,6 +34,7 @@ function App() {
             <Route path="/insights" element={<Insights />} />
             <Route path="/experience" element={<Experience />} />
             <Route path="/network" element={<Network />} />
+            <Route path="/contact" element={<Network />} />
           </Routes>
         </div>
 
