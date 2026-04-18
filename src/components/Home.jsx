@@ -22,12 +22,14 @@ function Home() {
   }, [location])
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-6 pb-24 md:pb-20 relative z-10 flex flex-col gap-24 md:gap-0">
+    <div className="w-full max-w-4xl mx-auto px-6 pb-12 md:pb-20 relative z-10">
       <Hero />
-      <FounderOf />
-      <TechStack />
-      <GitHubActivity />
-      <WritingMyStory />
+      <div className="space-y-32 md:space-y-40">
+        <FounderOf />
+        <TechStack />
+        <GitHubActivity />
+        <WritingMyStory />
+      </div>
       <Footer />
     </div>
   )
