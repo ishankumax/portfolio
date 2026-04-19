@@ -16,23 +16,23 @@ function Hero() {
       {/* Profile Content */}
       <div className="flex-1 text-center md:text-left min-w-0">
         <h1 className="text-4xl md:text-6xl font-bold mb-2 tracking-tighter">ishan kumar</h1>
-        <p className="text-[#818cf8] font-mono text-sm mb-6 uppercase tracking-[0.3em] opacity-90">@ishankumax</p>
+        <p className="text-[#818cf8] font-mono text-sm mb-6 lowercase tracking-wider opacity-90">@ishankumax</p>
         
         <div className="flex items-center justify-center md:justify-start gap-4 mb-8">
           <a href="https://github.com/ishankumax" target="_blank" rel="noopener noreferrer"
-            className="p-3 border border-white/5 rounded-xl hover:bg-white hover:text-black transition-all duration-300 text-gray-500">
+            className="p-3 border border-white/5 rounded-xl hover:bg-[#818cf8] hover:text-black transition-all duration-300 text-gray-500">
             <FaGithub size={20} />
           </a>
           <a href="https://www.linkedin.com/in/ishankumax/" target="_blank" rel="noopener noreferrer"
-            className="p-3 border border-white/5 rounded-xl hover:bg-white hover:text-black transition-all duration-300 text-gray-500">
+            className="p-3 border border-white/5 rounded-xl hover:bg-[#818cf8] hover:text-black transition-all duration-300 text-gray-500">
             <FaLinkedin size={20} />
           </a>
           <a href="https://x.com/ishankumax" target="_blank" rel="noopener noreferrer"
-            className="p-3 border border-white/5 rounded-xl hover:bg-white hover:text-black transition-all duration-300 text-gray-500">
+            className="p-3 border border-white/5 rounded-xl hover:bg-[#818cf8] hover:text-black transition-all duration-300 text-gray-500">
             <FaXTwitter size={20} />
           </a>
           <a href="https://www.instagram.com/ishankumax/" target="_blank" rel="noopener noreferrer"
-            className="p-3 border border-white/5 rounded-xl hover:bg-white hover:text-black transition-all duration-300 text-gray-500">
+            className="p-3 border border-white/5 rounded-xl hover:bg-[#818cf8] hover:text-black transition-all duration-300 text-gray-500">
             <FaInstagram size={20} />
           </a>
         </div>

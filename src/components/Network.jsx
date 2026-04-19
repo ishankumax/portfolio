@@ -85,7 +85,7 @@ function ContactCard({ item }) {
 
 function Network() {
   return (
-    <div className="min-h-screen bg-black text-white font-mono">
+    <div className="min-h-screen text-white font-mono">
       {/* Page Content */}
       <div className="max-w-2xl mx-auto px-6 pt-4 md:pt-0 pb-24">
         {/* Title */}

@@ -133,7 +133,7 @@ function Experience() {
   }, [location])
 
   return (
-    <div className="min-h-screen bg-black text-white font-mono">
+    <div className="min-h-screen text-white font-mono">
       {/* Page Title & Intro — Centered for better balance */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 mb-32 text-center">
         <h1 className="text-5xl md:text-7xl font-bold mb-8 tracking-tighter text-white lowercase">experience</h1>
@@ -172,7 +172,7 @@ function Experience() {
                     key={item.id}
                     id={item.slug}
                     ref={el => sectionRefs.current[item.slug] = el}
-                    className="group relative bg-black border border-white/5 rounded-2xl p-10 md:p-14 transition-all duration-700 hover:border-white/10 hover:bg-white/[0.01] overflow-hidden"
+                    className="group relative border border-white/5 rounded-2xl p-10 md:p-14 transition-all duration-700 hover:border-white/10 hover:bg-white/[0.01] overflow-hidden"
                   >
                     {/* Subtle ambient glow on hover */}
                     <div className="absolute top-0 right-0 w-40 h-40 bg-white/[0.03] blur-[60px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />

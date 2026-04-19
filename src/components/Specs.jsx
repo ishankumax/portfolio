@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom'
 
 function Specs() {
   return (
-    <div className="min-h-screen bg-black text-white font-mono">
+    <div className="min-h-screen text-white font-mono">
       <div className="max-w-6xl mx-auto px-6 pt-4 md:pt-0 pb-12 md:pb-20">
 
         {/* My Profile Photos */}
         <section className="mb-16">
-          <h2 className="text-xl md:text-2xl font-bold mb-6 text-gray-400 italic">my profile photoes</h2>
+          <h2 className="text-xl md:text-2xl font-bold mb-6 text-gray-400 italic">my profile photos</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="aspect-square border-2 border-white rounded-lg overflow-hidden">
               <img src="/pfp.jpg" alt="Profile Photo 1" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />

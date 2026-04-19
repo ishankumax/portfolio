@@ -27,19 +27,19 @@ function Footer() {
           {/* Right: Social icons */}
           <div className="flex items-center gap-3">
             <a href="https://github.com/ishankumax" target="_blank" rel="noopener noreferrer"
-              className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
+              className="p-2 border border-gray-800 rounded hover:bg-[#818cf8] hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
               <FaGithub size={16} />
             </a>
             <a href="https://www.linkedin.com/in/ishankumax/" target="_blank" rel="noopener noreferrer"
-              className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
+              className="p-2 border border-gray-800 rounded hover:bg-[#818cf8] hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
               <FaLinkedin size={16} />
             </a>
             <a href="https://x.com/ishankumax" target="_blank" rel="noopener noreferrer"
-              className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
+              className="p-2 border border-gray-800 rounded hover:bg-[#818cf8] hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
               <FaXTwitter size={16} />
             </a>
             <a href="https://www.instagram.com/ishankumax/" target="_blank" rel="noopener noreferrer"
-              className="p-2 border border-gray-800 rounded hover:bg-white hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
+              className="p-2 border border-gray-800 rounded hover:bg-[#818cf8] hover:text-black transition-all duration-200 text-gray-400 hover:text-black">
               <FaInstagram size={16} />
             </a>
           </div>

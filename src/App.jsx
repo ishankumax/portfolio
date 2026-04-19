@@ -11,13 +11,15 @@ import Navbar from './components/Navbar'
 import Terminal, { useTerminal } from './components/Terminal'
 import ScrollToTop from './components/ScrollToTop'
 
+
 function App() {
   const { open: terminalOpen, setOpen: setTerminalOpen } = useTerminal()
 
   return (
     <Router>
       <ScrollToTop />
-      <div className="min-h-screen bg-black text-white font-mono selection:bg-white selection:text-black scroll-smooth overflow-x-hidden">
+
+      <div className="min-h-screen text-white font-mono selection:bg-white selection:text-black scroll-smooth overflow-x-hidden">
         
         {/* Global Navigation */}
         <Navbar onOpenTerminal={() => setTerminalOpen(true)} />
