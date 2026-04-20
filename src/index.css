@@ -6,32 +6,91 @@
    Dim:     #4f46e5 (Indigo-600)
    Glow:    rgba(129, 140, 248, 0.25)
    ============================================================================ */
-:root {
-  --accent-purple:       #818cf8;
-  --accent-purple-dim:   #4f46e5;
-  --accent-purple-faint: rgba(129, 140, 248, 0.08);
-  --accent-purple-glow:  rgba(129, 140, 248, 0.28);
+
+/* ── Dark mode (default) ─────────────────────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  --accent-purple:        #818cf8;
+  --accent-purple-dim:    #4f46e5;
+  --accent-purple-faint:  rgba(129, 140, 248, 0.08);
+  --accent-purple-glow:   rgba(129, 140, 248, 0.28);
   --accent-purple-border: rgba(129, 140, 248, 0.22);
+
+  --bg-base:      #000000;
+  --bg-surface:   #0a0a0a;
+  --bg-elevated:  #111111;
+  --bg-navbar:    rgba(0, 0, 0, 0.80);
+  --bg-card:      rgba(255, 255, 255, 0.03);
+
+  --text-primary:   #ffffff;
+  --text-secondary: #9ca3af;   /* gray-400 */
+  --text-muted:     #4b5563;   /* gray-600 */
+
+  --border-subtle:  rgba(255, 255, 255, 0.05);
+  --border-card:    rgba(75, 85, 99, 0.4);
+
+  --selection-bg:   rgba(129, 140, 248, 0.35);
+  --selection-text: #ffffff;
+
+  --scrollbar-thumb: rgba(129, 140, 248, 0.25);
+  --scrollbar-hover: rgba(129, 140, 248, 0.50);
+}
+
+/* ── Light mode ──────────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --accent-purple:        #6d5ce7;
+  --accent-purple-dim:    #4f46e5;
+  --accent-purple-faint:  rgba(109, 92, 231, 0.08);
+  --accent-purple-glow:   rgba(109, 92, 231, 0.20);
+  --accent-purple-border: rgba(109, 92, 231, 0.25);
+
+  --bg-base:      #f5f4f7;
+  --bg-surface:   #f0eef5;
+  --bg-elevated:  #ffffff;
+  --bg-navbar:    rgba(245, 244, 247, 0.85);
+  --bg-card:      rgba(109, 92, 231, 0.04);
+
+  --text-primary:   #0f0e17;
+  --text-secondary: #171717;
+  --text-muted:     #2d2d2d;
+
+  --border-subtle:  rgba(0, 0, 0, 0.06);
+  --border-card:    rgba(109, 92, 231, 0.18);
+
+  --selection-bg:   rgba(109, 92, 231, 0.25);
+  --selection-text: #0f0e17;
+
+  --scrollbar-thumb: rgba(109, 92, 231, 0.25);
+  --scrollbar-hover: rgba(109, 92, 231, 0.50);
+}
+
+/* ── Theme transition — smooth on toggle ─────────────────────────────────── */
+*, *::before, *::after {
+  transition:
+    background-color 0.3s ease,
+    border-color     0.3s ease,
+    color            0.25s ease,
+    box-shadow       0.3s ease;
 }
 
 body {
   font-family: 'JetBrains Mono', monospace;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
   margin: 0;
 }
 
 /* ── Text selection — purple highlight ─────────────────────────────────── */
 ::selection {
-  background: rgba(129, 140, 248, 0.35);
-  color: #fff;
+  background: var(--selection-bg);
+  color: var(--selection-text);
 }
 
 /* ── Scrollbar — minimal purple thumb ──────────────────────────────────── */
 ::-webkit-scrollbar        { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track  { background: transparent; }
-::-webkit-scrollbar-thumb  { background: rgba(129, 140, 248, 0.25); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(129, 140, 248, 0.5); }
+::-webkit-scrollbar-thumb  { background: var(--scrollbar-thumb); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
 
 /* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -153,3 +212,41 @@ body {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* ============================================================================
+   LIGHT MODE — text-white overrides
+   Tailwind's `text-white` is hardcoded to #fff in many components.
+   In light mode we remap every white-text utility to use --text-primary
+   so text is always readable without touching each component.
+   ============================================================================ */
+[data-theme="light"] .text-white {
+  color: var(--text-primary) !important;
+}
+
+/* Strong emphasis tags also use text-white in several components */
+[data-theme="light"] strong.text-white,
+[data-theme="light"] span.text-white {
+  color: var(--text-primary) !important;
+}
+
+/* Opacity variants like text-white/60, text-white/20 */
+[data-theme="light"] [class*="text-white\/"] {
+  color: color-mix(in srgb, var(--text-primary), transparent) !important;
+}
+
+/* hover:text-white — prevent hover from turning text white in light mode */
+[data-theme="light"] *:hover.hover\:text-white,
+[data-theme="light"] .group:hover .group-hover\:text-white {
+  color: var(--text-primary) !important;
+}
+
+/* min-h-screen containers that set text-white as base */
+[data-theme="light"] .min-h-screen.text-white {
+  color: var(--text-primary) !important;
+}
+
+/* Navbar brand name */
+[data-theme="light"] .text-white.font-bold {
+  color: var(--text-primary) !important;
+}
+

@@ -10,16 +10,17 @@ import Network from './components/Network'
 import Navbar from './components/Navbar'
 import Terminal, { useTerminal } from './components/Terminal'
 import ScrollToTop from './components/ScrollToTop'
+import { ThemeProvider } from './ThemeContext'
 
 
-function App() {
+function AppInner() {
   const { open: terminalOpen, setOpen: setTerminalOpen } = useTerminal()
 
   return (
     <Router>
       <ScrollToTop />
 
-      <div className="min-h-screen text-white font-mono selection:bg-white selection:text-black scroll-smooth overflow-x-hidden">
+      <div className="min-h-screen font-mono scroll-smooth overflow-x-hidden" id="app-root">
         
         {/* Global Navigation */}
         <Navbar onOpenTerminal={() => setTerminalOpen(true)} />
@@ -42,6 +43,14 @@ function App() {
 
       </div>
     </Router>
+  )
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppInner />
+    </ThemeProvider>
   )
 }
 
