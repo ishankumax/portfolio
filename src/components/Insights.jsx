@@ -217,7 +217,7 @@ function Insights() {
             className={`px-5 py-2 rounded-lg text-xs font-mono transition-all duration-250 ${
               activeTab === 'takes'
                 ? 'bg-white text-black font-bold'
-                : 'text-gray-500 hover:text-white'
+                : 'text-black-500 hover:text-white'
             }`}
           >
             short takes
