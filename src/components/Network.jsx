@@ -90,11 +90,12 @@ function Network() {
     <div className="min-h-screen text-white font-mono">
       {/* Page Content */}
       <div className="max-w-2xl mx-auto px-6 pt-4 md:pt-0 pb-24">
-        {/* Title */}
-        <div className="mb-14">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">network</h1>
-          <p className="text-sm leading-relaxed max-w-md" style={{ color: 'var(--text-secondary)' }}>
-            building bridges across tech, design, and startups. 
+        {/* Header */}
+        <div className="success-header">
+          <p className="success-header__eyebrow">portfolio / network</p>
+          <h1 className="success-header__title">let's connect<span className="success-header__cursor">_</span></h1>
+          <p className="success-header__sub">
+            building bridges across tech, design, and startups.
             reach out for collaborations, coffee chats, or just to say hi.
           </p>
         </div>

@@ -47,8 +47,8 @@ function WritingMyStory() {
 
   return (
     <section id="highlights" className="mb-20">
-      <h2 className="text-xl md:text-2xl font-bold mb-8 flex items-center gap-2">
-        <span style={{ color: 'var(--text-muted)' }}>#</span> writing my story
+      <h2 className="text-xl md:text-2xl mb-8 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+        <span className="text-xs font-mono not-italic" style={{ color: 'var(--accent-purple)' }}>#</span> writing my story
       </h2>
       
       {/* Horizontal Scrollable Cards with Navigation */}

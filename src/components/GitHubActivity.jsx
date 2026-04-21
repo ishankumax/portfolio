@@ -141,7 +141,7 @@ export default function GitHubActivity() {
             style={{ color: 'var(--text-muted)' }}
           />
           <h2 className="text-xs md:text-sm font-mono uppercase tracking-[0.2em] group-hover:text-[color:var(--text-primary)] transition-colors duration-300" style={{ color: 'var(--text-muted)' }}>
-            Commit Activity
+            <span className="not-italic" style={{ color: 'var(--accent-purple)' }}>#</span> Commit Activity
           </h2>
           {!loading && !error && (
             <span className="text-[10px] font-mono text-[#818cf8]/70 bg-[#818cf8]/10 border border-[#818cf8]/20 px-2 py-0.5 rounded-full">

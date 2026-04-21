@@ -6,12 +6,15 @@ function About() {
     <div className="min-h-screen text-white font-mono">
       <div className="max-w-5xl mx-auto px-6 pt-4 md:pt-0 pb-12 md:pb-20">
 
+        {/* Header */}
+        <div className="success-header">
+          <p className="success-header__eyebrow">portfolio / about</p>
+          <h1 className="success-header__title">the founder's note<span className="success-header__cursor">_</span></h1>
+          <p className="success-header__sub">who i am, why i build, and what drives me forward.</p>
+        </div>
+
         {/* The Founder's Note */}
         <article className="border-2 rounded-lg p-8 md:p-12 transition-all duration-300" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
-          
-          <h1 className="text-3xl md:text-4xl font-bold text-center mb-12 tracking-wide">
-            the founder's note
-          </h1>
 
           <div className="space-y-6 leading-relaxed text-sm md:text-base" style={{ color: 'var(--text-secondary)' }}>
             

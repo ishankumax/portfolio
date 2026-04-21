@@ -134,14 +134,16 @@ function Experience() {
 
   return (
     <div className="min-h-screen text-white font-mono">
-      {/* Page Title & Intro — Centered for better balance */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-32 text-center">
-        <h1 className="text-5xl md:text-7xl font-bold mb-8 tracking-tighter text-white lowercase">experience</h1>
-        <div className="w-20 h-px mx-auto mb-10" style={{ backgroundColor: 'var(--border-subtle)' }} />
-        <p className="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed font-light" style={{ color: 'var(--text-secondary)' }}>
-          a detailed look at every role, team, and community i've been part of — 
-          from founding startups to leading campus chapters.
-        </p>
+      {/* Page Header */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="success-header">
+          <p className="success-header__eyebrow">portfolio / experience</p>
+          <h1 className="success-header__title">every chapter<span className="success-header__cursor">_</span></h1>
+          <p className="success-header__sub">
+            a detailed look at every role, team, and community i've been part of —
+            from founding startups to leading campus chapters.
+          </p>
+        </div>
       </div>
 
       {/* Two Column Layout — Detailed cards on left, Timeline on right */}

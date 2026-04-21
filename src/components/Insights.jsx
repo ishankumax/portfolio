@@ -203,12 +203,12 @@ function Insights() {
   return (
     <div className="min-h-screen text-white font-mono">
       <div className="max-w-2xl mx-auto px-6 pt-4 md:pt-0 pb-24">
-        {/* Title */}
-        <div className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">insights</h1>
-          <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-            things i've noticed, learned, or thought too hard about — from building a startup 
-            to running communities to writing code at 2am.
+        {/* Header */}
+        <div className="success-header">
+          <p className="success-header__eyebrow">portfolio / insights</p>
+          <h1 className="success-header__title">what i'm thinking<span className="success-header__cursor">_</span></h1>
+          <p className="success-header__sub">
+            things i've noticed, learned, or thought too hard about — from building a startup to running communities to writing code at 2am.
           </p>
         </div>
 

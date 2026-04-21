@@ -53,8 +53,8 @@ function SkillBar({ name, level }) {
 function TechStack() {
   return (
     <section className="mb-20">
-      <h2 className="text-xl md:text-2xl font-bold mb-8 flex items-center gap-2">
-        <span style={{ color: 'var(--text-muted)' }}>#</span> tech stack
+      <h2 className="text-xl md:text-2xl mb-8 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+        <span className="text-xs font-mono not-italic" style={{ color: 'var(--accent-purple)' }}>#</span> tech stack
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
