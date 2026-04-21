@@ -11,19 +11,19 @@ const MONTHS      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct'
 
 // Purple gradient: 0 = empty, 1 = low, 2 = medium, 3 = high, 4 = max
 const LEVEL_COLORS_DARK = [
-  '#0f0f14',      // 0: near-black (empty)
-  '#2a1040',      // 1: deep violet
-  '#4c1d95',      // 2: mid-purple
-  '#818cf8',      // 3: indigo-400 (brand)
-  '#c4b5fd',      // 4: lavender bright
+  '#0a0f0a',      // 0: near-black (empty)
+  '#0d2e12',      // 1: deep forest green
+  '#166534',      // 2: mid green
+  '#39ff14',      // 3: neon green (brand)
+  '#a3f97d',      // 4: bright lime
 ]
 
 const LEVEL_COLORS_LIGHT = [
   '#e2e8f0',      // 0: slate-200 (empty)
-  '#d8b4fe',      // 1: light purple
-  '#a855f7',      // 2: medium purple
-  '#818cf8',      // 3: indigo-400 (brand)
-  '#4c1d95',      // 4: deep purple
+  '#bbf7d0',      // 1: light green
+  '#4ade80',      // 2: medium green
+  '#16a34a',      // 3: brand green
+  '#14532d',      // 4: deep forest green
 ]
 
 const LEVEL_LABELS = ['No activity', 'Low', 'Medium', 'High', 'Peak']
@@ -131,7 +131,7 @@ export default function GitHubActivity() {
   }
 
   return (
-    <section className="mt-20 mb-16 pt-16 border-t border-[#818cf8]/10 max-w-4xl mx-auto px-4 md:px-6 w-full overflow-hidden">
+    <section className="mt-20 mb-16 pt-16 border-t border-[color:var(--accent-purple)]/10 max-w-4xl mx-auto px-4 md:px-6 w-full overflow-hidden">
       {/* ── Header Row ── */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-3 group cursor-default">
@@ -144,7 +144,7 @@ export default function GitHubActivity() {
             <span className="not-italic" style={{ color: 'var(--accent-purple)' }}>#</span> Commit Activity
           </h2>
           {!loading && !error && (
-            <span className="text-[10px] font-mono text-[#818cf8]/70 bg-[#818cf8]/10 border border-[#818cf8]/20 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full" style={{ color: 'var(--accent-purple)', backgroundColor: 'var(--accent-purple-faint)', border: '1px solid var(--accent-purple-border)' }}>
               {total}
             </span>
           )}
@@ -176,12 +176,12 @@ export default function GitHubActivity() {
         style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
       >
         {/* Ambient glow */}
-        <div className="absolute -top-16 -right-16 w-60 h-60 bg-[#818cf8]/[0.04] blur-[80px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        <div className="absolute -top-16 -right-16 w-60 h-60 blur-[80px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ backgroundColor: 'var(--accent-purple-faint)' }} />
 
         {/* ── Loading/Error/Graph ── */}
         {loading ? (
           <div className="flex items-center justify-center py-10">
-            <div className="w-5 h-5 border-2 border-[#818cf8]/30 border-t-[#818cf8] rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 rounded-full animate-spin" style={{ borderColor: 'var(--accent-purple-faint)', borderTopColor: 'var(--accent-purple)' }} />
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-10 gap-3">
@@ -237,7 +237,7 @@ export default function GitHubActivity() {
                           }}
                           onMouseEnter={e => cell && handleCellEnter(e, cell)}
                           onMouseLeave={() => setTooltip(null)}
-                          className={cell?.count > 0 ? 'hover:scale-125 hover:shadow-[0_0_6px_rgba(129,140,248,0.7)] hover:z-10 relative' : ''}
+                          className={cell?.count > 0 ? 'hover:scale-125 hover:shadow-[0_0_6px_rgba(57,255,20,0.7)] hover:z-10 relative' : ''}
                         />
                       ))}
                     </div>

@@ -36,7 +36,7 @@ function Navbar({ onOpenTerminal }) {
         <div className="hidden md:flex items-center gap-6 lg:gap-8 text-gray-500 text-sm">
           <Link to="/insights" className={linkClass('/insights')}>[i] insights</Link>
           <Link to="/success" className={linkClass('/success')}>[s] success</Link>
-          <Link to="/#highlights" className="hover:text-[#818cf8] transition-colors whitespace-nowrap">[h] highlights</Link>
+          <Link to="/#highlights" className="hover:text-[color:var(--accent-purple)] transition-colors whitespace-nowrap">[h] highlights</Link>
           <Link to="/about" className={linkClass('/about')}>[a] about me</Link>
           <Link to="/network" className={linkClass('/network')}>[n] network</Link>
           <Link to="/experience" className={linkClass('/experience')}>[x] experience</Link>

@@ -17,7 +17,7 @@ function Hero() {
       <div className="flex-1 text-center md:text-left min-w-0">
         <p className="success-header__eyebrow mb-2">portfolio / home</p>
         <h1 className="text-4xl md:text-6xl mb-2 tracking-tight">ishan kumar<span className="success-header__cursor">_</span></h1>
-        <p className="text-[#818cf8] font-mono text-sm mb-6 lowercase tracking-wider opacity-90">@ishankumax</p>
+        <p className="font-mono text-sm mb-6 lowercase tracking-wider opacity-90" style={{ color: 'var(--accent-purple)' }}>@ishankumax</p>
         
         <div className="flex items-center justify-center md:justify-start gap-4 mb-8">
           <a href="https://github.com/ishankumax" target="_blank" rel="noopener noreferrer"

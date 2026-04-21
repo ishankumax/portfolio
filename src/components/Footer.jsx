@@ -21,7 +21,7 @@ function Footer() {
             >
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
               let's talk
-              <span className="group-hover:translate-x-0.5 transition-transform duration-300">→</span>
+              <span className="group-hover:translate-x-0.5 transition-transform duration-300 font-color-black" >→</span>
             </Link>
           </div>
 
