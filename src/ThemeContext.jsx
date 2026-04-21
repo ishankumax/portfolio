@@ -4,9 +4,9 @@ const ThemeContext = createContext(null)
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
+    // Enforce dark as hard default — only respect explicitly stored user preference
     const stored = localStorage.getItem('portfolio-theme')
-    if (stored) return stored
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    return stored ?? 'dark'
   })
 
   useEffect(() => {

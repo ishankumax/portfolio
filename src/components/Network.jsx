@@ -57,27 +57,29 @@ function ContactCard({ item }) {
       href={item.href}
       target={item.href.startsWith('mailto') ? '_self' : '_blank'}
       rel="noopener noreferrer"
-      className="group flex items-center justify-between gap-4 p-5 border border-gray-800/70 rounded-xl hover:border-gray-600 hover:bg-white/[0.02] transition-all duration-300"
+      className="group flex items-center justify-between gap-4 p-5 border rounded-xl transition-all duration-300"
+      style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}
     >
       <div className="flex items-center gap-4">
-        <div className="w-9 h-9 rounded-lg border border-gray-800 flex items-center justify-center text-gray-400 group-hover:border-gray-500 group-hover:text-white transition-all duration-300 shrink-0">
+        <div className="w-9 h-9 rounded-lg border flex items-center justify-center transition-all duration-300 shrink-0" style={{ borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }}>
           {item.icon}
         </div>
         <div>
-          <p className="text-sm font-bold text-white font-mono">{item.label}</p>
-          <p className="text-xs text-gray-500 mt-0.5">{item.desc}</p>
+          <p className="text-sm font-bold font-mono" style={{ color: 'var(--text-primary)' }}>{item.label}</p>
+          <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{item.desc}</p>
         </div>
       </div>
       <div className="flex items-center gap-3 shrink-0">
-        <span className="text-xs text-gray-600 font-mono hidden sm:block">{item.value}</span>
+        <span className="text-xs font-mono hidden sm:block" style={{ color: 'var(--text-muted)' }}>{item.value}</span>
         <button
           onClick={handleCopy}
-          className="text-[10px] text-gray-600 hover:text-white border border-gray-800 hover:border-gray-600 rounded px-2 py-1 transition-all duration-200 font-mono"
+          className="text-[10px] border rounded px-2 py-1 transition-all duration-200 font-mono"
+          style={{ color: 'var(--text-muted)', borderColor: 'var(--border-subtle)' }}
           aria-label="Copy to clipboard"
         >
           {copied ? 'copied!' : 'copy'}
         </button>
-        <span className="text-gray-600 group-hover:text-white group-hover:translate-x-0.5 transition-all duration-300 text-sm">→</span>
+        <span className="group-hover:translate-x-0.5 transition-all duration-300 text-sm" style={{ color: 'var(--text-muted)' }}>→</span>
       </div>
     </a>
   )
@@ -91,16 +93,16 @@ function Network() {
         {/* Title */}
         <div className="mb-14">
           <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">network</h1>
-          <p className="text-gray-500 text-sm leading-relaxed max-w-md">
+          <p className="text-sm leading-relaxed max-w-md" style={{ color: 'var(--text-secondary)' }}>
             building bridges across tech, design, and startups. 
             reach out for collaborations, coffee chats, or just to say hi.
           </p>
         </div>
 
         {/* Status indicator */}
-        <div className="flex items-center gap-2 mb-10 p-3 border border-gray-800/60 rounded-lg w-fit">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#818cf8] animate-pulse" />
-          <span className="text-xs text-gray-400 font-mono">open for networking</span>
+        <div className="flex items-center gap-2 mb-10 p-3 border rounded-lg w-fit" style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-card)' }}>
+          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--accent-purple)' }} />
+          <span className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>open for networking</span>
         </div>
 
         {/* Contact links */}
@@ -111,7 +113,7 @@ function Network() {
         </div>
 
         {/* Footer note */}
-        <p className="mt-12 text-xs text-gray-700 text-center">
+        <p className="mt-12 text-xs text-center" style={{ color: 'var(--text-muted)' }}>
           i'm most active on twitter and linkedin — let's connect.
         </p>
       </div>

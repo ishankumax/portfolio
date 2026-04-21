@@ -27,8 +27,8 @@ function ImageMarquee({ images }) {
         onMouseLeave={() => setIsPaused(false)}
       >
         {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-12 z-10 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--bg-base), transparent)' }} />
+        <div className="absolute right-0 top-0 bottom-0 w-12 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, var(--bg-base), transparent)' }} />
 
         {/* Desktop: animated marquee track */}
         <div className="hidden md:block">
@@ -51,7 +51,7 @@ function ImageMarquee({ images }) {
                   />
                 </div>
                 {img.caption && (
-                  <p className="text-[10px] text-gray-500 mt-1.5 leading-tight w-44 break-words overflow-hidden">
+                  <p className="text-[10px] mt-1.5 leading-tight w-44 break-words overflow-hidden" style={{ color: 'var(--text-muted)' }}>
                     {img.caption}
                   </p>
                 )}
@@ -137,8 +137,8 @@ function Experience() {
       {/* Page Title & Intro — Centered for better balance */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 mb-32 text-center">
         <h1 className="text-5xl md:text-7xl font-bold mb-8 tracking-tighter text-white lowercase">experience</h1>
-        <div className="w-20 h-px bg-white/20 mx-auto mb-10" />
-        <p className="text-gray-400 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed font-light brightness-110">
+        <div className="w-20 h-px mx-auto mb-10" style={{ backgroundColor: 'var(--border-subtle)' }} />
+        <p className="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed font-light" style={{ color: 'var(--text-secondary)' }}>
           a detailed look at every role, team, and community i've been part of — 
           from founding startups to leading campus chapters.
         </p>
@@ -159,10 +159,10 @@ function Experience() {
                     {yearGroup.year}
                   </span>
                   {groupIndex === 0 && (
-                    <div className="absolute -right-3 -top-1 w-2 h-2 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] animate-pulse" />
+                    <div className="absolute -right-3 -top-1 w-2 h-2 rounded-full animate-pulse shadow-sm" style={{ backgroundColor: 'var(--accent-purple)' }} />
                   )}
                 </div>
-                <div className="flex-1 h-px bg-gradient-to-r from-gray-700 to-transparent" />
+                <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, var(--border-subtle), transparent)' }} />
               </div>
 
               {/* Role Cards */}
@@ -172,25 +172,26 @@ function Experience() {
                     key={item.id}
                     id={item.slug}
                     ref={el => sectionRefs.current[item.slug] = el}
-                    className="group relative border border-white/5 rounded-2xl p-10 md:p-14 transition-all duration-700 hover:border-white/10 hover:bg-white/[0.01] overflow-hidden"
+                    className="group relative border rounded-2xl p-10 md:p-14 transition-all duration-700 overflow-hidden"
+                    style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}
                   >
                     {/* Subtle ambient glow on hover */}
-                    <div className="absolute top-0 right-0 w-40 h-40 bg-white/[0.03] blur-[60px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    <div className="absolute top-0 right-0 w-40 h-40 blur-[60px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ backgroundColor: 'var(--accent-purple-faint)' }} />
 
                     <div className="relative z-10">
                       {/* Role Header */}
                       <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-4 mb-8">
-                        <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">
+                        <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight" style={{ color: 'var(--text-primary)' }}>
                           {item.role}
                         </h2>
-                        <span className="text-[11px] md:text-xs text-gray-500 font-mono tracking-widest uppercase opacity-70">
+                        <span className="text-[11px] md:text-xs font-mono tracking-widest uppercase opacity-70" style={{ color: 'var(--text-muted)' }}>
                           {item.date}
                         </span>
                       </div>
 
                       {/* Company — external link if website is provided */}
-                      <p className="text-sm text-gray-400 mb-8 flex items-center gap-2 font-light">
-                        <span className="w-1.5 h-1.5 rounded-full bg-white/20 inline-block shrink-0" />
+                      <p className="text-sm mb-8 flex items-center gap-2 font-light" style={{ color: 'var(--text-secondary)' }}>
+                        <span className="w-1.5 h-1.5 rounded-full inline-block shrink-0" style={{ backgroundColor: 'var(--accent-purple-border)' }} />
                         {item.website ? (
                           <a
                             href={item.website}
@@ -220,13 +221,13 @@ function Experience() {
                       </p>
 
                       {/* Divider */}
-                      <div className="border-t border-gray-800/60 mb-5" />
+                      <div className="border-t mb-5" style={{ borderColor: 'var(--border-subtle)' }} />
 
                       {/* Bullets */}
                       <ul className="flex flex-col gap-6 mb-12">
                         {item.bullets.map((bullet, i) => (
-                          <li key={i} className="flex items-start text-sm md:text-base text-gray-400 leading-relaxed font-light">
-                            <span className="mr-5 text-white/20 mt-[10px] text-[10px]">/</span>
+                          <li key={i} className="flex items-start text-sm md:text-base leading-relaxed font-light" style={{ color: 'var(--text-secondary)' }}>
+                            <span className="mr-5 mt-[10px] text-[10px]" style={{ color: 'var(--accent-purple-border)' }}>/</span>
                             <span>{bullet}</span>
                           </li>
                         ))}
@@ -242,8 +243,8 @@ function Experience() {
           ))}
 
           {/* Footer Note */}
-          <div className="mt-12 pt-8 border-t border-gray-800/40 text-center">
-            <p className="text-gray-600 text-xs italic">
+          <div className="mt-12 pt-8 border-t text-center" style={{ borderColor: 'var(--border-subtle)' }}>
+            <p className="text-xs italic" style={{ color: 'var(--text-muted)' }}>
               and the story continues...
             </p>
           </div>
@@ -251,8 +252,8 @@ function Experience() {
 
         {/* Sticky Timeline Sidebar — Desktop only, Right aligned */}
         <aside className="hidden lg:block lg:w-[420px] xl:w-[480px] lg:-mr-10 xl:-mr-24 shrink-0 order-1 lg:order-2">
-          <div className="sticky top-12 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar py-4 border-l border-white/5 pl-10">
-            <h3 className="text-white font-mono text-[10px] uppercase tracking-[0.5em] mb-10 opacity-30">Timeline Overview</h3>
+          <div className="sticky top-12 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar py-4 border-l pl-10" style={{ borderColor: 'var(--border-subtle)' }}>
+            <h3 className="font-mono text-[10px] uppercase tracking-[0.5em] mb-10 opacity-30" style={{ color: 'var(--text-muted)' }}>Timeline Overview</h3>
             <Timeline isMobileMode={false} />
           </div>
         </aside>

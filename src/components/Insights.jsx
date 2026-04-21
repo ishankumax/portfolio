@@ -128,12 +128,12 @@ function Tag({ name }) {
 
 function ShortTakeCard({ item }) {
   return (
-    <article className="group border border-gray-800/60 rounded-xl p-5 hover:border-gray-700 hover:bg-white/[0.013] transition-all duration-300">
+    <article className="group border rounded-xl p-5 transition-all duration-300" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
       <div className="flex items-center justify-between mb-3">
         <Tag name={item.tag} />
-        <span className="text-[10px] text-gray-700 font-mono">{item.date}</span>
+        <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>{item.date}</span>
       </div>
-      <p className="text-gray-300 text-sm leading-relaxed font-mono">
+      <p className="text-sm leading-relaxed font-mono" style={{ color: 'var(--text-secondary)' }}>
         "{item.body}"
       </p>
     </article>
@@ -144,27 +144,28 @@ function EssayCard({ item }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <article className="border border-gray-800/60 rounded-xl overflow-hidden hover:border-gray-700 transition-all duration-300">
+    <article className="border rounded-xl overflow-hidden transition-all duration-300" style={{ borderColor: 'var(--border-card)' }}>
       {/* Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full text-left p-6 hover:bg-white/[0.01] transition-colors duration-300 group"
+        className="w-full text-left p-6 transition-colors duration-300 group"
+        style={{ backgroundColor: 'var(--bg-card)' }}
       >
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
               <Tag name={item.tag} />
-              <span className="text-[10px] text-gray-700 font-mono">{item.date}</span>
-              <span className="text-[10px] text-gray-700 font-mono">· {item.readTime}</span>
+              <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>{item.date}</span>
+              <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>· {item.readTime}</span>
             </div>
-            <h3 className="text-white font-bold text-base font-mono mb-2 group-hover:text-gray-100 transition-colors">
+            <h3 className="text-white font-bold text-base font-mono mb-2 group-hover:text-[color:var(--accent-purple)] transition-colors">
               {item.title}
             </h3>
-            <p className="text-gray-500 text-xs leading-relaxed line-clamp-2">
+            <p className="text-xs leading-relaxed line-clamp-2" style={{ color: 'var(--text-secondary)' }}>
               {item.preview}
             </p>
           </div>
-          <span className={`text-gray-600 shrink-0 mt-1 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}>
+          <span className="shrink-0 mt-1 transition-transform duration-300" style={{ color: 'var(--text-muted)', transform: expanded ? 'rotate(180deg)' : '' }}>
             ↓
           </span>
         </div>
@@ -172,17 +173,18 @@ function EssayCard({ item }) {
 
       {/* Body — expandable */}
       {expanded && (
-        <div className="px-6 pb-6 border-t border-gray-800/40">
+        <div className="px-6 pb-6 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
           <div className="pt-5 flex flex-col gap-4">
             {item.body.map((para, i) => (
-              <p key={i} className="text-gray-400 text-sm leading-relaxed">
+              <p key={i} className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                 {para}
               </p>
             ))}
           </div>
           <button
             onClick={() => setExpanded(false)}
-            className="mt-6 text-[11px] text-gray-600 hover:text-gray-400 font-mono transition-colors"
+            className="mt-6 text-[11px] font-mono transition-colors"
+            style={{ color: 'var(--text-muted)' }}
           >
             ↑ collapse
           </button>
@@ -204,21 +206,22 @@ function Insights() {
         {/* Title */}
         <div className="mb-10">
           <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">insights</h1>
-          <p className="text-gray-500 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             things i've noticed, learned, or thought too hard about — from building a startup 
             to running communities to writing code at 2am.
           </p>
         </div>
 
         {/* Tab Toggle */}
-        <div className="flex gap-1 bg-gray-900/50 border border-gray-800/60 rounded-xl p-1 mb-10 w-fit">
+        <div className="flex gap-1 border rounded-xl p-1 mb-10 w-fit" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-subtle)' }}>
           <button
             onClick={() => setActiveTab('takes')}
             className={`px-5 py-2 rounded-lg text-xs font-mono transition-all duration-250 ${
               activeTab === 'takes'
-                ? 'bg-white text-black font-bold'
-                : 'text-black-500 hover:text-white'
+                ? 'bg-[color:var(--text-primary)] text-[color:var(--bg-base)] font-bold shadow-sm'
+                : 'hover:text-[color:var(--accent-purple)]'
             }`}
+            style={{ color: activeTab === 'takes' ? '' : 'var(--text-secondary)' }}
           >
             short takes
           </button>
@@ -226,9 +229,10 @@ function Insights() {
             onClick={() => setActiveTab('essays')}
             className={`px-5 py-2 rounded-lg text-xs font-mono transition-all duration-250 ${
               activeTab === 'essays'
-                ? 'bg-white text-black font-bold'
-                : 'text-gray-500 hover:text-white'
+                ? 'bg-[color:var(--text-primary)] text-[color:var(--bg-base)] font-bold shadow-sm'
+                : 'hover:text-[color:var(--accent-purple)]'
             }`}
+            style={{ color: activeTab === 'essays' ? '' : 'var(--text-secondary)' }}
           >
             essays
           </button>
@@ -237,7 +241,7 @@ function Insights() {
         {/* Content */}
         {activeTab === 'takes' && (
           <div className="flex flex-col gap-4">
-            <p className="text-[11px] text-gray-700 font-mono mb-2">
+            <p className="text-[11px] font-mono mb-2" style={{ color: 'var(--text-muted)' }}>
               {SHORT_TAKES.length} observations — newest first
             </p>
             {SHORT_TAKES.map(item => (
@@ -248,7 +252,7 @@ function Insights() {
 
         {activeTab === 'essays' && (
           <div className="flex flex-col gap-4">
-            <p className="text-[11px] text-gray-700 font-mono mb-2">
+            <p className="text-[11px] font-mono mb-2" style={{ color: 'var(--text-muted)' }}>
               {ESSAYS.length} essays — click to expand
             </p>
             {ESSAYS.map(item => (
@@ -258,7 +262,7 @@ function Insights() {
         )}
 
         {/* Footer note */}
-        <p className="mt-14 text-xs text-gray-700 text-center">
+        <p className="mt-14 text-xs text-center" style={{ color: 'var(--text-muted)' }}>
           writing more — check back soon.
         </p>
       </div>

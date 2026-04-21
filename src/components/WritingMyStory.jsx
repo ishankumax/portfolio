@@ -8,12 +8,12 @@ function StoryCard({ imageSrc, altText, label }) {
   const slug = storyToExperienceMap[label]
   
   const cardContent = (
-    <div className="shrink-0 w-64 border-2 border-white rounded-2xl snap-start hover:border-gray-400 transition-colors cursor-pointer overflow-hidden group">
+    <div className="shrink-0 w-64 border rounded-2xl snap-start transition-colors cursor-pointer overflow-hidden group" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
       <img src={imageSrc} alt={altText} className="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-500" />
       <div className="p-4 flex items-center justify-between">
-        <p className="text-sm text-gray-400">{label}</p>
+        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{label}</p>
         {slug && (
-          <span className="text-gray-600 group-hover:text-white text-xs transition-colors duration-300">→</span>
+          <span className="text-xs transition-colors duration-300" style={{ color: 'var(--text-muted)' }}>→</span>
         )}
       </div>
     </div>
@@ -48,7 +48,7 @@ function WritingMyStory() {
   return (
     <section id="highlights" className="mb-20">
       <h2 className="text-xl md:text-2xl font-bold mb-8 flex items-center gap-2">
-        <span className="text-gray-600">#</span> writing my story
+        <span style={{ color: 'var(--text-muted)' }}>#</span> writing my story
       </h2>
       
       {/* Horizontal Scrollable Cards with Navigation */}
@@ -57,6 +57,7 @@ function WritingMyStory() {
         <button 
           onClick={scrollLeft}
           className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity"
+          style={{ color: 'var(--text-primary)' }}
         >
           <FaChevronLeft size={24} />
         </button>
@@ -118,6 +119,7 @@ function WritingMyStory() {
         <button 
           onClick={scrollRight}
           className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity"
+          style={{ color: 'var(--text-primary)' }}
         >
           <FaChevronRight size={24} />
         </button>

@@ -1,9 +1,16 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/jpeg" href="/pfp.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Blocking script: set theme BEFORE render to prevent flash of light mode -->
+    <script>
+      (function() {
+        var stored = localStorage.getItem('portfolio-theme');
+        document.documentElement.setAttribute('data-theme', stored || 'dark');
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">

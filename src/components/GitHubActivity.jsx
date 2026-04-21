@@ -10,12 +10,20 @@ const WEEK_DAYS   = ['', 'Mon', '', 'Wed', '', 'Fri', '']
 const MONTHS      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 // Purple gradient: 0 = empty, 1 = low, 2 = medium, 3 = high, 4 = max
-const LEVEL_COLORS = [
-  '#0f0f14',   // 0: near-black (empty)
-  '#491768ff',   // 1: deep violet
-  '#8b1fcaff',   // 2: mid-purple
-  '#ad57f8ff',   // 3: indigo-400 (brand)
-  '#c4b5fd',   // 4: lavender bright
+const LEVEL_COLORS_DARK = [
+  '#0f0f14',      // 0: near-black (empty)
+  '#2a1040',      // 1: deep violet
+  '#4c1d95',      // 2: mid-purple
+  '#818cf8',      // 3: indigo-400 (brand)
+  '#c4b5fd',      // 4: lavender bright
+]
+
+const LEVEL_COLORS_LIGHT = [
+  '#e2e8f0',      // 0: slate-200 (empty)
+  '#d8b4fe',      // 1: light purple
+  '#a855f7',      // 2: medium purple
+  '#818cf8',      // 3: indigo-400 (brand)
+  '#4c1d95',      // 4: deep purple
 ]
 
 const LEVEL_LABELS = ['No activity', 'Low', 'Medium', 'High', 'Peak']
@@ -44,6 +52,10 @@ export default function GitHubActivity() {
   const [error, setError]               = useState(false)
   const [tooltip, setTooltip]           = useState(null) // { x, y, count, date }
   const containerRef                    = useRef(null)
+  
+  // Theme-aware colors
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light'
+  const levelColors = isDark ? LEVEL_COLORS_DARK : LEVEL_COLORS_LIGHT
 
   // ── Fetch ──
   const fetchData = useCallback(async (year) => {
@@ -125,9 +137,10 @@ export default function GitHubActivity() {
         <div className="flex items-center gap-3 group cursor-default">
           <FaGithub
             size={18}
-            className="text-gray-500 group-hover:text-[#818cf8] transition-colors duration-300"
+            className="transition-colors duration-300"
+            style={{ color: 'var(--text-muted)' }}
           />
-          <h2 className="text-xs md:text-sm font-mono uppercase tracking-[0.2em] text-gray-400 group-hover:text-white transition-colors duration-300">
+          <h2 className="text-xs md:text-sm font-mono uppercase tracking-[0.2em] group-hover:text-[color:var(--text-primary)] transition-colors duration-300" style={{ color: 'var(--text-muted)' }}>
             Commit Activity
           </h2>
           {!loading && !error && (
@@ -138,16 +151,17 @@ export default function GitHubActivity() {
         </div>
 
         {/* Year toggle */}
-        <div className="flex items-center gap-1 bg-[#0d0d12] border border-gray-800/60 rounded-xl p-1">
+        <div className="flex items-center gap-1 border rounded-xl p-1" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-subtle)' }}>
           {YEARS.map(yr => (
             <button
               key={yr}
               onClick={() => setSelectedYear(yr)}
               className={`px-3 py-1 text-[10px] md:text-[11px] font-mono rounded-lg transition-all duration-200 ${
                 selectedYear === yr
-                  ? 'bg-[#818cf8] text-black font-bold'
-                  : 'text-gray-500 hover:text-[#818cf8]'
+                  ? 'bg-[color:var(--accent-purple)] text-white font-bold'
+                  : ''
               }`}
+              style={{ color: selectedYear === yr ? '' : 'var(--text-muted)' }}
             >
               {yr}
             </button>
@@ -158,7 +172,8 @@ export default function GitHubActivity() {
       {/* ── Main Card ── */}
       <div
         ref={containerRef}
-        className="relative bg-[#09090e] border border-gray-900 rounded-2xl p-4 md:p-8 overflow-hidden transition-all duration-500 group"
+        className="relative border rounded-2xl p-4 md:p-8 overflow-hidden transition-all duration-500 group"
+        style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
       >
         {/* Ambient glow */}
         <div className="absolute -top-16 -right-16 w-60 h-60 bg-[#818cf8]/[0.04] blur-[80px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -170,8 +185,8 @@ export default function GitHubActivity() {
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-10 gap-3">
-            <p className="text-gray-600 text-[11px] font-mono">failed to fetch activity.</p>
-            <button onClick={() => fetchData(selectedYear)} className="text-[10px] text-[#818cf8] hover:underline">retry</button>
+            <p className="text-[11px] font-mono" style={{ color: 'var(--text-muted)' }}>failed to fetch activity.</p>
+            <button onClick={() => fetchData(selectedYear)} className="text-[10px] hover:underline" style={{ color: 'var(--accent-purple)' }}>retry</button>
           </div>
         ) : (
           <div className="overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing">
@@ -182,8 +197,8 @@ export default function GitHubActivity() {
                 {monthLabels.map(({ label, weekIndex }) => (
                   <span
                     key={label + weekIndex}
-                    className="absolute text-[10px] font-mono text-gray-500"
-                    style={{ left: weekIndex * STEP }}
+                    className="absolute text-[10px] font-mono"
+                    style={{ left: weekIndex * STEP, color: 'var(--text-muted)' }}
                   >
                     {label}
                   </span>
@@ -197,8 +212,8 @@ export default function GitHubActivity() {
                   {WEEK_DAYS.map((d, i) => (
                     <span
                       key={i}
-                      className="text-[9px] font-mono text-gray-600 leading-none"
-                      style={{ height: CELL_SIZE, lineHeight: `${CELL_SIZE}px` }}
+                      className="text-[9px] font-mono leading-none"
+                      style={{ height: CELL_SIZE, lineHeight: `${CELL_SIZE}px`, color: 'var(--text-muted)' }}
                     >
                       {d}
                     </span>
@@ -216,7 +231,7 @@ export default function GitHubActivity() {
                             width:  CELL_SIZE,
                             height: CELL_SIZE,
                             borderRadius: 2,
-                            backgroundColor: cell ? LEVEL_COLORS[cell.level] : 'transparent',
+                            backgroundColor: cell ? levelColors[cell.level] : 'transparent',
                             transition: 'transform 0.1s, box-shadow 0.15s',
                             cursor: cell?.count > 0 ? 'pointer' : 'default',
                           }}
@@ -237,39 +252,42 @@ export default function GitHubActivity() {
         {/* ── Tooltip ── */}
         {tooltip && (
           <div
-            className="absolute z-50 pointer-events-none bg-[#12121a] border border-[#818cf8]/40 shadow-[0_4px_20px_rgba(0,0,0,0.6)] rounded-lg px-3 py-2 text-[11px] font-mono text-white"
+            className="absolute z-50 pointer-events-none rounded-lg px-3 py-2 text-[11px] font-mono border"
             style={{
               left: tooltip.x,
               top:  tooltip.y - 56,
               transform: 'translateX(-50%)',
               whiteSpace: 'nowrap',
+              backgroundColor: 'var(--bg-elevated)',
+              borderColor: 'var(--accent-purple-border)',
+              color: 'var(--text-primary)',
             }}
           >
-            <span className="text-[#818cf8] font-bold">{tooltip.count} commit{tooltip.count !== 1 ? 's' : ''}</span>
-            <span className="text-gray-500 mx-1">·</span>
-            <span className="text-gray-400">{formatDate(tooltip.date)}</span>
+            <span className="font-bold" style={{ color: 'var(--accent-purple)' }}>{tooltip.count} commit{tooltip.count !== 1 ? 's' : ''}</span>
+            <span className="mx-1" style={{ color: 'var(--text-muted)' }}>·</span>
+            <span style={{ color: 'var(--text-muted)' }}>{formatDate(tooltip.date)}</span>
             {/* Arrow */}
-            <div className="absolute bottom-[-5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-[#12121a] border-b border-r border-[#818cf8]/40 rotate-45" />
+            <div className="absolute bottom-[-5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 border-b border-r rotate-45" style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--accent-purple-border)' }} />
           </div>
         )}
 
         {/* ── Legend ── */}
         {!loading && !error && (
-          <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-900/60 px-1">
-            <p className="text-[10px] font-mono text-gray-700 italic">
+          <div className="flex items-center justify-between mt-6 pt-4 border-t px-1" style={{ borderColor: 'var(--border-subtle)' }}>
+            <p className="text-[10px] font-mono italic" style={{ color: 'var(--text-muted)' }}>
               // hover cells to inspect commits
             </p>
             <div className="flex items-center gap-1.5">
-              <span className="text-[9px] font-mono text-gray-600 mr-1">less</span>
-              {LEVEL_COLORS.map((color, i) => (
+              <span className="text-[9px] font-mono mr-1" style={{ color: 'var(--text-muted)' }}>less</span>
+              {levelColors.map((color, i) => (
                 <div
                   key={i}
                   title={LEVEL_LABELS[i]}
                   className="rounded-[2px] transition-transform hover:scale-110"
-                  style={{ width: 10, height: 10, backgroundColor: color, border: '1px solid rgba(255,255,255,0.05)' }}
+                  style={{ width: 10, height: 10, backgroundColor: color, border: '1px solid var(--border-subtle)' }}
                 />
               ))}
-              <span className="text-[9px] font-mono text-gray-600 ml-1">more</span>
+              <span className="text-[9px] font-mono ml-1" style={{ color: 'var(--text-muted)' }}>more</span>
             </div>
           </div>
         )}
@@ -281,7 +299,8 @@ export default function GitHubActivity() {
           href={`https://github.com/${USERNAME}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] font-mono text-gray-700 hover:text-[#818cf8] transition-colors uppercase tracking-widest flex items-center gap-1"
+          className="text-[10px] font-mono transition-colors uppercase tracking-widest flex items-center gap-1"
+          style={{ color: 'var(--text-muted)' }}
         >
           <FaGithub size={10} />
           @{USERNAME}

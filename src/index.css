@@ -17,6 +17,7 @@
   --accent-purple-border: rgba(129, 140, 248, 0.22);
 
   --bg-base:      #000000;
+  --bg-base-95:   rgba(0, 0, 0, 0.95);
   --bg-surface:   #0a0a0a;
   --bg-elevated:  #111111;
   --bg-navbar:    rgba(0, 0, 0, 0.80);
@@ -45,6 +46,7 @@
   --accent-purple-border: rgba(109, 92, 231, 0.25);
 
   --bg-base:      #f5f4f7;
+  --bg-base-95:   rgba(245, 244, 247, 0.95);
   --bg-surface:   #f0eef5;
   --bg-elevated:  #ffffff;
   --bg-navbar:    rgba(245, 244, 247, 0.85);
@@ -64,8 +66,10 @@
   --scrollbar-hover: rgba(109, 92, 231, 0.50);
 }
 
-/* ── Theme transition — smooth on toggle ─────────────────────────────────── */
-*, *::before, *::after {
+/* ── Theme transition — smooth on toggle, skip animation-heavy elements ─── */
+*:not(.marquee-track):not(.marquee-img-wrapper):not([class*="animate-"]),
+*:not(.marquee-track):not(.marquee-img-wrapper):not([class*="animate-"])::before,
+*:not(.marquee-track):not(.marquee-img-wrapper):not([class*="animate-"])::after {
   transition:
     background-color 0.3s ease,
     border-color     0.3s ease,

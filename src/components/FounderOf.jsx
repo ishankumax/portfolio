@@ -51,10 +51,10 @@ function FounderOf() {
 
         <div className="flex-1 w-full text-center md:text-left">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-baseline mb-2">
-            <h3 className="font-bold text-2xl font-mono">InTheBox</h3>
-            <span className="text-sm text-gray-500 font-mono mt-1 md:mt-0">april 2025 - today</span>
+            <h3 className="font-bold text-2xl font-mono" style={{ color: 'var(--text-primary)' }}>InTheBox</h3>
+            <span className="text-sm font-mono mt-1 md:mt-0" style={{ color: 'var(--text-muted)' }}>april 2025 - today</span>
           </div>
-          <p className="text-gray-400 font-mono leading-relaxed mb-5">
+          <p className="font-mono leading-relaxed mb-5" style={{ color: 'var(--text-secondary)' }}>
             Where Packaging Meets Innovation —{' '}
             building Custom, Premium Designs for brands that care about the unboxing moment.
           </p>
@@ -62,9 +62,9 @@ function FounderOf() {
           {/* Impact metrics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {METRICS.map((m) => (
-              <div key={m.label} className="border border-gray-800/70 rounded-lg p-3 text-left hover:border-indigo-500/40 hover:shadow-[0_0_15px_rgba(129,140,248,0.1)] transition-all duration-500 group/metric">
-                <p className="text-white font-bold text-lg font-mono group-hover/metric:text-indigo-300 transition-colors">{m.value}</p>
-                <p className="text-gray-600 text-[11px] font-mono mt-0.5">{m.label}</p>
+              <div key={m.label} className="border rounded-lg p-3 text-left transition-all duration-500 group/metric" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
+                <p className="font-bold text-lg font-mono group-hover/metric:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-primary)' }}>{m.value}</p>
+                <p className="text-[11px] font-mono mt-0.5" style={{ color: 'var(--text-muted)' }}>{m.label}</p>
               </div>
             ))}
           </div>
@@ -72,28 +72,29 @@ function FounderOf() {
       </div>
 
       {/* Case Study toggle */}
-      <div className="border border-gray-800/60 rounded-xl overflow-hidden group/case hover:border-indigo-500/20 transition-colors">
+      <div className="border rounded-xl overflow-hidden group/case transition-colors" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
         <button
           onClick={() => setCaseOpen(!caseOpen)}
-          className="w-full flex items-center justify-between px-5 py-4 text-sm font-mono text-gray-400 hover:text-white hover:bg-white/[0.01] transition-all duration-300 group"
+          className="w-full flex items-center justify-between px-5 py-4 text-sm font-mono transition-all duration-300 group"
+          style={{ color: 'var(--text-secondary)' }}
         >
           <span className="flex items-center gap-2">
-            <span className="text-gray-600 group-hover:text-[#818cf8] transition-colors">{'>'}</span>
+            <span className="transition-colors" style={{ color: 'var(--text-muted)' }}>{'>'}</span>
             case study — how inthebox works
           </span>
-          <span className={`text-gray-600 transition-transform duration-300 ${caseOpen ? 'rotate-180 text-[#818cf8]' : ''}`}>
+          <span className={`transition-transform duration-300 ${caseOpen ? 'rotate-180 text-[color:var(--accent-purple)]' : ''}`} style={{ color: 'var(--text-muted)' }}>
             ↓
           </span>
         </button>
 
         {caseOpen && (
-          <div className="border-t border-gray-800/60 px-5 py-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="border-t px-5 py-6 grid grid-cols-1 md:grid-cols-2 gap-5" style={{ borderColor: 'var(--border-subtle)' }}>
             {CASE_STUDY.map((item) => (
               <div key={item.step} className="flex gap-4">
-                <span className="text-[11px] font-mono text-gray-700 mt-0.5 shrink-0">{item.step}</span>
+                <span className="text-[11px] font-mono mt-0.5 shrink-0" style={{ color: 'var(--text-muted)' }}>{item.step}</span>
                 <div>
-                  <p className="text-white font-bold text-sm font-mono mb-1">{item.title}</p>
-                  <p className="text-gray-500 text-xs leading-relaxed">{item.body}</p>
+                  <p className="font-bold text-sm font-mono mb-1" style={{ color: 'var(--text-primary)' }}>{item.title}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{item.body}</p>
                 </div>
               </div>
             ))}

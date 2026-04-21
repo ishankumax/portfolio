@@ -184,9 +184,9 @@ function Terminal({ onClose }) {
       className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm flex items-end md:items-center justify-center p-4 md:p-8"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="w-full max-w-3xl bg-[#0a0a0a] border border-gray-800 rounded-xl overflow-hidden shadow-2xl shadow-black/80 font-mono text-sm">
+      <div className="w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl font-mono text-sm border" style={{ backgroundColor: '#0a0a0a', borderColor: 'rgba(255,255,255,0.1)', shadowColor: 'rgba(0,0,0,0.8)' }}>
         {/* Title bar */}
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-800/70 bg-[#111]">
+        <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ backgroundColor: '#111', borderColor: 'rgba(255,255,255,0.05)' }}>
           <button onClick={onClose} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
           <div className="w-3 h-3 rounded-full bg-yellow-500/40" />
           <div className="w-3 h-3 rounded-full bg-green-500/40" />
@@ -200,7 +200,7 @@ function Terminal({ onClose }) {
           onClick={() => inputRef.current?.focus()}
         >
           {lines.map((line, i) => (
-            <div key={i} className={`whitespace-pre ${line.startsWith('ishankumax@') ? 'text-white' : 'text-gray-500'}`}>
+            <div key={i} className={`whitespace-pre ${line.startsWith('ishankumax@') ? 'text-[#ffffff]' : 'text-gray-500'}`}>
               {line || '\u00A0'}
             </div>
           ))}
@@ -208,14 +208,14 @@ function Terminal({ onClose }) {
         </div>
 
         {/* Input */}
-        <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-800/70 bg-[#0d0d0d]">
+        <div className="flex items-center gap-2 px-4 py-3 border-t" style={{ backgroundColor: '#0d0d0d', borderColor: 'rgba(255,255,255,0.05)' }}>
           <span className="text-gray-600 text-[12px] shrink-0">ishankumax@portfolio:~$</span>
           <input
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKey}
-            className="flex-1 bg-transparent text-white text-[12px] outline-none caret-white placeholder-gray-700"
+            className="flex-1 bg-transparent text-[#ffffff] text-[12px] outline-none caret-white placeholder-gray-700"
             placeholder="type a command..."
             autoComplete="off"
             spellCheck={false}
