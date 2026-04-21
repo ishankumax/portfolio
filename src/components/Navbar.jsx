@@ -35,7 +35,7 @@ function Navbar({ onOpenTerminal }) {
         {/* Center: Desktop Links */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8 text-gray-500 text-sm">
           <Link to="/insights" className={linkClass('/insights')}>[i] insights</Link>
-          <Link to="/specs" className={linkClass('/specs')}>[s] specs</Link>
+          <Link to="/success" className={linkClass('/success')}>[s] success</Link>
           <Link to="/#highlights" className="hover:text-[#818cf8] transition-colors whitespace-nowrap">[h] highlights</Link>
           <Link to="/about" className={linkClass('/about')}>[a] about me</Link>
           <Link to="/network" className={linkClass('/network')}>[n] network</Link>
@@ -112,7 +112,7 @@ function Navbar({ onOpenTerminal }) {
       {/* Mobile Links Row */}
       <div className="md:hidden flex overflow-x-auto no-scrollbar gap-8 px-6 pb-4 text-[10px] uppercase tracking-[0.2em] border-t pt-4" style={{ color: 'var(--text-secondary)', borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-navbar)' }}>
         <Link to="/insights" className={linkClass('/insights')}>insights</Link>
-        <Link to="/specs" className={linkClass('/specs')}>specs</Link>
+        <Link to="/success" className={linkClass('/success')}>success</Link>
         <Link to="/about" className={linkClass('/about')}>about</Link>
         <Link to="/network" className={linkClass('/network')}>network</Link>
         <Link to="/experience" className={linkClass('/experience')}>experience</Link>
