@@ -21,7 +21,7 @@ function Footer() {
             >
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
               let's talk
-              <span className="group-hover:translate-x-0.5 transition-transform duration-300 font-color-black" >→</span>
+              <span className="group-hover:translate-x-0.5 transition-transform duration-300">→</span>
             </Link>
           </div>
 
@@ -58,7 +58,7 @@ function Footer() {
           <div className="flex gap-4 text-[11px] font-mono">
             <Link to="/insights" className="hover:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-muted)' }}>insights</Link>
             <Link to="/experience" className="hover:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-muted)' }}>experience</Link>
-            <Link to="/specs" className="hover:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-muted)' }}>specs</Link>
+            <Link to="/success" className="hover:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-muted)' }}>success</Link>
             <Link to="/network" className="hover:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-muted)' }}>contact</Link>
           </div>
         </div>

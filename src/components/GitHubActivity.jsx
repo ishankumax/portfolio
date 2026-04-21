@@ -1,29 +1,30 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { FaGithub } from 'react-icons/fa'
+import { useTheme } from '../ThemeContext'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const USERNAME    = 'ishankumax'
 const YEARS       = [2026]
 const CELL_SIZE   = 11   // px, size of each square
 const CELL_GAP    = 3    // px, gap between squares
-const WEEK_DAYS   = ['', 'Mon', '', 'Wed', '', 'Fri', '']
+const WEEK_DAYS   = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 const MONTHS      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 // Purple gradient: 0 = empty, 1 = low, 2 = medium, 3 = high, 4 = max
 const LEVEL_COLORS_DARK = [
-  '#0a0f0a',      // 0: near-black (empty)
-  '#0d2e12',      // 1: deep forest green
-  '#166534',      // 2: mid green
-  '#39ff14',      // 3: neon green (brand)
-  '#a3f97d',      // 4: bright lime
+  '#161b22',      // 0: near-black (empty)
+  '#0e4429',      // 1: dark green
+  '#006d32',      // 2: medium green
+  '#26a641',      // 3: bright green
+  '#39d353',      // 4: vibrant green
 ]
 
 const LEVEL_COLORS_LIGHT = [
-  '#e2e8f0',      // 0: slate-200 (empty)
-  '#bbf7d0',      // 1: light green
-  '#4ade80',      // 2: medium green
-  '#16a34a',      // 3: brand green
-  '#14532d',      // 4: deep forest green
+  '#ebedf0',      // 0: empty
+  '#9be9a8',      // 1: low
+  '#40c463',      // 2: medium
+  '#30a14e',      // 3: high
+  '#216e39',      // 4: max
 ]
 
 const LEVEL_LABELS = ['No activity', 'Low', 'Medium', 'High', 'Peak']
@@ -54,8 +55,9 @@ export default function GitHubActivity() {
   const containerRef                    = useRef(null)
   
   // Theme-aware colors
-  const isDark = document.documentElement.getAttribute('data-theme') !== 'light'
-  const levelColors = isDark ? LEVEL_COLORS_DARK : LEVEL_COLORS_LIGHT
+  const { theme }                  = useTheme()
+  const isDark                          = theme !== 'light'
+  const levelColors                     = isDark ? LEVEL_COLORS_DARK : LEVEL_COLORS_LIGHT
 
   // ── Fetch ──
   const fetchData = useCallback(async (year) => {
@@ -237,7 +239,7 @@ export default function GitHubActivity() {
                           }}
                           onMouseEnter={e => cell && handleCellEnter(e, cell)}
                           onMouseLeave={() => setTooltip(null)}
-                          className={cell?.count > 0 ? 'hover:scale-125 hover:shadow-[0_0_6px_rgba(57,255,20,0.7)] hover:z-10 relative' : ''}
+                          className={cell?.count > 0 ? 'hover:scale-125 hover:shadow-[0_0_6px_rgba(57,211,83,0.7)] hover:z-10 relative' : ''}
                         />
                       ))}
                     </div>
