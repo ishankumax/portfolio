@@ -20,7 +20,7 @@ const LEVEL_COLORS_DARK = [
 ]
 
 const LEVEL_COLORS_LIGHT = [
-  '#ebedf0',      // 0: empty
+  '#d1d7d4ff',      // 0: empty
   '#9be9a8',      // 1: low
   '#40c463',      // 2: medium
   '#30a14e',      // 3: high

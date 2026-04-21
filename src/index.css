@@ -209,6 +209,21 @@ body {
 }
 
 /* ============================================================================
+   CTA BUTTON — footer custom style to avoid inline specificity bugs
+   ============================================================================ */
+.cta-footer {
+  color: var(--text-primary);
+  border-color: var(--border-card);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.cta-footer:hover {
+  background-color: var(--text-primary) !important;
+  color: var(--bg-base) !important;
+}
+
+/* ============================================================================
    FOCUS RING — replace browser default with purple ring
    ============================================================================ */
 *:focus-visible {

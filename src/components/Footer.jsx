@@ -16,8 +16,7 @@ function Footer() {
             <p className="text-xs uppercase tracking-widest mb-2 font-mono" style={{ color: 'var(--text-muted)' }}>got an idea?</p>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 border hover:bg-[color:var(--text-primary)] hover:text-[color:var(--bg-base)] transition-all duration-300 px-5 py-2.5 rounded-lg text-sm font-mono group"
-              style={{ color: 'var(--text-primary)', borderColor: 'var(--border-card)' }}
+              className="cta-footer inline-flex items-center gap-2 border transition-all duration-300 px-5 py-2.5 rounded-lg text-sm font-mono group"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
               let's talk
