@@ -50,7 +50,7 @@ const softScrollTo = (targetY, duration = 1200, container = window) => {
 // Re-usable vertical scrolling timeline that tracks 'active states' and elegantly
 // handles scrolling document flow. Roles are clickable and navigate to /experience.
 // ============================================================================
-function Timeline({ isMobileMode = false }) {
+function Timeline({ isMobileMode = false, activeYear = null }) {
   
   const [activeId, setActiveId] = useState(null);
   const hoverTimeout = useRef(null);
@@ -118,17 +118,33 @@ function Timeline({ isMobileMode = false }) {
         <div className="absolute left-[50px] md:left-[70px] top-10 bottom-10 w-[2px] shadow-[0_0_10px_rgba(129,140,248,0.15)]" style={{ background: 'linear-gradient(to bottom, transparent, var(--accent-purple-border), transparent)' }}></div>
         
         <div className="flex flex-col gap-16">
-          {timelineData.map((yearGroup, yIndex) => (
+          {timelineData.map((yearGroup, yIndex) => {
+            const isYearActive = activeYear === yearGroup.year;
+            return (
             <div key={yearGroup.year} className="relative z-10">
               
               {/* Yearly Marker (e.g. "2026" + Glowing Dot) */}
-              <div className="absolute left-0 top-3 flex items-center w-[60px] md:w-[84px] justify-between pr-[8px] md:pr-[12px] backdrop-blur-md z-30 py-1.5 rounded-r-md transition-colors duration-300" style={{ backgroundColor: 'var(--bg-base-95)' }}>
-                <span className="text-[15px] font-mono tracking-widest font-bold brightness-125" style={{ color: 'var(--text-primary)' }}>
+              <div
+                className="absolute left-0 top-3 flex items-center w-[60px] md:w-[84px] justify-between pr-[8px] md:pr-[12px] backdrop-blur-md z-30 py-1.5 rounded-r-md transition-all duration-500"
+                style={{ backgroundColor: 'var(--bg-base-95)' }}
+              >
+                <span
+                  className="text-[15px] font-mono tracking-widest font-bold transition-all duration-500"
+                  style={{ color: isYearActive ? 'var(--accent-purple)' : 'var(--text-primary)', textShadow: isYearActive ? '0 0 12px var(--accent-purple-glow)' : 'none' }}
+                >
                   {yearGroup.year}
                 </span>
-                {/* Dot — precisely centered on the track */}
+                {/* Dot — glow when year is active */}
                 <div className="relative flex justify-center items-center">
-                  <div className={`w-[8px] h-[8px] rounded-full shadow-[0_0_12px_rgba(129,140,248,0.8)] ${yIndex === 0 ? 'ring-4 ring-indigo-500/20' : ''}`} style={{ backgroundColor: 'var(--accent-purple)' }}></div>
+                  <div
+                    className={`w-[8px] h-[8px] rounded-full transition-all duration-500 ${isYearActive ? 'scale-125' : ''}`}
+                    style={{
+                      backgroundColor: 'var(--accent-purple)',
+                      boxShadow: isYearActive
+                        ? '0 0 0 4px var(--accent-purple-faint), 0 0 18px var(--accent-purple-glow)'
+                        : '0 0 8px rgba(57,255,20,0.3)'
+                    }}
+                  />
                 </div>
               </div>
 
