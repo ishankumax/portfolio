@@ -115,7 +115,7 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
       
       <div className="relative flex flex-col w-full">
         {/* The single vertical timeline track — centered precisely with the dots */}
-        <div className="absolute left-[50px] md:left-[70px] top-10 bottom-10 w-[2px] shadow-[0_0_10px_rgba(129,140,248,0.15)]" style={{ background: 'linear-gradient(to bottom, transparent, var(--accent-purple-border), transparent)' }}></div>
+        <div className="timeline-track absolute left-[30px] md:left-[35px] top-10 bottom-10 w-[3px] shadow-[0_0_15px_var(--accent-purple-glow)]" style={{ background: 'linear-gradient(to bottom, transparent, var(--accent-purple), transparent)', opacity: 0.6 }}></div>
         
         <div className="flex flex-col gap-16">
           {timelineData.map((yearGroup, yIndex) => {
@@ -125,24 +125,27 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
               
               {/* Yearly Marker (e.g. "2026" + Glowing Dot) */}
               <div
-                className="absolute left-0 top-3 flex items-center w-[60px] md:w-[84px] justify-between pr-[8px] md:pr-[12px] backdrop-blur-md z-30 py-1.5 rounded-r-md transition-all duration-500"
+                className="absolute left-0 top-3 flex items-center w-[50px] md:w-[60px] justify-between pr-[4px] md:pr-[6px] backdrop-blur-md z-30 py-1.5 rounded-r-md transition-all duration-500"
                 style={{ backgroundColor: 'var(--bg-base-95)' }}
               >
                 <span
-                  className="text-[15px] font-mono tracking-widest font-bold transition-all duration-500"
-                  style={{ color: isYearActive ? 'var(--accent-purple)' : 'var(--text-primary)', textShadow: isYearActive ? '0 0 12px var(--accent-purple-glow)' : 'none' }}
+                  className="timeline-year-label text-[10px] md:text-[12px] font-mono tracking-tighter font-bold transition-all duration-500"
+                  style={{ 
+                    color: isYearActive ? 'var(--accent-purple)' : 'var(--text-primary)', 
+                    textShadow: isYearActive ? '0 0 15px var(--accent-purple-glow)' : 'none',
+                  }}
                 >
-                  {yearGroup.year}
+                  '{yearGroup.year.slice(2)}
                 </span>
                 {/* Dot — glow when year is active */}
                 <div className="relative flex justify-center items-center">
                   <div
-                    className={`w-[8px] h-[8px] rounded-full transition-all duration-500 ${isYearActive ? 'scale-125' : ''}`}
+                    className={`timeline-dot w-[10px] h-[10px] rounded-full transition-all duration-500 ${isYearActive ? 'scale-150' : ''}`}
                     style={{
                       backgroundColor: 'var(--accent-purple)',
                       boxShadow: isYearActive
-                        ? '0 0 0 4px var(--accent-purple-faint), 0 0 18px var(--accent-purple-glow)'
-                        : '0 0 8px rgba(57,255,20,0.3)'
+                        ? '0 0 0 5px var(--accent-purple-faint), 0 0 25px var(--accent-purple-glow)'
+                        : '0 0 12px var(--accent-purple-glow)'
                     }}
                   />
                 </div>
@@ -170,7 +173,7 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
                     >
                     {/* Role heading — click navigates to /experience#slug */}
                       <div 
-                        className={`pl-16 md:pl-[110px] py-7 pr-6 transition-all duration-300 group/row flex items-center justify-between border-l-2 ${
+                        className={`pl-10 md:pl-[50px] py-7 pr-2 transition-all duration-300 group/row flex items-center justify-between border-l-2 ${
                           isActive ? 'bg-[color:var(--accent-purple-faint)]' : 'border-transparent'
                         }`}
                         style={{ borderLeftColor: isActive ? 'var(--accent-purple)' : 'transparent' }}
@@ -179,11 +182,11 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
                           handleRoleClick(item);
                         }}
                       >
-                        <span className={`font-mono text-sm transition-colors duration-300 ${isActive ? 'font-bold' : 'group-hover/row:text-[color:var(--text-primary)]'}`} style={{ color: isActive ? 'var(--accent-purple)' : 'var(--text-muted)' }}>
+                        <span className={`timeline-role-label font-mono text-sm transition-colors duration-300 ${isActive ? 'font-bold' : 'group-hover/row:text-[color:var(--text-primary)]'}`} style={{ color: isActive ? 'var(--accent-purple)' : 'var(--text-muted)' }}>
                           {item.role}
                         </span>
                         {/* Nav arrow — visible on hover or active */}
-                        <span className={`font-mono text-[10px] transition-all duration-300 ${
+                        <span className={`timeline-nav-arrow font-mono text-[10px] transition-all duration-300 ${
                           isActive
                             ? 'translate-x-0 opacity-100'
                             : '-translate-x-1 opacity-0 group-hover/row:translate-x-0 group-hover/row:opacity-60'
@@ -241,7 +244,8 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
               </div>
 
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

@@ -78,61 +78,34 @@ function ImageMarquee({ images }) {
 }
 
 // ============================================================================
-// COMPONENT: CollapsibleTimelineSidebar
-// Right-side sticky sidebar — expanded = full timeline, collapsed = slim bar
-// with vertical writing-mode labels (OVERVIEW, 2026, 2025…) like LeetCode
+// COMPONENT: SlimSidebar
+// Integrated 80px sidebar with vertical labels (LeetCode style)
 // ============================================================================
-function CollapsibleTimelineSidebar({ activeYear }) {
-  const [collapsed, setCollapsed] = useState(false)
-
-  // Years derived from data for the slim bar labels
+function SlimSidebar({ activeYear, onYearClick }) {
   const years = timelineData.map(g => g.year)
 
   return (
-    <aside
-      className={`exp-sidebar ${collapsed ? 'exp-sidebar--collapsed' : 'exp-sidebar--expanded'}`}
-      aria-label="Experience timeline sidebar"
-    >
-      {/* ── Toggle button ─────────────────────────────────────────────── */}
-      <button
-        className="exp-sidebar__toggle"
-        onClick={() => setCollapsed(c => !c)}
-        title={collapsed ? 'Expand timeline' : 'Collapse timeline'}
-        aria-expanded={!collapsed}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={`exp-sidebar__toggle-icon ${collapsed ? 'exp-sidebar__toggle-icon--flipped' : ''}`}
+    <aside className="exp-sidebar-new">
+      <div className="exp-sidebar-new__inner">
+        {/* Overview Label */}
+        <div 
+          className="exp-sidebar-new__item"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          <path d="M10 3L6 8l4 5" />
-        </svg>
-      </button>
+          <span className="exp-sidebar-new__label exp-sidebar-new__label--overview">OVERVIEW</span>
+        </div>
 
-      {/* ── EXPANDED: full timeline ────────────────────────────────────── */}
-      <div className="exp-sidebar__full">
-        <h3 className="exp-sidebar__heading">Timeline Overview</h3>
-        <Timeline isMobileMode={false} activeYear={activeYear} />
-      </div>
-
-      {/* ── COLLAPSED: slim vertical label bar ───────────────────────── */}
-      <div className="exp-sidebar__slim" onClick={() => setCollapsed(false)}>
-        <div className="exp-sidebar__slim-inner">
-          <span className="exp-sidebar__slim-label exp-sidebar__slim-label--title">
-            OVERVIEW
-          </span>
+        {/* Year Labels */}
+        <div className="exp-sidebar-new__years">
           {years.map(y => (
-            <span
+            <div 
               key={y}
-              className={`exp-sidebar__slim-label ${activeYear === y ? 'exp-sidebar__slim-label--active' : ''}`}
+              className={`exp-sidebar-new__item ${activeYear === y ? 'exp-sidebar-new__item--active' : ''}`}
+              onClick={() => onYearClick(y)}
             >
-              {y}
-            </span>
+              <span className="exp-sidebar-new__label">{y}</span>
+              <div className="exp-sidebar-new__dot" />
+            </div>
           ))}
         </div>
       </div>
@@ -148,6 +121,14 @@ function Experience() {
   const sectionRefs = useRef({})
   const [activeYear, setActiveYear] = useState(timelineData[0]?.year ?? null)
 
+  // Scroll to year function
+  const scrollToYear = useCallback((year) => {
+    const el = document.getElementById(`year-section-${year}`)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [])
+
   // Deep-link scroll on hash
   useEffect(() => {
     const hash = location.hash?.replace('#', '')
@@ -162,14 +143,8 @@ function Experience() {
     }
   }, [location])
 
-  // IntersectionObserver — track which year is in view for timeline sync
+  // IntersectionObserver — track which year is in view
   useEffect(() => {
-    const yearEls = {}
-    timelineData.forEach(g => {
-      const el = document.getElementById(`year-section-${g.year}`)
-      if (el) yearEls[g.year] = el
-    })
-
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
@@ -179,124 +154,100 @@ function Experience() {
           }
         })
       },
-      { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
+      { rootMargin: '-20% 0px -70% 0px', threshold: 0 }
     )
 
-    Object.values(yearEls).forEach(el => observer.observe(el))
+    timelineData.forEach(g => {
+      const el = document.getElementById(`year-section-${g.year}`)
+      if (el) observer.observe(el)
+    })
+
     return () => observer.disconnect()
   }, [])
 
   return (
-    <div className="min-h-screen text-white font-mono">
+    <div className="min-h-screen text-white font-mono bg-black">
+      {/* ── Adjacent Layout: Content | Sidebar ─────────────────────── */}
+      <div className="exp-container">
+        
+        {/* Main Content Area */}
+        <main className="exp-content">
+          <div className="exp-content__inner">
+            {/* Page Header */}
+            <header className="exp-header">
+              <p className="exp-header__eyebrow">portfolio / experience</p>
+              <h1 className="exp-header__title">every chapter<span className="exp-header__cursor">_</span></h1>
+              <p className="exp-header__sub">
+                a detailed look at every role, team, and community i've been part of —
+                from founding startups to leading campus chapters.
+              </p>
+            </header>
 
-      {/* Page Header */}
-      <div className="max-w-[1800px] mx-auto px-6 md:px-12">
-        <div className="success-header">
-          <p className="success-header__eyebrow">portfolio / experience</p>
-          <h1 className="success-header__title">every chapter<span className="success-header__cursor">_</span></h1>
-          <p className="success-header__sub">
-            a detailed look at every role, team, and community i've been part of —
-            from founding startups to leading campus chapters.
-          </p>
-        </div>
-      </div>
-
-      {/* ── Two-column layout: content + right sidebar ─────────────────────── */}
-      <div className="exp-layout">
-
-        {/* Main Content */}
-        <main className="exp-layout__content">
-          {timelineData.map((yearGroup, groupIndex) => (
-            <div
-              key={yearGroup.year}
-              id={`year-section-${yearGroup.year}`}
-              data-year={yearGroup.year}
-              className="mb-16"
-            >
-              {/* Year Header */}
-              <div className="flex items-center gap-4 mb-8">
-                <div className="relative">
-                  <span className="text-2xl md:text-3xl font-bold text-white tracking-widest">
-                    {yearGroup.year}
-                  </span>
-                  {groupIndex === 0 && (
-                    <div className="absolute -right-3 -top-1 w-2 h-2 rounded-full animate-pulse shadow-sm" style={{ backgroundColor: 'var(--accent-purple)' }} />
-                  )}
+            {/* Content Groups */}
+            {timelineData.map((yearGroup, groupIndex) => (
+              <div
+                key={yearGroup.year}
+                id={`year-section-${yearGroup.year}`}
+                data-year={yearGroup.year}
+                className="exp-year-group"
+              >
+                {/* Year Marker */}
+                <div className="exp-year-marker">
+                  <span className="exp-year-marker__text">{yearGroup.year}</span>
+                  <div className="exp-year-marker__line" />
                 </div>
-                <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, var(--border-subtle), transparent)' }} />
-              </div>
 
-              {/* Role Cards */}
-              <div className="flex flex-col gap-6 pl-2 md:pl-4">
-                {yearGroup.items.map((item) => (
-                  <section
-                    key={item.id}
-                    id={item.slug}
-                    ref={el => sectionRefs.current[item.slug] = el}
-                    className="group relative border rounded-2xl p-10 md:p-14 transition-all duration-700 overflow-hidden"
-                    style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}
-                  >
-                    {/* Ambient glow on hover */}
-                    <div className="absolute top-0 right-0 w-40 h-40 blur-[60px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ backgroundColor: 'var(--accent-purple-faint)' }} />
+                {/* Role Cards */}
+                <div className="exp-cards">
+                  {yearGroup.items.map((item) => (
+                    <section
+                      key={item.id}
+                      id={item.slug}
+                      ref={el => sectionRefs.current[item.slug] = el}
+                      className="exp-card group"
+                    >
+                      <div className="exp-card__glow" />
+                      <div className="relative z-10">
+                        <header className="exp-card__header">
+                          <h2 className="exp-card__role">{item.role}</h2>
+                          <span className="exp-card__date">{item.date}</span>
+                        </header>
 
-                    <div className="relative z-10">
-                      {/* Role Header */}
-                      <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-4 mb-8">
-                        <h2 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight" style={{ color: 'var(--text-primary)' }}>
-                          {item.role}
-                        </h2>
-                        <span className="text-[11px] md:text-xs font-mono tracking-widest uppercase opacity-70" style={{ color: 'var(--text-muted)' }}>
-                          {item.date}
-                        </span>
+                        <div className="exp-card__company">
+                          <span className="exp-card__dot" />
+                          {item.website ? (
+                            <a href={item.website} target="_blank" rel="noopener noreferrer" className="exp-company-link">
+                              {item.company}
+                              <svg className="exp-company-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 10L10 2M10 2H5M10 2v5" /></svg>
+                            </a>
+                          ) : item.company}
+                        </div>
+
+                        <ul className="exp-card__bullets">
+                          {item.bullets.map((bullet, i) => (
+                            <li key={i} className="exp-card__bullet">
+                              <span className="exp-card__bullet-slash">/</span>
+                              <span>{bullet}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <ImageMarquee images={item.images} />
                       </div>
-
-                      {/* Company */}
-                      <p className="text-sm mb-8 flex items-center gap-2 font-light" style={{ color: 'var(--text-secondary)' }}>
-                        <span className="w-1.5 h-1.5 rounded-full inline-block shrink-0" style={{ backgroundColor: 'var(--accent-purple-border)' }} />
-                        {item.website ? (
-                          <a
-                            href={item.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={e => e.stopPropagation()}
-                            className="company-link brightness-125"
-                          >
-                            {item.company}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="company-link-icon">
-                              <path d="M2 10L10 2M10 2H5M10 2v5" />
-                            </svg>
-                          </a>
-                        ) : item.company}
-                      </p>
-
-                      <div className="border-t mb-5" style={{ borderColor: 'var(--border-subtle)' }} />
-
-                      {/* Bullets */}
-                      <ul className="flex flex-col gap-6 mb-12">
-                        {item.bullets.map((bullet, i) => (
-                          <li key={i} className="flex items-start text-sm md:text-base leading-relaxed font-light" style={{ color: 'var(--text-secondary)' }}>
-                            <span className="mr-5 mt-[10px] text-[10px]" style={{ color: 'var(--accent-purple-border)' }}>/</span>
-                            <span>{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <ImageMarquee images={item.images} />
-                    </div>
-                  </section>
-                ))}
+                    </section>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          <div className="mt-12 pt-8 border-t text-center" style={{ borderColor: 'var(--border-subtle)' }}>
-            <p className="text-xs italic" style={{ color: 'var(--text-muted)' }}>and the story continues...</p>
+            <footer className="exp-footer">
+              <p>and the story continues...</p>
+            </footer>
           </div>
         </main>
 
-        {/* Right Sidebar — Desktop only */}
-        <CollapsibleTimelineSidebar activeYear={activeYear} />
-
+        {/* Sticky Integrated Sidebar */}
+        <SlimSidebar activeYear={activeYear} onYearClick={scrollToYear} />
       </div>
     </div>
   )
