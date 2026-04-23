@@ -4,7 +4,7 @@ import { useTheme } from '../ThemeContext'
 
 function Navbar({ onOpenTerminal }) {
   const location = useLocation()
-  const { theme, toggle } = useTheme()
+  const { theme, toggleTheme } = useTheme()
 
   // Helper to detect an active route
   const isActive = (path) => {
@@ -13,7 +13,7 @@ function Navbar({ onOpenTerminal }) {
   }
 
   const linkClass = (path) =>
-    `hover:text-[color:var(--accent-purple)] transition-colors whitespace-nowrap ${isActive(path) ? 'text-[color:var(--accent-purple)] font-bold' : ''}`
+    `hover:text-[color:var(--accent)] transition-colors whitespace-nowrap ${isActive(path) ? 'text-[color:var(--accent)] font-bold' : ''}`
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] backdrop-blur-xl border-b" style={{ backgroundColor: 'var(--bg-navbar)', borderColor: 'var(--border-subtle)' }}>
@@ -24,10 +24,10 @@ function Navbar({ onOpenTerminal }) {
           to="/" 
           className="group flex flex-col justify-center shrink-0"
         >
-          <span className="group-hover:text-[color:var(--accent-purple)] transition-colors font-bold tracking-tighter text-lg md:text-xl uppercase leading-none" style={{ color: 'var(--text-primary)' }}>
+          <span className="group-hover:text-[color:var(--accent)] transition-colors font-bold tracking-tighter text-lg md:text-xl uppercase leading-none" style={{ color: 'var(--text-primary)' }}>
             ishan kumar
           </span>
-          <span className="text-[9px] md:text-[10px] font-mono tracking-widest mt-1 opacity-60 group-hover:opacity-100 group-hover:text-[color:var(--accent-purple)] transition-all" style={{ color: 'var(--text-secondary)' }}>
+          <span className="text-[9px] md:text-[10px] font-mono tracking-widest mt-1 opacity-60 group-hover:opacity-100 group-hover:text-[color:var(--accent)] transition-all" style={{ color: 'var(--text-secondary)' }}>
             @ishankumax
           </span>
         </Link>
@@ -36,7 +36,7 @@ function Navbar({ onOpenTerminal }) {
         <div className="hidden md:flex items-center gap-6 lg:gap-8 text-gray-500 text-sm">
           <Link to="/insights" className={linkClass('/insights')}>[i] insights</Link>
           <Link to="/success" className={linkClass('/success')}>[s] success</Link>
-          <Link to="/#highlights" className="hover:text-[color:var(--accent-purple)] transition-colors whitespace-nowrap">[h] highlights</Link>
+          <Link to="/#highlights" className="hover:text-[color:var(--accent)] transition-colors whitespace-nowrap">[h] highlights</Link>
           <Link to="/about" className={linkClass('/about')}>[a] about me</Link>
           <Link to="/network" className={linkClass('/network')}>[n] network</Link>
           <Link to="/experience" className={linkClass('/experience')}>[x] experience</Link>
@@ -48,9 +48,9 @@ function Navbar({ onOpenTerminal }) {
           {/* Day / Night toggle */}
           <button
             id="theme-toggle"
-            onClick={toggle}
+            onClick={toggleTheme}
             title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="relative w-8 h-8 flex items-center justify-center rounded-full hover:text-[color:var(--accent-purple)] transition-colors cursor-pointer"
+            className="relative w-8 h-8 flex items-center justify-center rounded-full hover:text-[color:var(--accent)] transition-colors cursor-pointer"
             style={{ color: 'var(--text-secondary)' }}
             aria-label="Toggle theme"
           >
@@ -98,12 +98,12 @@ function Navbar({ onOpenTerminal }) {
           {/* Terminal button */}
           <button
             onClick={onOpenTerminal}
-            className="flex items-center gap-1.5 hover:text-[color:var(--accent-purple)] transition-colors cursor-pointer group"
+            className="flex items-center gap-1.5 hover:text-[color:var(--accent)] transition-colors cursor-pointer group"
             style={{ color: 'var(--text-secondary)' }}
           >
-            <span className="group-hover:text-[color:var(--accent-purple)] transition-colors">[</span>
-            <span className="font-mono group-hover:text-[color:var(--accent-purple)] transition-colors">{'>'}_</span>
-            <span className="group-hover:text-[color:var(--accent-purple)] transition-colors">]</span>
+            <span className="group-hover:text-[color:var(--accent)] transition-colors">[</span>
+            <span className="font-mono group-hover:text-[color:var(--accent)] transition-colors">{'>'}_</span>
+            <span className="group-hover:text-[color:var(--accent)] transition-colors">]</span>
             <span className="hidden sm:inline ml-0.5 transition-colors">terminal</span>
           </button>
         </div>

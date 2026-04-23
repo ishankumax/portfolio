@@ -7,7 +7,7 @@ import About from './components/About'
 import Insights from './components/Insights'
 import Experience from './components/Experience'
 import Network from './components/Network'
-import Navbar from './components/Navbar'
+import MainLayout from './components/layout/MainLayout'
 import Terminal, { useTerminal } from './components/Terminal'
 import ScrollToTop from './components/ScrollToTop'
 import { ThemeProvider } from './ThemeContext'
@@ -20,16 +20,11 @@ function AppInner() {
     <Router>
       <ScrollToTop />
 
-      <div className="min-h-screen font-mono scroll-smooth overflow-x-hidden" id="app-root">
-        
-        {/* Global Navigation */}
-        <Navbar onOpenTerminal={() => setTerminalOpen(true)} />
-
+      <div className="min-h-screen scroll-smooth overflow-x-hidden" id="app-root">
         {/* Global Terminal Overlay */}
         {terminalOpen && <Terminal onClose={() => setTerminalOpen(false)} />}
 
-        {/* Content Area — increased top padding for mobile to accommodate two-row fixed Navbar */}
-        <div className="pt-36 md:pt-32">
+        <MainLayout onOpenTerminal={() => setTerminalOpen(true)}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/success" element={<Success />} />
@@ -39,8 +34,7 @@ function AppInner() {
             <Route path="/network" element={<Network />} />
             <Route path="/contact" element={<Network />} />
           </Routes>
-        </div>
-
+        </MainLayout>
       </div>
     </Router>
   )

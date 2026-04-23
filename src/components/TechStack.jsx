@@ -37,13 +37,13 @@ function SkillBar({ name, level }) {
   return (
     <div className="group">
       <div className="flex justify-between items-center mb-1.5">
-        <span className="text-xs font-mono group-hover:text-[color:var(--accent-purple)] transition-colors duration-300" style={{ color: 'var(--text-secondary)' }}>{name}</span>
+        <span className="text-xs font-mono group-hover:text-[color:var(--accent)] transition-colors duration-300" style={{ color: 'var(--text-secondary)' }}>{name}</span>
         <span className="text-[10px] font-mono transition-colors duration-300" style={{ color: 'var(--text-muted)' }}></span>
       </div>
       <div className="h-px rounded-full overflow-hidden" style={{ backgroundColor: 'var(--border-subtle)' }}>
         <div
           className="h-full rounded-full transition-all duration-700"
-          style={{ width: `${level}%`, backgroundColor: 'var(--accent-purple)' }}
+          style={{ width: `${level}%`, backgroundColor: 'var(--accent)' }}
         />
       </div>
     </div>
@@ -54,7 +54,7 @@ function TechStack() {
   return (
     <section className="mb-20">
       <h2 className="text-xl md:text-2xl mb-8 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-        <span className="text-xs font-mono not-italic" style={{ color: 'var(--accent-purple)' }}>#</span> tech stack
+        <span className="text-xs font-mono not-italic" style={{ color: 'var(--accent)' }}>#</span> tech stack
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

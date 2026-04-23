@@ -22,7 +22,7 @@ function Home() {
   }, [location])
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-6 pb-12 md:pb-20 relative z-10">
+    <div className="relative z-10">
       <Hero />
       <div className="space-y-32 md:space-y-40">
         <FounderOf />

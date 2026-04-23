@@ -11,20 +11,12 @@ const WEEK_DAYS   = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 const MONTHS      = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
 // Purple gradient: 0 = empty, 1 = low, 2 = medium, 3 = high, 4 = max
-const LEVEL_COLORS_DARK = [
-  '#161b22',      // 0: near-black (empty)
-  '#0e4429',      // 1: dark green
-  '#006d32',      // 2: medium green
-  '#26a641',      // 3: bright green
-  '#39d353',      // 4: vibrant green
-]
-
-const LEVEL_COLORS_LIGHT = [
-  '#d1d7d4ff',      // 0: empty
-  '#9be9a8',      // 1: low
-  '#40c463',      // 2: medium
-  '#30a14e',      // 3: high
-  '#216e39',      // 4: max
+const LEVEL_COLORS = [
+  'var(--gh-level-0)',
+  'var(--gh-level-1)',
+  'var(--gh-level-2)',
+  'var(--gh-level-3)',
+  'var(--gh-level-4)',
 ]
 
 const LEVEL_LABELS = ['No activity', 'Low', 'Medium', 'High', 'Peak']
@@ -55,9 +47,7 @@ export default function GitHubActivity() {
   const containerRef                    = useRef(null)
   
   // Theme-aware colors
-  const { theme }                  = useTheme()
-  const isDark                          = theme !== 'light'
-  const levelColors                     = isDark ? LEVEL_COLORS_DARK : LEVEL_COLORS_LIGHT
+  const levelColors = LEVEL_COLORS
 
   // ── Fetch ──
   const fetchData = useCallback(async (year) => {
@@ -133,7 +123,7 @@ export default function GitHubActivity() {
   }
 
   return (
-    <section className="mt-20 mb-16 pt-16 border-t border-[color:var(--accent-purple)]/10 max-w-4xl mx-auto px-4 md:px-6 w-full overflow-hidden">
+    <section className="mt-20 mb-16 pt-16 border-t border-[color:var(--accent)]/10 w-full overflow-hidden">
       {/* ── Header Row ── */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-3 group cursor-default">
@@ -143,10 +133,10 @@ export default function GitHubActivity() {
             style={{ color: 'var(--text-muted)' }}
           />
           <h2 className="text-xs md:text-sm font-mono uppercase tracking-[0.2em] group-hover:text-[color:var(--text-primary)] transition-colors duration-300" style={{ color: 'var(--text-muted)' }}>
-            <span className="not-italic" style={{ color: 'var(--accent-purple)' }}>#</span> Commit Activity
+            <span className="not-italic" style={{ color: 'var(--accent)' }}>#</span> Commit Activity
           </h2>
           {!loading && !error && (
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full" style={{ color: 'var(--accent-purple)', backgroundColor: 'var(--accent-purple-faint)', border: '1px solid var(--accent-purple-border)' }}>
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full" style={{ color: 'var(--accent)', backgroundColor: 'var(--accent-faint)', border: '1px solid var(--accent-border)' }}>
               {total}
             </span>
           )}
@@ -160,7 +150,7 @@ export default function GitHubActivity() {
               onClick={() => setSelectedYear(yr)}
               className={`px-3 py-1 text-[10px] md:text-[11px] font-mono rounded-lg transition-all duration-200 ${
                 selectedYear === yr
-                  ? 'bg-[color:var(--accent-purple)] text-white font-bold'
+                  ? 'bg-[color:var(--accent)] text-white font-bold'
                   : ''
               }`}
               style={{ color: selectedYear === yr ? '' : 'var(--text-muted)' }}
@@ -178,17 +168,17 @@ export default function GitHubActivity() {
         style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-card)' }}
       >
         {/* Ambient glow */}
-        <div className="absolute -top-16 -right-16 w-60 h-60 blur-[80px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ backgroundColor: 'var(--accent-purple-faint)' }} />
+        <div className="absolute -top-16 -right-16 w-60 h-60 blur-[80px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ backgroundColor: 'var(--accent-faint)' }} />
 
         {/* ── Loading/Error/Graph ── */}
         {loading ? (
           <div className="flex items-center justify-center py-10">
-            <div className="w-5 h-5 border-2 rounded-full animate-spin" style={{ borderColor: 'var(--accent-purple-faint)', borderTopColor: 'var(--accent-purple)' }} />
+            <div className="w-5 h-5 border-2 rounded-full animate-spin" style={{ borderColor: 'var(--accent-faint)', borderTopColor: 'var(--accent)' }} />
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-10 gap-3">
             <p className="text-[11px] font-mono" style={{ color: 'var(--text-muted)' }}>failed to fetch activity.</p>
-            <button onClick={() => fetchData(selectedYear)} className="text-[10px] hover:underline" style={{ color: 'var(--accent-purple)' }}>retry</button>
+            <button onClick={() => fetchData(selectedYear)} className="text-[10px] hover:underline" style={{ color: 'var(--accent)' }}>retry</button>
           </div>
         ) : (
           <div className="overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing">
@@ -261,15 +251,15 @@ export default function GitHubActivity() {
               transform: 'translateX(-50%)',
               whiteSpace: 'nowrap',
               backgroundColor: 'var(--bg-elevated)',
-              borderColor: 'var(--accent-purple-border)',
+              borderColor: 'var(--accent-border)',
               color: 'var(--text-primary)',
             }}
           >
-            <span className="font-bold" style={{ color: 'var(--accent-purple)' }}>{tooltip.count} commit{tooltip.count !== 1 ? 's' : ''}</span>
+            <span className="font-bold" style={{ color: 'var(--accent)' }}>{tooltip.count} commit{tooltip.count !== 1 ? 's' : ''}</span>
             <span className="mx-1" style={{ color: 'var(--text-muted)' }}>·</span>
             <span style={{ color: 'var(--text-muted)' }}>{formatDate(tooltip.date)}</span>
             {/* Arrow */}
-            <div className="absolute bottom-[-5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 border-b border-r rotate-45" style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--accent-purple-border)' }} />
+            <div className="absolute bottom-[-5px] left-1/2 -translate-x-1/2 w-2.5 h-2.5 border-b border-r rotate-45" style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--accent-border)' }} />
           </div>
         )}
 

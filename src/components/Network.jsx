@@ -87,37 +87,34 @@ function ContactCard({ item }) {
 
 function Network() {
   return (
-    <div className="min-h-screen text-white font-mono">
-      {/* Page Content */}
-      <div className="max-w-2xl mx-auto px-6 pt-4 md:pt-0 pb-24">
-        {/* Header */}
-        <div className="success-header">
-          <p className="success-header__eyebrow">portfolio / network</p>
-          <h1 className="success-header__title">let's connect<span className="success-header__cursor">_</span></h1>
-          <p className="success-header__sub">
-            building bridges across tech, design, and startups.
-            reach out for collaborations, coffee chats, or just to say hi.
-          </p>
-        </div>
-
-        {/* Status indicator */}
-        <div className="flex items-center gap-2 mb-10 p-3 border rounded-lg w-fit" style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-card)' }}>
-          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--accent-purple)' }} />
-          <span className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>open for networking</span>
-        </div>
-
-        {/* Contact links */}
-        <div className="flex flex-col gap-3">
-          {CONTACT_LINKS.map((item) => (
-            <ContactCard key={item.label} item={item} />
-          ))}
-        </div>
-
-        {/* Footer note */}
-        <p className="mt-12 text-xs text-center" style={{ color: 'var(--text-muted)' }}>
-          i'm most active on twitter and linkedin — let's connect.
+    <div className="relative z-10">
+      {/* Header */}
+      <div className="page-header">
+        <p className="page-header__eyebrow">portfolio / network</p>
+        <h1 className="page-header__title">let's connect<span className="page-header__cursor">_</span></h1>
+        <p className="page-header__sub">
+          building bridges across tech, design, and startups.
+          reach out for collaborations, coffee chats, or just to say hi.
         </p>
       </div>
+
+      {/* Status indicator */}
+      <div className="flex items-center gap-2 mb-10 p-3 border rounded-lg w-fit" style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-card)' }}>
+        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: 'var(--accent)' }} />
+        <span className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>open for networking</span>
+      </div>
+
+      {/* Contact links */}
+      <div className="flex flex-col gap-3">
+        {CONTACT_LINKS.map((item) => (
+          <ContactCard key={item.label} item={item} />
+        ))}
+      </div>
+
+      {/* Footer note */}
+      <p className="mt-12 text-xs text-left" style={{ color: 'var(--text-muted)' }}>
+        i'm most active on twitter and linkedin — let's connect.
+      </p>
     </div>
   )
 }

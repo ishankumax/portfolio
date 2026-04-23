@@ -115,7 +115,7 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
       
       <div className="relative flex flex-col w-full">
         {/* The single vertical timeline track — centered precisely with the dots */}
-        <div className="timeline-track absolute left-[30px] md:left-[35px] top-10 bottom-10 w-[3px] shadow-[0_0_15px_var(--accent-purple-glow)]" style={{ background: 'linear-gradient(to bottom, transparent, var(--accent-purple), transparent)', opacity: 0.6 }}></div>
+        <div className="timeline-track absolute left-[30px] md:left-[35px] top-10 bottom-10 w-[3px] shadow-[0_0_15px_var(--accent-glow)]" style={{ background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)', opacity: 0.6 }}></div>
         
         <div className="flex flex-col gap-16">
           {timelineData.map((yearGroup, yIndex) => {
@@ -131,8 +131,8 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
                 <span
                   className="timeline-year-label text-[10px] md:text-[12px] font-mono tracking-tighter font-bold transition-all duration-500"
                   style={{ 
-                    color: isYearActive ? 'var(--accent-purple)' : 'var(--text-primary)', 
-                    textShadow: isYearActive ? '0 0 15px var(--accent-purple-glow)' : 'none',
+                    color: isYearActive ? 'var(--accent)' : 'var(--text-primary)', 
+                    textShadow: isYearActive ? '0 0 15px var(--accent-glow)' : 'none',
                   }}
                 >
                   '{yearGroup.year.slice(2)}
@@ -142,10 +142,10 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
                   <div
                     className={`timeline-dot w-[10px] h-[10px] rounded-full transition-all duration-500 ${isYearActive ? 'scale-150' : ''}`}
                     style={{
-                      backgroundColor: 'var(--accent-purple)',
+                      backgroundColor: 'var(--accent)',
                       boxShadow: isYearActive
-                        ? '0 0 0 5px var(--accent-purple-faint), 0 0 25px var(--accent-purple-glow)'
-                        : '0 0 12px var(--accent-purple-glow)'
+                        ? '0 0 0 5px var(--accent-faint), 0 0 25px var(--accent-glow)'
+                        : '0 0 12px var(--accent-glow)'
                     }}
                   />
                 </div>
@@ -174,15 +174,15 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
                     {/* Role heading — click navigates to /experience#slug */}
                       <div 
                         className={`pl-10 md:pl-[50px] py-7 pr-2 transition-all duration-300 group/row flex items-center justify-between border-l-2 ${
-                          isActive ? 'bg-[color:var(--accent-purple-faint)]' : 'border-transparent'
+                          isActive ? 'bg-[color:var(--accent-faint)]' : 'border-transparent'
                         }`}
-                        style={{ borderLeftColor: isActive ? 'var(--accent-purple)' : 'transparent' }}
+                        style={{ borderLeftColor: isActive ? 'var(--accent)' : 'transparent' }}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleRoleClick(item);
                         }}
                       >
-                        <span className={`timeline-role-label font-mono text-sm transition-colors duration-300 ${isActive ? 'font-bold' : 'group-hover/row:text-[color:var(--text-primary)]'}`} style={{ color: isActive ? 'var(--accent-purple)' : 'var(--text-muted)' }}>
+                        <span className={`timeline-role-label font-mono text-sm transition-colors duration-300 ${isActive ? 'font-bold' : 'group-hover/row:text-[color:var(--text-primary)]'}`} style={{ color: isActive ? 'var(--accent)' : 'var(--text-muted)' }}>
                           {item.role}
                         </span>
                         {/* Nav arrow — visible on hover or active */}
@@ -190,7 +190,7 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
                           isActive
                             ? 'translate-x-0 opacity-100'
                             : '-translate-x-1 opacity-0 group-hover/row:translate-x-0 group-hover/row:opacity-60'
-                        }`} style={{ color: isActive ? 'var(--accent-purple)' : 'var(--text-muted)' }}>
+                        }`} style={{ color: isActive ? 'var(--accent)' : 'var(--text-muted)' }}>
                           →
                         </span>
                       </div>
@@ -201,7 +201,7 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
                           
                           <div className="ml-16 md:ml-[110px] mr-4 md:mr-0 mb-10 mt-2 backdrop-blur-xl border rounded-2xl p-6 md:p-10 shadow-2xl relative overflow-hidden" style={{ backgroundColor: 'var(--bg-base-95)', borderColor: 'var(--border-card)' }}>
                             
-                            <div className="absolute top-0 right-0 w-48 h-48 blur-[50px] rounded-full pointer-events-none" style={{ backgroundColor: 'var(--accent-purple-faint)' }}></div>
+                            <div className="absolute top-0 right-0 w-48 h-48 blur-[50px] rounded-full pointer-events-none" style={{ backgroundColor: 'var(--accent-faint)' }}></div>
 
                             <div className="relative z-10">
                               <h3 className="font-semibold tracking-widest text-[11px] uppercase opacity-70 mb-4" style={{ color: 'var(--text-muted)' }}>{item.company}</h3>
@@ -214,7 +214,7 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
                               <ul className="flex flex-col gap-6 mb-8">
                                 {item.bullets.map((bullet, i) => (
                                   <li key={i} className="flex items-start text-sm leading-relaxed font-sans" style={{ color: 'var(--text-secondary)' }}>
-                                    <span className="mr-4 mt-[6px] opacity-60 text-xs" style={{ color: 'var(--accent-purple)' }}>/</span>
+                                    <span className="mr-4 mt-[6px] opacity-60 text-xs" style={{ color: 'var(--accent)' }}>/</span>
                                     <span>{bullet}</span>
                                   </li>
                                 ))}
@@ -226,7 +226,7 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
                                   e.stopPropagation();
                                   handleRoleClick(item);
                                 }}
-                                className="mt-8 text-[11px] font-mono hover:text-[color:var(--accent-purple)] transition-colors flex items-center gap-2 group/link uppercase tracking-widest"
+                                className="mt-8 text-[11px] font-mono hover:text-[color:var(--accent)] transition-colors flex items-center gap-2 group/link uppercase tracking-widest"
                                 style={{ color: 'var(--text-muted)' }}
                               >
                                 <span>view details</span>

@@ -1,52 +1,47 @@
 import React from 'react'
-import { FaInstagram, FaLinkedin, FaXTwitter, FaGithub } from 'react-icons/fa6'
+import { FaLinkedin, FaXTwitter, FaGithub, FaInstagram } from 'react-icons/fa6'
 
+/**
+ * Hero Component
+ * Follows the normalized left-aligned header pattern.
+ */
 function Hero() {
   return (
-    <div className="flex flex-col md:flex-row gap-10 md:gap-16 mb-24 items-center md:items-start px-2 md:px-0">
-      {/* Profile Image */}
-      <div className="shrink-0">
-        <img 
-          src="/pfp.jpg" 
-          alt="Ishan Kumar" 
-          className="w-40 h-40 md:w-52 md:h-52 rounded-2xl object-cover grayscale hover:grayscale-0 transition-all duration-300 shadow-2xl shadow-white/5"
-        />
-      </div>
- 
-      {/* Profile Content */}
-      <div className="flex-1 text-center md:text-left min-w-0">
-        <p className="success-header__eyebrow mb-2">portfolio / home</p>
-        <h1 className="text-4xl md:text-6xl mb-2 tracking-tight">ishan kumar<span className="success-header__cursor">_</span></h1>
-        <p className="font-mono text-sm mb-6 lowercase tracking-wider opacity-90" style={{ color: 'var(--accent-purple)' }}>@ishankumax</p>
-        
-        <div className="flex items-center justify-center md:justify-start gap-4 mb-8">
-          <a href="https://github.com/ishankumax" target="_blank" rel="noopener noreferrer"
-            className="p-3 border rounded-xl hover:bg-[color:var(--accent-purple)] hover:text-black transition-all duration-300"
-            style={{ color: 'var(--text-secondary)', borderColor: 'var(--border-subtle)' }}>
-            <FaGithub size={20} />
-          </a>
-          <a href="https://www.linkedin.com/in/ishankumax/" target="_blank" rel="noopener noreferrer"
-            className="p-3 border rounded-xl hover:bg-[color:var(--accent-purple)] hover:text-black transition-all duration-300"
-            style={{ color: 'var(--text-secondary)', borderColor: 'var(--border-subtle)' }}>
-            <FaLinkedin size={20} />
-          </a>
-          <a href="https://x.com/ishankumax" target="_blank" rel="noopener noreferrer"
-            className="p-3 border rounded-xl hover:bg-[color:var(--accent-purple)] hover:text-black transition-all duration-300"
-            style={{ color: 'var(--text-secondary)', borderColor: 'var(--border-subtle)' }}>
-            <FaXTwitter size={20} />
-          </a>
-          <a href="https://www.instagram.com/ishankumax/" target="_blank" rel="noopener noreferrer"
-            className="p-3 border rounded-xl hover:bg-[color:var(--accent-purple)] hover:text-black transition-all duration-300"
-            style={{ color: 'var(--text-secondary)', borderColor: 'var(--border-subtle)' }}>
-            <FaInstagram size={20} />
-          </a>
-        </div>
- 
-        <p className="leading-relaxed text-base md:text-lg max-w-xl" style={{ color: 'var(--text-secondary)' }}>
-          i'm a 20 y/o cs undergrad. i love building businesses and solving problems. interested in growth, startups, networking and infra. when i'm not cooking stuff, i'm prolly locking another client for my business - <span className="border-b" style={{ color: 'var(--text-primary)', borderColor: 'var(--accent-purple-border)' }}>inthebox.</span>
+    <section className="relative mb-24 md:mb-32">
+      {/* Header Pattern */}
+      <div className="mb-10">
+        <p className="text-[10px] uppercase tracking-[0.3em] font-mono mb-4 opacity-50" style={{ color: 'var(--text-primary)' }}>
+          portfolio / home
+        </p>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6">
+          ishan kumar<span className="animate-pulse" style={{ color: 'var(--accent)' }}>_</span>
+        </h1>
+        <p className="text-base md:text-lg leading-relaxed max-w-2xl" style={{ color: 'var(--text-secondary)' }}>
+          20-year-old CS undergrad building software for the next billion users. 
+          founder of <span className="border-b" style={{ borderColor: 'var(--accent)' }}>InTheBox</span>, 
+          leading tech communities, and documenting the messy journey of a developer.
         </p>
       </div>
-    </div>
+
+      {/* Social Links / CTA */}
+      <div className="flex flex-wrap gap-4 text-[10px] font-mono uppercase tracking-widest items-center">
+        <a href="https://github.com/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
+          <FaGithub size={12} /> github
+        </a>
+        <span className="opacity-20">/</span>
+        <a href="https://linkedin.com/in/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
+          <FaLinkedin size={12} /> linkedin
+        </a>
+        <span className="opacity-20">/</span>
+        <a href="https://x.com/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
+          <FaXTwitter size={12} /> x.com
+        </a>
+        <span className="opacity-20">/</span>
+        <a href="mailto:ishankumax@gmail.com" className="hover:text-[var(--accent)] transition-colors">
+          email
+        </a>
+      </div>
+    </section>
   )
 }
 

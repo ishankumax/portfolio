@@ -166,89 +166,85 @@ function Experience() {
   }, [])
 
   return (
-    <div className="min-h-screen text-[var(--text-primary)] font-mono bg-[var(--bg-base)]">
-      {/* ── Adjacent Layout: Content | Sidebar ─────────────────────── */}
-      <div className="exp-container">
-        
-        {/* Main Content Area */}
-        <main className="exp-content">
-          <div className="exp-content__inner">
-            {/* Page Header */}
-            <header className="exp-header">
-              <p className="exp-header__eyebrow">portfolio / experience</p>
-              <h1 className="exp-header__title">every chapter<span className="exp-header__cursor">_</span></h1>
-              <p className="exp-header__sub">
-                a detailed look at every role, team, and community i've been part of —
-                from founding startups to leading campus chapters.
-              </p>
-            </header>
+    <div className="exp-container">
+      {/* Main Content Area */}
+      <main className="exp-content">
+        <div className="exp-content__inner">
+          {/* Unified Page Header */}
+          <header className="page-header">
+            <p className="page-header__eyebrow">portfolio / experience</p>
+            <h1 className="page-header__title">every chapter<span className="page-header__cursor">_</span></h1>
+            <p className="page-header__sub">
+              a detailed look at every role, team, and community i've been part of —
+              from founding startups to leading campus chapters.
+            </p>
+          </header>
 
-            {/* Content Groups */}
-            {timelineData.map((yearGroup, groupIndex) => (
-              <div
-                key={yearGroup.year}
-                id={`year-section-${yearGroup.year}`}
-                data-year={yearGroup.year}
-                className="exp-year-group"
-              >
-                {/* Year Marker */}
-                <div className="exp-year-marker">
-                  <span className="exp-year-marker__text">{yearGroup.year}</span>
-                  <div className="exp-year-marker__line" />
-                </div>
-
-                {/* Role Cards */}
-                <div className="exp-cards">
-                  {yearGroup.items.map((item) => (
-                    <section
-                      key={item.id}
-                      id={item.slug}
-                      ref={el => sectionRefs.current[item.slug] = el}
-                      className="exp-card group"
-                    >
-                      <div className="exp-card__glow" />
-                      <div className="relative z-10">
-                        <header className="exp-card__header">
-                          <h2 className="exp-card__role">{item.role}</h2>
-                          <span className="exp-card__date">{item.date}</span>
-                        </header>
-
-                        <div className="exp-card__company">
-                          <span className="exp-card__dot" />
-                          {item.website ? (
-                            <a href={item.website} target="_blank" rel="noopener noreferrer" className="exp-company-link">
-                              {item.company}
-                              <svg className="exp-company-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 10L10 2M10 2H5M10 2v5" /></svg>
-                            </a>
-                          ) : item.company}
-                        </div>
-
-                        <ul className="exp-card__bullets">
-                          {item.bullets.map((bullet, i) => (
-                            <li key={i} className="exp-card__bullet">
-                              <span className="exp-card__bullet-slash">/</span>
-                              <span>{bullet}</span>
-                            </li>
-                          ))}
-                        </ul>
-
-                        <ImageMarquee images={item.images} />
-                      </div>
-                    </section>
-                  ))}
-                </div>
+          {/* Content Groups */}
+          {timelineData.map((yearGroup, groupIndex) => (
+            <div
+              key={yearGroup.year}
+              id={`year-section-${yearGroup.year}`}
+              data-year={yearGroup.year}
+              className="exp-year-group"
+            >
+              {/* Year Marker */}
+              <div className="exp-year-marker">
+                <span className="exp-year-marker__text">{yearGroup.year}</span>
+                <div className="exp-year-marker__line" />
               </div>
-            ))}
 
-            <footer className="exp-footer">
-              <p>and the story continues...</p>
-            </footer>
-          </div>
-        </main>
+              {/* Role Cards */}
+              <div className="exp-cards">
+                {yearGroup.items.map((item) => (
+                  <section
+                    key={item.id}
+                    id={item.slug}
+                    ref={el => sectionRefs.current[item.slug] = el}
+                    className="exp-card group"
+                  >
+                    <div className="exp-card__glow" />
+                    <div className="relative z-10">
+                      <header className="exp-card__header">
+                        <h2 className="exp-card__role">{item.role}</h2>
+                        <span className="exp-card__date">{item.date}</span>
+                      </header>
 
-        {/* Sticky Integrated Sidebar */}
-        <SlimSidebar activeYear={activeYear} onYearClick={scrollToYear} />
-      </div>
+                      <div className="exp-card__company">
+                        <span className="exp-card__dot" />
+                        {item.website ? (
+                          <a href={item.website} target="_blank" rel="noopener noreferrer" className="exp-company-link">
+                            {item.company}
+                            <svg className="exp-company-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 10L10 2M10 2H5M10 2v5" /></svg>
+                          </a>
+                        ) : item.company}
+                      </div>
+
+                      <ul className="exp-card__bullets">
+                        {item.bullets.map((bullet, i) => (
+                          <li key={i} className="exp-card__bullet">
+                            <span className="exp-card__bullet-icon">+</span>
+                            <span>{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <ImageMarquee images={item.images} />
+                    </div>
+                  </section>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          <footer className="exp-footer">
+            <p>and the story continues...</p>
+          </footer>
+        </div>
+      </main>
+
+      {/* Sticky Integrated Sidebar */}
+      <SlimSidebar activeYear={activeYear} onYearClick={scrollToYear} />
     </div>
   )
 }

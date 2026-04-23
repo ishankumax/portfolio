@@ -192,14 +192,14 @@ export default function Success() {
     TAB_LABELS.find((t) => t.key === activeTab)?.label ?? ''
 
   return (
-    <div className="success-page">
+    <>
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="success-header">
-        <p className="success-header__eyebrow">portfolio / success</p>
-        <h1 className="success-header__title">
-          proof of work<span className="success-header__cursor">_</span>
+      <div className="page-header">
+        <p className="page-header__eyebrow">portfolio / success</p>
+        <h1 className="page-header__title">
+          proof of work<span className="page-header__cursor">_</span>
         </h1>
-        <p className="success-header__sub">
+        <p className="page-header__sub">
           real milestones. visual evidence. the story behind the achievements.
         </p>
       </div>
@@ -243,6 +243,6 @@ export default function Success() {
         </div>
 
       </div>
-    </div>
+    </>
   )
 }

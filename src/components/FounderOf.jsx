@@ -36,7 +36,7 @@ function FounderOf() {
   return (
     <section className="mb-20">
       <h2 className="text-xl md:text-2xl mb-8 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-        <span className="text-xs font-mono not-italic" style={{ color: 'var(--accent-purple)' }}>#</span> founder of
+        <span className="text-xs font-mono not-italic" style={{ color: 'var(--accent)' }}>#</span> founder of
       </h2>
 
       {/* Company header */}
@@ -49,7 +49,7 @@ function FounderOf() {
           />
         </div>
 
-        <div className="flex-1 w-full text-center md:text-left">
+        <div className="flex-1 w-full text-left">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-baseline mb-2">
             <h3 className="font-bold text-2xl font-mono" style={{ color: 'var(--text-primary)' }}>InTheBox</h3>
             <span className="text-sm font-mono mt-1 md:mt-0" style={{ color: 'var(--text-muted)' }}>april 2025 - today</span>
@@ -63,7 +63,7 @@ function FounderOf() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {METRICS.map((m) => (
               <div key={m.label} className="border rounded-lg p-3 text-left transition-all duration-500 group/metric" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
-                <p className="font-bold text-lg font-mono group-hover/metric:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-primary)' }}>{m.value}</p>
+                <p className="font-bold text-lg font-mono group-hover/metric:text-[color:var(--accent)] transition-colors" style={{ color: 'var(--text-primary)' }}>{m.value}</p>
                 <p className="text-[11px] font-mono mt-0.5" style={{ color: 'var(--text-muted)' }}>{m.label}</p>
               </div>
             ))}
@@ -82,7 +82,7 @@ function FounderOf() {
             <span className="transition-colors" style={{ color: 'var(--text-muted)' }}>{'>'}</span>
             case study — how inthebox works
           </span>
-          <span className={`transition-transform duration-300 ${caseOpen ? 'rotate-180 text-[color:var(--accent-purple)]' : ''}`} style={{ color: 'var(--text-muted)' }}>
+          <span className={`transition-transform duration-300 ${caseOpen ? 'rotate-180 text-[color:var(--accent)]' : ''}`} style={{ color: 'var(--text-muted)' }}>
             ↓
           </span>
         </button>

@@ -158,7 +158,7 @@ function EssayCard({ item }) {
               <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>{item.date}</span>
               <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>· {item.readTime}</span>
             </div>
-            <h3 className="text-white font-bold text-base font-mono mb-2 group-hover:text-[color:var(--accent-purple)] transition-colors">
+            <h3 className="text-white font-bold text-base font-mono mb-2 group-hover:text-[color:var(--accent)] transition-colors">
               {item.title}
             </h3>
             <p className="text-xs leading-relaxed line-clamp-2" style={{ color: 'var(--text-secondary)' }}>
@@ -201,71 +201,69 @@ function Insights() {
   const [activeTab, setActiveTab] = useState('takes')
 
   return (
-    <div className="min-h-screen text-white font-mono">
-      <div className="max-w-2xl mx-auto px-6 pt-4 md:pt-0 pb-24">
-        {/* Header */}
-        <div className="success-header">
-          <p className="success-header__eyebrow">portfolio / insights</p>
-          <h1 className="success-header__title">what i'm thinking<span className="success-header__cursor">_</span></h1>
-          <p className="success-header__sub">
-            things i've noticed, learned, or thought too hard about — from building a startup to running communities to writing code at 2am.
-          </p>
-        </div>
-
-        {/* Tab Toggle */}
-        <div className="flex gap-1 border rounded-xl p-1 mb-10 w-fit" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-subtle)' }}>
-          <button
-            onClick={() => setActiveTab('takes')}
-            className={`px-5 py-2 rounded-lg text-xs font-mono transition-all duration-250 ${
-              activeTab === 'takes'
-                ? 'bg-[color:var(--text-primary)] text-[color:var(--bg-base)] font-bold shadow-sm'
-                : 'hover:text-[color:var(--accent-purple)]'
-            }`}
-            style={{ color: activeTab === 'takes' ? '' : 'var(--text-secondary)' }}
-          >
-            short takes
-          </button>
-          <button
-            onClick={() => setActiveTab('essays')}
-            className={`px-5 py-2 rounded-lg text-xs font-mono transition-all duration-250 ${
-              activeTab === 'essays'
-                ? 'bg-[color:var(--text-primary)] text-[color:var(--bg-base)] font-bold shadow-sm'
-                : 'hover:text-[color:var(--accent-purple)]'
-            }`}
-            style={{ color: activeTab === 'essays' ? '' : 'var(--text-secondary)' }}
-          >
-            essays
-          </button>
-        </div>
-
-        {/* Content */}
-        {activeTab === 'takes' && (
-          <div className="flex flex-col gap-4">
-            <p className="text-[11px] font-mono mb-2" style={{ color: 'var(--text-muted)' }}>
-              {SHORT_TAKES.length} observations — newest first
-            </p>
-            {SHORT_TAKES.map(item => (
-              <ShortTakeCard key={item.id} item={item} />
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'essays' && (
-          <div className="flex flex-col gap-4">
-            <p className="text-[11px] font-mono mb-2" style={{ color: 'var(--text-muted)' }}>
-              {ESSAYS.length} essays — click to expand
-            </p>
-            {ESSAYS.map(item => (
-              <EssayCard key={item.id} item={item} />
-            ))}
-          </div>
-        )}
-
-        {/* Footer note */}
-        <p className="mt-14 text-xs text-center" style={{ color: 'var(--text-muted)' }}>
-          writing more — check back soon.
+    <div className="relative z-10">
+      {/* Header */}
+      <div className="page-header">
+        <p className="page-header__eyebrow">portfolio / insights</p>
+        <h1 className="page-header__title">what i'm thinking<span className="page-header__cursor">_</span></h1>
+        <p className="page-header__sub">
+          things i've noticed, learned, or thought too hard about — from building a startup to running communities to writing code at 2am.
         </p>
       </div>
+
+      {/* Tab Toggle */}
+      <div className="flex gap-1 border rounded-xl p-1 mb-10 w-fit" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-subtle)' }}>
+        <button
+          onClick={() => setActiveTab('takes')}
+          className={`px-5 py-2 rounded-lg text-xs font-mono transition-all duration-250 ${
+            activeTab === 'takes'
+              ? 'bg-[color:var(--text-primary)] text-[color:var(--bg-base)] font-bold shadow-sm'
+              : 'hover:text-[color:var(--accent)]'
+          }`}
+          style={{ color: activeTab === 'takes' ? '' : 'var(--text-secondary)' }}
+        >
+          short takes
+        </button>
+        <button
+          onClick={() => setActiveTab('essays')}
+          className={`px-5 py-2 rounded-lg text-xs font-mono transition-all duration-250 ${
+            activeTab === 'essays'
+              ? 'bg-[color:var(--text-primary)] text-[color:var(--bg-base)] font-bold shadow-sm'
+              : 'hover:text-[color:var(--accent)]'
+          }`}
+          style={{ color: activeTab === 'essays' ? '' : 'var(--text-secondary)' }}
+        >
+          essays
+        </button>
+      </div>
+
+      {/* Content */}
+      {activeTab === 'takes' && (
+        <div className="flex flex-col gap-4">
+          <p className="text-[11px] font-mono mb-2" style={{ color: 'var(--text-muted)' }}>
+            {SHORT_TAKES.length} observations — newest first
+          </p>
+          {SHORT_TAKES.map(item => (
+            <ShortTakeCard key={item.id} item={item} />
+          ))}
+        </div>
+      )}
+
+      {activeTab === 'essays' && (
+        <div className="flex flex-col gap-4">
+          <p className="text-[11px] font-mono mb-2" style={{ color: 'var(--text-muted)' }}>
+            {ESSAYS.length} essays — click to expand
+          </p>
+          {ESSAYS.map(item => (
+            <EssayCard key={item.id} item={item} />
+          ))}
+        </div>
+      )}
+
+      {/* Footer note */}
+      <p className="mt-14 text-xs text-left" style={{ color: 'var(--text-muted)' }}>
+        writing more — check back soon.
+      </p>
     </div>
   )
 }

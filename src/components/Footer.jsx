@@ -27,22 +27,22 @@ function Footer() {
           {/* Right: Social icons */}
           <div className="flex items-center gap-3">
             <a href="https://github.com/ishankumax" target="_blank" rel="noopener noreferrer"
-              className="p-2 border rounded hover:bg-[color:var(--accent-purple)] hover:text-black transition-all duration-200"
+              className="p-2 border rounded hover:bg-[color:var(--accent)] hover:text-black transition-all duration-200"
               style={{ borderColor: 'var(--border-card)', color: 'var(--text-muted)' }}>
               <FaGithub size={16} />
             </a>
             <a href="https://www.linkedin.com/in/ishankumax/" target="_blank" rel="noopener noreferrer"
-              className="p-2 border rounded hover:bg-[color:var(--accent-purple)] hover:text-black transition-all duration-200"
+              className="p-2 border rounded hover:bg-[color:var(--accent)] hover:text-black transition-all duration-200"
               style={{ borderColor: 'var(--border-card)', color: 'var(--text-muted)' }}>
               <FaLinkedin size={16} />
             </a>
             <a href="https://x.com/ishankumax" target="_blank" rel="noopener noreferrer"
-              className="p-2 border rounded hover:bg-[color:var(--accent-purple)] hover:text-black transition-all duration-200"
+              className="p-2 border rounded hover:bg-[color:var(--accent)] hover:text-black transition-all duration-200"
               style={{ borderColor: 'var(--border-card)', color: 'var(--text-muted)' }}>
               <FaXTwitter size={16} />
             </a>
             <a href="https://www.instagram.com/ishankumax/" target="_blank" rel="noopener noreferrer"
-              className="p-2 border rounded hover:bg-[color:var(--accent-purple)] hover:text-black transition-all duration-200"
+              className="p-2 border rounded hover:bg-[color:var(--accent)] hover:text-black transition-all duration-200"
               style={{ borderColor: 'var(--border-card)', color: 'var(--text-muted)' }}>
               <FaInstagram size={16} />
             </a>
@@ -55,10 +55,10 @@ function Footer() {
             © {year} ishankumax — built with react + vite
           </p>
           <div className="flex gap-4 text-[11px] font-mono">
-            <Link to="/insights" className="hover:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-muted)' }}>insights</Link>
-            <Link to="/experience" className="hover:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-muted)' }}>experience</Link>
-            <Link to="/success" className="hover:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-muted)' }}>success</Link>
-            <Link to="/network" className="hover:text-[color:var(--accent-purple)] transition-colors" style={{ color: 'var(--text-muted)' }}>contact</Link>
+            <Link to="/insights" className="hover:text-[color:var(--accent)] transition-colors" style={{ color: 'var(--text-muted)' }}>insights</Link>
+            <Link to="/experience" className="hover:text-[color:var(--accent)] transition-colors" style={{ color: 'var(--text-muted)' }}>experience</Link>
+            <Link to="/success" className="hover:text-[color:var(--accent)] transition-colors" style={{ color: 'var(--text-muted)' }}>success</Link>
+            <Link to="/network" className="hover:text-[color:var(--accent)] transition-colors" style={{ color: 'var(--text-muted)' }}>contact</Link>
           </div>
         </div>
 

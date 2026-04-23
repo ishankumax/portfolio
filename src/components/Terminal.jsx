@@ -184,23 +184,24 @@ function Terminal({ onClose }) {
       className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm flex items-end md:items-center justify-center p-4 md:p-8"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl font-mono text-sm border" style={{ backgroundColor: '#0a0a0a', borderColor: 'rgba(255,255,255,0.1)', shadowColor: 'rgba(0,0,0,0.8)' }}>
+      <div className="w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl font-mono text-sm border" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-subtle)' }}>
         {/* Title bar */}
-        <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ backgroundColor: '#111', borderColor: 'rgba(255,255,255,0.05)' }}>
+        <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ backgroundColor: 'var(--bg-elevated)', borderColor: 'var(--border-subtle)' }}>
           <button onClick={onClose} className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
           <div className="w-3 h-3 rounded-full bg-yellow-500/40" />
           <div className="w-3 h-3 rounded-full bg-green-500/40" />
-          <span className="ml-3 text-[11px] text-gray-600 flex-1 text-center">ishankumax — portfolio terminal</span>
-          <span className="text-[10px] text-gray-700">` or Ctrl+K to close</span>
+          <span className="ml-3 text-[11px] text-[var(--text-muted)] flex-1 text-left">ishankumax — portfolio terminal</span>
+          <span className="text-[10px] text-[var(--text-muted)] opacity-50">` or Ctrl+K to close</span>
         </div>
 
         {/* Output */}
         <div
           className="h-72 md:h-96 overflow-y-auto p-4 space-y-0.5 text-[12px] leading-relaxed"
+          style={{ backgroundColor: 'var(--bg-base)' }}
           onClick={() => inputRef.current?.focus()}
         >
           {lines.map((line, i) => (
-            <div key={i} className={`whitespace-pre ${line.startsWith('ishankumax@') ? 'text-[#ffffff]' : 'text-gray-500'}`}>
+            <div key={i} className={`whitespace-pre ${line.startsWith('ishankumax@') ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}>
               {line || '\u00A0'}
             </div>
           ))}
@@ -208,14 +209,14 @@ function Terminal({ onClose }) {
         </div>
 
         {/* Input */}
-        <div className="flex items-center gap-2 px-4 py-3 border-t" style={{ backgroundColor: '#0d0d0d', borderColor: 'rgba(255,255,255,0.05)' }}>
-          <span className="text-gray-600 text-[12px] shrink-0">ishankumax@portfolio:~$</span>
+        <div className="flex items-center gap-2 px-4 py-3 border-t" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-subtle)' }}>
+          <span className="text-[12px] shrink-0" style={{ color: 'var(--accent)' }}>ishankumax@portfolio:~$</span>
           <input
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKey}
-            className="flex-1 bg-transparent text-[#ffffff] text-[12px] outline-none caret-white placeholder-gray-700"
+            className="flex-1 bg-transparent text-[var(--text-primary)] text-[12px] outline-none caret-[var(--accent)] placeholder-[var(--text-muted)]"
             placeholder="type a command..."
             autoComplete="off"
             spellCheck={false}
