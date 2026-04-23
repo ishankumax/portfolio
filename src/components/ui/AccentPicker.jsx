@@ -9,7 +9,7 @@ const AccentPicker = () => {
   const { accentColor, setAccentColor } = useTheme()
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-center gap-3">
+    <div className="fixed bottom-6 right-[96px] z-[100] flex flex-col items-center gap-3">
       <div className="flex flex-col gap-2 p-2 rounded-full border backdrop-blur-xl shadow-2xl transition-all duration-500 hover:scale-105" 
            style={{ backgroundColor: 'var(--bg-navbar)', borderColor: 'var(--border-subtle)' }}>
         {ACCENT_PALETTE.map((color) => (
