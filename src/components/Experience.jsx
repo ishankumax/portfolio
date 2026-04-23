@@ -90,7 +90,7 @@ function SlimSidebar({ activeYear, onYearClick }) {
       <div className="exp-sidebar-new__inner">
         {/* Overview Label */}
         <div 
-          className="exp-sidebar-new__item"
+          className="exp-sidebar-new__item exp-sidebar-new__item--overview"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <span className="exp-sidebar-new__label exp-sidebar-new__label--overview">OVERVIEW</span>

@@ -680,15 +680,25 @@ p {
    ============================================================================ */
 
 .exp-container {
+  display: flex;
+  flex-direction: row;
   position: relative;
   width: 100%;
+  gap: 2rem;
 }
 
-
+@media (max-width: 768px) {
+  .exp-container {
+    flex-direction: column;
+    padding-bottom: 80px;
+    gap: 0;
+  }
+}
 
 /* ── Main Content Area ────────────────────────────────────────────────────── */
 .exp-content {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
 }
 
 .exp-content__inner {
@@ -727,14 +737,12 @@ p {
 .exp-sidebar-new {
   width: 80px;
   min-width: 80px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100vh;
+  position: sticky;
+  top: 100px; /* offset from navbar */
+  height: calc(100vh - 100px);
   border-left: 4px solid var(--border-subtle);
-  background: rgba(10, 10, 10, 0.5);
-  backdrop-filter: blur(20px);
-  z-index: 110;
+  background: transparent;
+  z-index: 10;
   display: flex;
   flex-direction: column;
 }
@@ -957,24 +965,33 @@ p {
 /* Mobile Adjustments */
 @media (max-width: 768px) {
   .exp-content__inner {
-    padding: 0 1.5rem 6rem;
+    padding: 0 0 6rem;
   }
   .exp-sidebar-new {
-    width: 100%;
-    height: 70px;
+    width: max-content;
+    max-width: 90%;
+    height: 56px;
     top: auto;
-    bottom: 0;
-    border-left: none;
-    border-top: 1px solid var(--border-subtle);
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    position: fixed;
+    z-index: 110;
+    border: 1px solid var(--border-subtle);
+    border-radius: 100px;
     flex-direction: row;
-    padding: 0;
-    background: var(--bg-base-95);
+    padding: 0 1.5rem;
+    background: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
   }
   .exp-sidebar-new__inner {
     flex-direction: row;
-    padding: 0 1.5rem;
+    padding: 0;
     gap: 1.5rem;
     justify-content: center;
+    height: 100%;
+    align-items: center;
   }
   .exp-sidebar-new__years {
     flex-direction: row;
@@ -992,6 +1009,9 @@ p {
     transform: none;
     font-size: 11px;
   }
+  .exp-sidebar-new__item--overview {
+    display: none;
+  }
   .exp-sidebar-new__label--overview {
     display: none;
   }
@@ -1003,15 +1023,22 @@ p {
     width: 4px;
     height: 4px;
   }
+  .exp-cards {
+    margin: 0 -1rem; /* pulls it out to the edge on mobile to utilize space */
+  }
   .exp-card {
-    padding: 2rem;
+    padding: 1.5rem 1.25rem;
+    border-radius: 16px;
+  }
+  .exp-card__role {
+    font-size: 1.5rem; /* slightly smaller to fit better */
   }
 }
 
 /* Light-mode overrides for experience page */
 [data-theme="light"] .exp-sidebar-new {
-  background: rgba(255, 255, 255, 0.75);
-  border-left-color: var(--border-subtle);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 [data-theme="light"] .exp-sidebar-new__dot {
