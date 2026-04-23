@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { successData, TAB_LABELS } from '../data/successData'
+import PageHeader from './ui/PageHeader'
 
 /* ─────────────────────────────────────────────────────────────────────────────
    IMAGE CAROUSEL
@@ -194,15 +195,11 @@ export default function Success() {
   return (
     <>
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="page-header">
-        <p className="page-header__eyebrow">portfolio / success</p>
-        <h1 className="page-header__title">
-          proof of work<span className="page-header__cursor">_</span>
-        </h1>
-        <p className="page-header__sub">
-          real milestones. visual evidence. the story behind the achievements.
-        </p>
-      </div>
+      <PageHeader 
+        eyebrow="portfolio / success"
+        title="proof of work"
+        sub="real milestones. visual evidence. the story behind the achievements."
+      />
 
       {/* ── Tab Bar ────────────────────────────────────────────────────────── */}
       <div className="success-tabs" role="tablist" aria-label="Achievement sections">

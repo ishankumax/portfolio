@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import PageHeader from './ui/PageHeader'
 import { timelineData } from '../data/timelineData'
 import Timeline from './Timeline'
 
@@ -170,15 +171,11 @@ function Experience() {
       {/* Main Content Area */}
       <main className="exp-content">
         <div className="exp-content__inner">
-          {/* Unified Page Header */}
-          <header className="page-header">
-            <p className="page-header__eyebrow">portfolio / experience</p>
-            <h1 className="page-header__title">every chapter<span className="page-header__cursor">_</span></h1>
-            <p className="page-header__sub">
-              a detailed look at every role, team, and community i've been part of —
-              from founding startups to leading campus chapters.
-            </p>
-          </header>
+            <PageHeader 
+              eyebrow="portfolio / experience"
+              title="every chapter"
+              sub="a detailed look at every role, team, and community i've been part of — from founding startups to leading campus chapters."
+            />
 
           {/* Content Groups */}
           {timelineData.map((yearGroup, groupIndex) => (

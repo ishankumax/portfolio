@@ -680,34 +680,19 @@ p {
    ============================================================================ */
 
 .exp-container {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  background: var(--bg-base);
   position: relative;
-  padding-right: 80px; 
+  width: 100%;
 }
 
-@media (max-width: 768px) {
-  .exp-container {
-    padding-right: 0;
-    padding-bottom: 80px;
-    flex-direction: column;
-  }
-}
+
 
 /* ── Main Content Area ────────────────────────────────────────────────────── */
 .exp-content {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  justify-content: center; /* Centered like other pages */
+  width: 100%;
 }
 
 .exp-content__inner {
   width: 100%;
-  max-width: 896px; /* max-w-4xl equivalent */
-  padding: 0 2rem 10rem; /* Normalized padding */
 }
 
 /* Header */

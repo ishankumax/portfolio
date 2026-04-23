@@ -1,15 +1,13 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import PageHeader from './ui/PageHeader'
 
 function About() {
   return (
     <div className="relative z-10">
-      {/* Unified Page Header */}
-      <div className="page-header">
-        <p className="page-header__eyebrow">portfolio / about</p>
-        <h1 className="page-header__title">the founder's note<span className="page-header__cursor">_</span></h1>
-        <p className="page-header__sub">who i am, why i build, and what drives me forward.</p>
-      </div>
+      <PageHeader 
+        eyebrow="portfolio / about"
+        title="the founder's note"
+        sub="who i am, why i build, and what drives me forward."
+      />
 
         {/* The Founder's Note */}
         <article className="border-2 rounded-lg p-8 md:p-12 transition-all duration-300" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
