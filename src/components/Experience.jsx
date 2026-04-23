@@ -166,7 +166,7 @@ function Experience() {
   }, [])
 
   return (
-    <div className="min-h-screen text-white font-mono bg-black">
+    <div className="min-h-screen text-[var(--text-primary)] font-mono bg-[var(--bg-base)]">
       {/* ── Adjacent Layout: Content | Sidebar ─────────────────────── */}
       <div className="exp-container">
         
