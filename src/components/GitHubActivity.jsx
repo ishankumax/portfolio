@@ -276,9 +276,6 @@ export default function GitHubActivity() {
         {/* ── Legend ── */}
         {!loading && !error && (
           <div className="flex items-center justify-between mt-6 pt-4 border-t px-1" style={{ borderColor: 'var(--border-subtle)' }}>
-            <p className="text-[10px] font-mono italic" style={{ color: 'var(--text-muted)' }}>
-              // hover cells to inspect commits
-            </p>
             <div className="flex items-center gap-1.5">
               <span className="text-[9px] font-mono mr-1" style={{ color: 'var(--text-muted)' }}>less</span>
               {levelColors.map((color, i) => (
