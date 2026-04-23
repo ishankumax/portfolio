@@ -701,13 +701,13 @@ p {
   flex: 1;
   min-width: 0;
   display: flex;
-  justify-content: flex-start; /* Consistent left alignment */
+  justify-content: center; /* Centered like other pages */
 }
 
 .exp-content__inner {
   width: 100%;
   max-width: 896px; /* max-w-4xl equivalent */
-  padding: 0 6rem 10rem 0; /* Extra right padding for sidebar clearance */
+  padding: 0 2rem 10rem; /* Normalized padding */
 }
 
 /* Header */
