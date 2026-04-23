@@ -37,11 +37,11 @@ export function ThemeProvider({ children }) {
     document.documentElement.style.setProperty('--accent-border', `${accentColor}38`)
 
     // Dynamic GitHub Contribution Levels
-    document.documentElement.style.setProperty('--gh-level-0', theme === 'dark' ? '#161b22' : '#ebedf0')
-    document.documentElement.style.setProperty('--gh-level-1', `${accentColor}40`) // low
-    document.documentElement.style.setProperty('--gh-level-2', `${accentColor}80`) // medium
-    document.documentElement.style.setProperty('--gh-level-3', `${accentColor}bf`) // high
-    document.documentElement.style.setProperty('--gh-level-4', accentColor)        // max
+    document.documentElement.style.setProperty('--gh-level-0', theme === 'dark' ? '#161b22' : '#e5e7eb') // More visible in light
+    document.documentElement.style.setProperty('--gh-level-1', `${accentColor}33`) // 20%
+    document.documentElement.style.setProperty('--gh-level-2', `${accentColor}66`) // 40%
+    document.documentElement.style.setProperty('--gh-level-3', `${accentColor}aa`) // 66%
+    document.documentElement.style.setProperty('--gh-level-4', accentColor)        // 100%
   }, [accentColor, theme])
 
   const toggleTheme = () => setTheme(t => (t === 'dark' ? 'light' : 'dark'))

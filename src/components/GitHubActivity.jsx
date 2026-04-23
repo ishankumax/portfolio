@@ -123,7 +123,7 @@ export default function GitHubActivity() {
   }
 
   return (
-    <section className="mt-20 mb-16 pt-16 border-t border-[color:var(--accent)]/10 w-full overflow-hidden">
+    <section className="mt-20 mb-16 pt-16 border-t w-full overflow-hidden" style={{ borderColor: 'var(--accent-border)' }}>
       {/* ── Header Row ── */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-3 group cursor-default">
@@ -143,17 +143,20 @@ export default function GitHubActivity() {
         </div>
 
         {/* Year toggle */}
-        <div className="flex items-center gap-1 border rounded-xl p-1" style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--border-subtle)' }}>
+        <div className="flex items-center gap-1 border rounded-xl p-1" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}>
           {YEARS.map(yr => (
             <button
               key={yr}
               onClick={() => setSelectedYear(yr)}
-              className={`px-3 py-1 text-[10px] md:text-[11px] font-mono rounded-lg transition-all duration-200 ${
+              className={`px-3 py-1 text-[10px] md:text-[11px] font-mono rounded-lg transition-all duration-300 ${
                 selectedYear === yr
-                  ? 'bg-[color:var(--accent)] text-white font-bold'
-                  : ''
+                  ? 'shadow-lg'
+                  : 'hover:text-[color:var(--accent)]'
               }`}
-              style={{ color: selectedYear === yr ? '' : 'var(--text-muted)' }}
+              style={{ 
+                backgroundColor: selectedYear === yr ? 'var(--accent)' : 'transparent',
+                color: selectedYear === yr ? 'var(--bg-base)' : 'var(--text-muted)'
+              }}
             >
               {yr}
             </button>
