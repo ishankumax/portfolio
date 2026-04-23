@@ -37,8 +37,8 @@ function Hero() {
           <FaXTwitter size={12} /> x.com
         </a>
         <span className="opacity-20">/</span>
-        <a href="mailto:ishankumax@gmail.com" className="hover:text-[var(--accent)] transition-colors">
-          email
+        <a href="https://instagram.com/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
+          <FaInstagram size={12} /> instagram
         </a>
       </div>
     </section>
