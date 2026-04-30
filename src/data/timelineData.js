@@ -52,6 +52,25 @@ export const timelineData = [
     year: '2025',
     items: [
       {
+        id: 'codex',
+        slug: 'codex',
+        role: 'CodeX 2.O Mentor',
+        company: 'Panipat Institute Of Engineering And Technology',
+        website: 'https://www.instagram.com/p/DNVZiGWSIey/',
+        date: '12 AUG - 13 AUG',
+        images: [
+          { src: '/facillitation1.jpg', caption: 'Opening Ceremony' },
+          { src: '/PIET Award.jpg', caption: 'Appreciation Award' },
+          { src: '/facillitation2.jpg', caption: 'Facilitation Ceremony' },
+          { src: '/jaipur-.png', caption: 'Mentors Banner' },
+          { src: '/PIET Mentors.jpg', caption: 'Mentors' }
+        ],
+        bullets: [
+          'Mentored 50+ Teams',
+          'Worked with 500+ Students'
+        ]
+      },
+      {
         id: 'head-marketing-acm',
         slug: 'head-of-marketing',
         role: 'Head of Marketing',
@@ -183,9 +202,9 @@ export const timelineData = [
         website: 'https://devlearnevent.vercel.app/',
         date: 'FEB 2024 - MAY 2024',
         images: [
-          { src: '/Devlearn Founding Member.jpg', caption: 'Leading Design' },
-          { src: '/HQ Mentor.jpg', caption: 'Team Mentoring' },
-          { src: '/workspace-1.jpg', caption: 'Web Design' }
+          { src: '/cube mania.jpeg', caption: 'Cube Mania Event' },
+          { src: '/devlearn.jpeg', caption: 'Team Mentoring' },
+          { src: '/DevLearn X DTC.jpeg', caption: 'Web Design' }
         ],
         bullets: [
           'Led graphic design team',
@@ -200,11 +219,11 @@ export const timelineData = [
         website: 'https://www.codingninjas.com',
         date: 'JAN 2024 - FEB 2024',
         images: [
-          { src: '/jaipur-.png', caption: 'Utkrishti 2024' },
-          { src: '/delhi-train.png', caption: 'Outreach Drive' }
+          { src: '/CN1.jpg', caption: 'Utkrishti 2024' },
+          { src: '/CN2.jpg', caption: 'Outreach Drive' }
         ],
         bullets: [
-          'Managed outreach for Utkrishti 2024',
+          'Outreach Drive for Utkrishti 2024',
           'Led student outreach initiatives'
         ]
       }
@@ -221,8 +240,9 @@ export const timelineData = [
         website: 'https://devlearnevent.vercel.app/',
         date: 'NOV 2023 - FEB 2024',
         images: [
-          { src: '/Devlearn Founding Member.jpg', caption: 'Community Design' },
-          { src: '/workspace-2.jpg', caption: 'Visual Identity' }
+          { src: '/company visit.jpeg', caption: 'Company Visit' },
+          { src: '/anchor.jpeg', caption: 'Anchor' },
+          { src: '/appwrk.jpeg', caption: 'Appwrk visit' }
         ],
         bullets: [
           'Executed remote graphic design tasks',
