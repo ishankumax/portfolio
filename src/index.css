@@ -261,6 +261,26 @@ p {
   color: var(--bg-base) !important;
 }
 
+/* Footer Social Icons */
+.footer-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: 1px solid var(--border-card);
+  border-radius: 6px;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+.footer-social-link:hover {
+  background-color: var(--accent);
+  color: #000000 !important;
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
 /* ============================================================================
    FOCUS RING — replace browser default with purple ring
    ============================================================================ */

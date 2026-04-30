@@ -27,23 +27,19 @@ function Footer() {
           {/* Right: Social icons */}
           <div className="flex items-center gap-3">
             <a href="https://github.com/ishankumax" target="_blank" rel="noopener noreferrer"
-              className="p-2 border rounded hover:bg-[color:var(--accent)] hover:text-black transition-all duration-200"
-              style={{ borderColor: 'var(--border-card)', color: 'var(--text-muted)' }}>
+              className="footer-social-link" title="GitHub">
               <FaGithub size={16} />
             </a>
             <a href="https://www.linkedin.com/in/ishankumax/" target="_blank" rel="noopener noreferrer"
-              className="p-2 border rounded hover:bg-[color:var(--accent)] hover:text-black transition-all duration-200"
-              style={{ borderColor: 'var(--border-card)', color: 'var(--text-muted)' }}>
+              className="footer-social-link" title="LinkedIn">
               <FaLinkedin size={16} />
             </a>
             <a href="https://x.com/ishankumax" target="_blank" rel="noopener noreferrer"
-              className="p-2 border rounded hover:bg-[color:var(--accent)] hover:text-black transition-all duration-200"
-              style={{ borderColor: 'var(--border-card)', color: 'var(--text-muted)' }}>
+              className="footer-social-link" title="X (Twitter)">
               <FaXTwitter size={16} />
             </a>
             <a href="https://www.instagram.com/ishankumax/" target="_blank" rel="noopener noreferrer"
-              className="p-2 border rounded hover:bg-[color:var(--accent)] hover:text-black transition-all duration-200"
-              style={{ borderColor: 'var(--border-card)', color: 'var(--text-muted)' }}>
+              className="footer-social-link" title="Instagram">
               <FaInstagram size={16} />
             </a>
           </div>
