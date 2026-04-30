@@ -680,18 +680,15 @@ p {
    ============================================================================ */
 
 .exp-container {
-  display: flex;
-  flex-direction: row;
+  display: block;
   position: relative;
   width: 100%;
-  gap: 2rem;
+  padding-bottom: 100px; /* Space for the floating bar */
 }
 
 @media (max-width: 768px) {
   .exp-container {
-    flex-direction: column;
     padding-bottom: 80px;
-    gap: 0;
   }
 }
 
@@ -733,67 +730,81 @@ p {
   line-height: 1.6;
 }
 
-/* ── Sticky Sidebar (80px) ───────────────────────────────────────────────── */
+/* ── Floating Navigation Bar (Unified Mobile/Desktop) ─────────────────────── */
 .exp-sidebar-new {
-  width: 80px;
-  min-width: 80px;
-  position: sticky;
-  top: 100px; /* offset from navbar */
-  height: calc(100vh - 100px);
-  border-left: 4px solid var(--border-subtle);
-  background: transparent;
-  z-index: 10;
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 90%;
+  height: 56px;
+  background: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 100px;
+  z-index: 110;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  padding: 0 1.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .exp-sidebar-new__inner {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  padding: 4rem 0;
+  justify-content: center;
   height: 100%;
-  gap: 3rem;
+  gap: 1.5rem;
+  width: 100%;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.exp-sidebar-new__inner::-webkit-scrollbar {
+  display: none;
 }
 
 .exp-sidebar-new__item {
   cursor: pointer;
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   transition: all 0.3s ease;
   position: relative;
+  flex-shrink: 0;
 }
 
 .exp-sidebar-new__label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
   color: var(--text-muted);
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
   white-space: nowrap;
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
+.exp-sidebar-new__item--overview {
+  display: none; /* Match mobile view behavior */
+}
+
 .exp-sidebar-new__label--overview {
-  font-size: 15px;
-  color: var(--text-muted);
-  opacity: 0.6;
+  display: none;
 }
 
 .exp-sidebar-new__years {
   display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-  flex: 1;
-  justify-content: center;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: center;
 }
 
 .exp-sidebar-new__dot {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--text-muted);
   opacity: 0.3;
@@ -810,6 +821,12 @@ p {
   opacity: 1;
   box-shadow: 0 0 10px var(--accent-glow);
   transform: scale(1.5);
+  animation: exp-dot-blink 1.5s ease-in-out infinite;
+}
+
+@keyframes exp-dot-blink {
+  0%, 100% { opacity: 1; transform: scale(1.5); }
+  50% { opacity: 0.5; transform: scale(1.2); }
 }
 
 .exp-sidebar-new__item:hover .exp-sidebar-new__dot {
@@ -966,62 +983,6 @@ p {
 @media (max-width: 768px) {
   .exp-content__inner {
     padding: 0 0 6rem;
-  }
-  .exp-sidebar-new {
-    width: max-content;
-    max-width: 90%;
-    height: 56px;
-    top: auto;
-    bottom: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    position: fixed;
-    z-index: 110;
-    border: 1px solid var(--border-subtle);
-    border-radius: 100px;
-    flex-direction: row;
-    padding: 0 1.5rem;
-    background: rgba(10, 10, 10, 0.75);
-    backdrop-filter: blur(20px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  }
-  .exp-sidebar-new__inner {
-    flex-direction: row;
-    padding: 0;
-    gap: 1.5rem;
-    justify-content: center;
-    height: 100%;
-    align-items: center;
-  }
-  .exp-sidebar-new__years {
-    flex-direction: row;
-    gap: 1.5rem;
-    justify-content: center;
-    overflow-x: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .exp-sidebar-new__years::-webkit-scrollbar {
-    display: none;
-  }
-  .exp-sidebar-new__label {
-    writing-mode: horizontal-tb;
-    transform: none;
-    font-size: 11px;
-  }
-  .exp-sidebar-new__item--overview {
-    display: none;
-  }
-  .exp-sidebar-new__label--overview {
-    display: none;
-  }
-  .exp-sidebar-new__item {
-    flex-direction: row-reverse;
-    gap: 0.5rem;
-  }
-  .exp-sidebar-new__dot {
-    width: 4px;
-    height: 4px;
   }
   .exp-cards {
     margin: 0 -1rem; /* pulls it out to the edge on mobile to utilize space */

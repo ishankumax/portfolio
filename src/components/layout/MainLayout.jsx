@@ -12,7 +12,7 @@ const MainLayout = ({ children, onOpenTerminal }) => {
   
   // The experience page has a sidebar, so we give it more breathing room
   const isExperiencePage = location.pathname === '/experience'
-  const maxWidth = isExperiencePage ? "max-w-6xl" : "max-w-4xl"
+  const maxWidth = "max-w-4xl"
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-base)] text-[var(--text-primary)] font-mono selection:bg-[var(--selection-bg)] selection:text-[var(--selection-text)]">

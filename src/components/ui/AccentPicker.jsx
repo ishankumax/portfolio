@@ -10,8 +10,6 @@ const AccentPicker = () => {
   const { accentColor, setAccentColor } = useTheme()
   const location = useLocation()
 
-  // Hide on experience page
-  if (location.pathname === '/experience') return null;
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:bottom-6 md:right-[54px] z-[100] flex flex-col md:flex-col items-center gap-2 md:gap-3">
