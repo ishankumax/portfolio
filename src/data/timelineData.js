@@ -148,17 +148,34 @@ export const timelineData = [
       {
         id: 'marketing-exec-acm',
         slug: 'marketing-exec',
+        role: 'Core Team Member',
+        company: 'Center for Entrepreneurship Education and Development (CEED)',
+        website: 'https://www.facebook.com/CUCEED/',
+        date: 'NOV 2024 - PRESENT',
+        images: [
+          { src: '/SPHERON.jpg', caption: 'SPHERON Event' },
+          { src: '/ACM.jpg', caption: 'ACM Lady Ada Event' }
+        ],
+        bullets: [
+          'Organised 1st ICSCCS',
+          'Managed SPHERON X APTOS Tour',
+          'Managed marketing and student outreach'
+        ]
+      },
+      {
+        id: 'marketing-exec-acm',
+        slug: 'marketing-exec',
         role: 'Marketing Exec.',
         company: 'ACM Student Chapter',
         website: 'https://www.acm.org',
         date: 'SEP 2024 - NOV 2024',
         images: [
-          { src: '/ACM Marketing Head.jpg', caption: 'ISCCSC Event' },
-          { src: '/banner.jpg', caption: 'Student Outreach' }
+          { src: '/SPHERON.jpg', caption: 'SPHERON Event' },
+          { src: '/ACM.jpg', caption: 'ACM Lady Ada Event' }
         ],
         bullets: [
-          'Organised ISCCSC',
           'Organised 1st ICSCCS',
+          'Managed SPHERON X APTOS Tour',
           'Managed marketing and student outreach'
         ]
       },
@@ -171,7 +188,7 @@ export const timelineData = [
         date: 'JUN 2024 - JUL 2024',
         images: [
           { src: '/delhi-train.png', caption: 'KotlinConf Delhi' },
-          { src: '/workspace-1.jpg', caption: 'Campus Outreach' }
+          { src: '/KOTLIN.jpg', caption: 'Kotlin Ambassadors' }
         ],
         bullets: [
           'Promoted KotlinConfDelhi',
@@ -186,8 +203,8 @@ export const timelineData = [
         website: 'https://www.geeksforgeeks.org',
         date: 'JAN 2024 - JUL 2024',
         images: [
-          { src: '/workspace-2.jpg', caption: 'Branding Work' },
-          { src: '/lapinlaptop.jpg', caption: 'Design Sessions' }
+          { src: '/gfg.jpeg', caption: 'GFG Team Glimpses' },
+          { src: '/GFG CyberSurakhsha.jpeg', caption: 'Cyber Surakhsha' },
         ],
         bullets: [
           'Managed branding for 23-24 Team',
@@ -203,8 +220,8 @@ export const timelineData = [
         date: 'FEB 2024 - MAY 2024',
         images: [
           { src: '/cube mania.jpeg', caption: 'Cube Mania Event' },
-          { src: '/devlearn.jpeg', caption: 'Team Mentoring' },
-          { src: '/DevLearn X DTC.jpeg', caption: 'Web Design' }
+          { src: '/devlearn.jpeg', caption: 'DevLearn Merch' },
+          { src: '/DevLearn X DTC.jpeg', caption: 'DevLearn X DTC' }
         ],
         bullets: [
           'Led graphic design team',
