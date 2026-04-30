@@ -153,7 +153,7 @@ export const timelineData = [
         website: 'https://www.facebook.com/CUCEED/',
         date: 'NOV 2024 - PRESENT',
         images: [
-          { src: '/SPHERON.jpg', caption: 'SPHERON Event' },
+          { src: '/iim amritsar.jpg', caption: 'IIM Amritsar Event' },
           { src: '/ACM.jpg', caption: 'ACM Lady Ada Event' }
         ],
         bullets: [
