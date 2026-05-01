@@ -131,9 +131,11 @@ export const timelineData = [
         website: 'https://codingblocks.com',
         date: 'DEC 2023 - MAY 2025',
         images: [
-          { src: '/winner at microsoft.jpg', caption: 'Winner at Microsoft' },
-          { src: '/workspace-2.jpg', caption: 'Web3 Hackathon' },
-          { src: '/lapinlaptop.jpg', caption: 'Design Work' }
+          { src: '/CB1.jpg', caption: 'Tenure letter' },
+          { src: '/CB2.jpg', caption: 'LeadingFirst Event' },
+          { src: '/CB3.jpg', caption: 'Event Cerificate' },
+          { src: '/CB4.jpg', caption: 'Team 24-25' },
+          { src: '/CB5.jpg', caption: 'HackIndia 24' },
         ],
         bullets: [
           "Organised India's biggest Web3 Hackathon",
@@ -153,20 +155,22 @@ export const timelineData = [
         website: 'https://www.facebook.com/CUCEED/',
         date: 'NOV 2024 - PRESENT',
         images: [
-          { src: '/iim amritsar.jpg', caption: 'IIM Amritsar Event' },
-          { src: '/ACM.jpg', caption: 'ACM Lady Ada Event' }
+          { src: '/iim amritsar.jpg', caption: 'IIM Amritsar' },
+          { src: '/CEED.jpg', caption: 'CEED Team' },
+          { src: '/CEED2.jpg', caption: 'CII Visit' },
+          { src: '/cis1.jpeg', caption: 'mentoring CIS student' },
+          { src: '/CIS2.jpg', caption: 'CIS student delegation' },
         ],
         bullets: [
-          'Organised 1st ICSCCS',
-          'Managed SPHERON X APTOS Tour',
-          'Managed marketing and student outreach'
+          'Helping young Entrepreneurs ideas',
+          'Hosted Multiple Sharks from Shark Tank India',
         ]
       },
       {
         id: 'marketing-exec-acm',
         slug: 'marketing-exec',
         role: 'Marketing Exec.',
-        company: 'ACM Student Chapter',
+        company: 'ACM Chitkara Student Chapter',
         website: 'https://www.acm.org',
         date: 'SEP 2024 - NOV 2024',
         images: [
