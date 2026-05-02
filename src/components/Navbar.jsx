@@ -4,7 +4,7 @@ import { useTheme } from '../ThemeContext'
 
 function Navbar({ onOpenTerminal }) {
   const location = useLocation()
-  const { theme, toggleTheme } = useTheme()
+  const { theme, toggleTheme, rippleEnabled, toggleRipple } = useTheme()
 
   // Helper to detect an active route
   const isActive = (path) => {
@@ -45,7 +45,80 @@ function Navbar({ onOpenTerminal }) {
         {/* Right: Actions */}
         <div className="flex items-center gap-4 shrink-0">
 
-          {/* Day / Night toggle */}
+          {/* Ripple toggle — water drop icon */}
+          <div className="group relative">
+            <button
+              id="ripple-toggle"
+              onClick={toggleRipple}
+              aria-label="Toggle ripple background"
+              className="relative w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer"
+              style={{
+                color: rippleEnabled ? 'var(--accent)' : 'var(--text-muted)',
+                filter: rippleEnabled ? 'drop-shadow(0 0 6px var(--accent-glow))' : 'none',
+                transition: 'color 0.25s ease, filter 0.25s ease',
+              }}
+            >
+              {/* Water drop SVG */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill={rippleEnabled ? 'currentColor' : 'none'}
+                stroke="currentColor"
+                strokeWidth={rippleEnabled ? 0 : 1.75}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-[18px] h-[18px] transition-all duration-300"
+                style={{ opacity: rippleEnabled ? 1 : 0.45 }}
+              >
+                <path d="M12 2C12 2 5 10 5 14a7 7 0 0 0 14 0c0-4-7-12-7-12z" />
+              </svg>
+            </button>
+
+            {/* Custom tooltip */}
+            <div
+              className="pointer-events-none absolute top-full right-0 mt-2 z-[200]
+                         opacity-0 group-hover:opacity-100
+                         translate-y-1 group-hover:translate-y-0
+                         transition-all duration-200 ease-out"
+              style={{ minWidth: '140px' }}
+            >
+              {/* Arrow */}
+              <div
+                className="absolute -top-1 right-3 w-2 h-2 rotate-45"
+                style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-card)', borderBottom: 'none', borderRight: 'none' }}
+              />
+              {/* Card */}
+              <div
+                className="rounded-lg px-3 py-2.5 text-left"
+                style={{
+                  background: 'var(--bg-elevated)',
+                  border: '1px solid var(--border-card)',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                }}
+              >
+                {/* Status row */}
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span
+                    className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                    style={{ background: rippleEnabled ? 'var(--accent)' : 'var(--text-muted)', boxShadow: rippleEnabled ? '0 0 6px var(--accent)' : 'none' }}
+                  />
+                  <span
+                    className="font-mono text-[10px] font-bold tracking-widest uppercase"
+                    style={{ color: rippleEnabled ? 'var(--accent)' : 'var(--text-muted)' }}
+                  >
+                    ripple {rippleEnabled ? 'on' : 'off'}
+                  </span>
+                </div>
+                {/* Hint */}
+                <p className="font-mono text-[9px] leading-relaxed m-0" style={{ color: 'var(--text-muted)' }}>
+                  {rippleEnabled
+                    ? 'click anywhere → water ripple'
+                    : 'click to enable background ripple'}
+                </p>
+              </div>
+            </div>
+          </div>
+
           <button
             id="theme-toggle"
             onClick={toggleTheme}

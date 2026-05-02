@@ -15,7 +15,7 @@ const MainLayout = ({ children, onOpenTerminal }) => {
   const maxWidth = "max-w-4xl"
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-base)] text-[var(--text-primary)] font-mono selection:bg-[var(--selection-bg)] selection:text-[var(--selection-text)]">
+    <div className="min-h-screen flex flex-col text-[var(--text-primary)] font-mono selection:bg-[var(--selection-bg)] selection:text-[var(--selection-text)]">
       {/* Global Navigation */}
       <Navbar onOpenTerminal={onOpenTerminal} />
 

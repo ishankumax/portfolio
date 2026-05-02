@@ -10,31 +10,39 @@ import Network from './components/Network'
 import MainLayout from './components/layout/MainLayout'
 import Terminal, { useTerminal } from './components/Terminal'
 import ScrollToTop from './components/ScrollToTop'
-import { ThemeProvider } from './ThemeContext'
+import { ThemeProvider, useTheme } from './ThemeContext'
+import RippleBackground from './components/RippleBackground'
 
 
 function AppInner() {
   const { open: terminalOpen, setOpen: setTerminalOpen } = useTerminal()
+  const { rippleEnabled } = useTheme()
 
   return (
     <Router>
       <ScrollToTop />
 
-      <div className="min-h-screen scroll-smooth overflow-x-hidden" id="app-root">
+      <div className="min-h-screen scroll-smooth overflow-x-hidden" id="app-root" style={{ position: 'relative' }}>
+        {/* Interactive dot-grid ripple canvas — fixed background layer */}
+        <RippleBackground enabled={rippleEnabled} />
+
         {/* Global Terminal Overlay */}
         {terminalOpen && <Terminal onClose={() => setTerminalOpen(false)} />}
 
-        <MainLayout onOpenTerminal={() => setTerminalOpen(true)}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/success" element={<Success />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/insights" element={<Insights />} />
-            <Route path="/experience" element={<Experience />} />
-            <Route path="/network" element={<Network />} />
-            <Route path="/contact" element={<Network />} />
-          </Routes>
-        </MainLayout>
+        {/* Content layer — pointer-events auto so all UI remains interactive */}
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <MainLayout onOpenTerminal={() => setTerminalOpen(true)}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/success" element={<Success />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/insights" element={<Insights />} />
+              <Route path="/experience" element={<Experience />} />
+              <Route path="/network" element={<Network />} />
+              <Route path="/contact" element={<Network />} />
+            </Routes>
+          </MainLayout>
+        </div>
       </div>
     </Router>
   )

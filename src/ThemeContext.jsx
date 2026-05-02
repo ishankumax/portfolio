@@ -22,6 +22,17 @@ export function ThemeProvider({ children }) {
     return stored ?? ACCENT_PALETTE[0].value
   })
 
+  const [rippleEnabled, setRippleEnabled] = useState(() => {
+    const stored = localStorage.getItem('portfolio-ripple')
+    return stored !== null ? stored === 'true' : false // OFF by default
+  })
+
+  const toggleRipple = () => setRippleEnabled(prev => {
+    const next = !prev
+    localStorage.setItem('portfolio-ripple', String(next))
+    return next
+  })
+
   useEffect(() => {
     localStorage.setItem('portfolio-theme', theme)
     document.documentElement.setAttribute('data-theme', theme)
@@ -47,7 +58,7 @@ export function ThemeProvider({ children }) {
   const toggleTheme = () => setTheme(t => (t === 'dark' ? 'light' : 'dark'))
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, accentColor, setAccentColor }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, accentColor, setAccentColor, rippleEnabled, toggleRipple }}>
       {children}
     </ThemeContext.Provider>
   )
