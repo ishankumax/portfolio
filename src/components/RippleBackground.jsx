@@ -17,6 +17,10 @@ const CONFIG = {
   maxDisplace:  9,      // px — max dot displacement at peak
   fadeInDur:    0.12,   // s — fade in
   fadeDuration: 0.6,    // s — hold time before fade out begins
+
+  // Hover effect
+  hoverRadius:  150,    // px — distance at which hover starts
+  hoverStrength: 0.8,   // 0-1 — intensity of hover effect
 }
 
 // ─── Hex → RGB ────────────────────────────────────────────────────────────────
@@ -36,6 +40,7 @@ function gaussian(x, sigma) {
 export default function RippleBackground({ enabled }) {
   const canvasRef    = useRef(null)
   const ripplesRef   = useRef([])
+  const mouseRef     = useRef({ x: -1000, y: -1000 })
   const rafRef       = useRef(null)
   const lastTimeRef  = useRef(null)
   const { accentColor } = useTheme()
@@ -99,10 +104,11 @@ export default function RippleBackground({ enabled }) {
           const bx = c * spacing
           const by = r * spacing
 
-          // ── Ripple displacement (only when there are active ripples) ───────
+          // ── Ripple & Hover displacement ─────────────────────────────────────
           let dx = 0, dy = 0
           let rippleInfluence = 0
 
+          // 1. Calculate ripple displacement
           for (const rip of activeRipples) {
             const age = (now - rip.born) / 1000
             const dist = Math.hypot(bx - rip.x, by - rip.y)
@@ -127,16 +133,31 @@ export default function RippleBackground({ enabled }) {
             }
           }
 
+          // 2. Calculate hover displacement
+          const distToMouse = Math.hypot(bx - mouseRef.current.x, by - mouseRef.current.y)
+          let hoverInfluence = 0
+          if (distToMouse < CONFIG.hoverRadius) {
+            const hoverNorm = 1 - distToMouse / CONFIG.hoverRadius
+            // Smoothstep-like easing for hover
+            hoverInfluence = Math.pow(hoverNorm, 2) * CONFIG.hoverStrength
+            
+            // Subtle push away from mouse
+            const angle = Math.atan2(by - mouseRef.current.y, bx - mouseRef.current.x)
+            dx += Math.cos(angle) * hoverInfluence * 4
+            dy += Math.sin(angle) * hoverInfluence * 4
+          }
+
           const dotX = bx + dx
           const dotY = by + dy
 
           // ── Compose color & opacity ────────────────────────────────────────
-          const totalOpacity = Math.min(CONFIG.dotOpacity + rippleInfluence * 0.4, 0.95)
-          const tint = Math.min(rippleInfluence * 1.4, 1)
+          const combinedInfluence = Math.max(rippleInfluence, hoverInfluence)
+          const totalOpacity = Math.min(CONFIG.dotOpacity + combinedInfluence * 0.4, 0.95)
+          const tint = Math.min(combinedInfluence * 1.4, 1)
           const ir = Math.round(255 * (1 - tint) + accent.r * tint)
           const ig = Math.round(255 * (1 - tint) + accent.g * tint)
           const ib = Math.round(255 * (1 - tint) + accent.b * tint)
-          const dotR = CONFIG.dotRadius + rippleInfluence * 0.6
+          const dotR = CONFIG.dotRadius + combinedInfluence * 0.8
 
           ctx.beginPath()
           ctx.arc(dotX, dotY, dotR, 0, Math.PI * 2)
@@ -159,8 +180,9 @@ export default function RippleBackground({ enabled }) {
   // ── Event listeners — only attached when enabled ───────────────────────────
   useEffect(() => {
     if (!enabled) {
-      // Clear any lingering ripples when toggled off
+      // Clear any lingering ripples and hover when toggled off
       ripplesRef.current = []
+      mouseRef.current = { x: -1000, y: -1000 }
       return
     }
 
@@ -182,12 +204,24 @@ export default function RippleBackground({ enabled }) {
       }
     }
 
+    const onDocMouseMove = e => {
+      const { x, y } = getPos(e.clientX, e.clientY)
+      mouseRef.current = { x, y }
+    }
+    const onDocMouseLeave = () => {
+      mouseRef.current = { x: -1000, y: -1000 }
+    }
+
     document.addEventListener('click',      onDocClick)
     document.addEventListener('touchstart', onDocTouch, { passive: true })
+    document.addEventListener('mousemove',  onDocMouseMove)
+    document.addEventListener('mouseleave', onDocMouseLeave)
 
     return () => {
       document.removeEventListener('click',      onDocClick)
       document.removeEventListener('touchstart', onDocTouch)
+      document.removeEventListener('mousemove',  onDocMouseMove)
+      document.removeEventListener('mouseleave', onDocMouseLeave)
     }
   }, [enabled, spawnRipple])
 

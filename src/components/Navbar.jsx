@@ -51,7 +51,7 @@ function Navbar({ onOpenTerminal }) {
               id="ripple-toggle"
               onClick={toggleRipple}
               aria-label="Toggle ripple background"
-              className="relative w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer"
+              className="relative w-10 h-10 flex items-center justify-center rounded-full transition-colors cursor-pointer"
               style={{
                 color: rippleEnabled ? 'var(--accent)' : 'var(--text-muted)',
                 filter: rippleEnabled ? 'drop-shadow(0 0 6px var(--accent-glow))' : 'none',
@@ -68,7 +68,7 @@ function Navbar({ onOpenTerminal }) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className="w-[18px] h-[18px] transition-all duration-300"
-                style={{ opacity: rippleEnabled ? 1 : 0.45 }}
+                style={{ opacity: rippleEnabled ? 1 : 18 }}
               >
                 <path d="M12 2C12 2 5 10 5 14a7 7 0 0 0 14 0c0-4-7-12-7-12z" />
               </svg>

@@ -1,47 +1,106 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useState, useRef, useEffect } from 'react'
 import { useTheme, ACCENT_PALETTE } from '../../ThemeContext'
 
 /**
  * AccentPicker
- * A premium floating UI to switch the global accent color in real-time.
+ * A premium right-side collapsible control to switch global accent colors.
  */
 const AccentPicker = () => {
   const { accentColor, setAccentColor } = useTheme()
-  const location = useLocation()
+  const [isOpen, setIsOpen] = useState(false)
+  const pickerRef = useRef(null)
 
+  // Auto-close on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+        setIsOpen(false)
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isOpen])
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-auto md:bottom-6 md:right-[54px] z-[100] flex flex-col md:flex-col items-center gap-2 md:gap-3">
-      <div className="flex flex-row md:flex-col gap-2 p-2 rounded-full border backdrop-blur-xl shadow-2xl transition-all duration-500 hover:scale-105" 
-           style={{ backgroundColor: 'var(--bg-navbar)', borderColor: 'var(--border-subtle)' }}>
-        {ACCENT_PALETTE.map((color) => (
-          <button
-            key={color.name}
-            onClick={() => setAccentColor(color.value)}
-            className={`w-4 h-4 md:w-4 md:h-4 rounded-full transition-all duration-300 hover:scale-125 relative group ${
-              accentColor === color.value ? 'ring-2 ring-offset-2 ring-offset-transparent' : ''
-            }`}
-            style={{ 
-              backgroundColor: color.value,
-              ringColor: color.value,
-              boxShadow: accentColor === color.value ? `0 0 10px ${color.value}80` : 'none'
-            }}
-            title={`Switch to ${color.name} accent`}
-          >
-            {/* Tooltip */}
-            <span className="absolute bottom-full mb-3 md:bottom-auto md:mb-0 md:right-full md:mr-3 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-black/80 text-[9px] text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none uppercase tracking-widest border border-white/10 hidden md:block">
-              {color.name}
-            </span>
-          </button>
-        ))}
+    <div 
+      ref={pickerRef}
+      className={`fixed right-0 top-1/2 -translate-y-1/2 z-[150] flex items-center transition-all duration-500 ease-in-out ${
+        isOpen ? 'translate-x-0' : 'translate-x-[64px] md:translate-x-[60px]'
+      }`}
+    >
+      {/* Vertical Trigger Tab */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex flex-col items-center justify-center py-6 px-2 rounded-l-xl border-y border-l backdrop-blur-xl shadow-[-8px_0_24px_rgba(0,0,0,0.3)] hover:shadow-[-8px_0_32px_var(--accent-glow)] transition-all duration-300 group relative"
+        style={{ 
+          backgroundColor: 'var(--bg-navbar)', 
+          borderColor: 'var(--border-subtle)',
+          color: isOpen ? 'var(--accent)' : 'var(--text-secondary)',
+          minWidth: '32px'
+        }}
+        aria-label={isOpen ? "Close accent picker" : "Open accent picker"}
+      >
+        {/* Active Color Indicator on Tab */}
+        {!isOpen && (
+          <div 
+            className="absolute top-2 w-1.5 h-1.5 rounded-full shadow-[0_0_8px_var(--accent)]"
+            style={{ backgroundColor: 'var(--accent)' }}
+          />
+        )}
+
+        <span 
+          className="font-mono text-[10px] font-bold tracking-[0.3em] uppercase whitespace-nowrap"
+          style={{ 
+            writingMode: 'vertical-lr', 
+            transform: 'rotate(180deg)',
+            color: isOpen ? 'var(--accent)' : 'inherit'
+          }}
+        >
+          theme accent
+        </span>
+      </button>
+
+      {/* Expanded Panel */}
+      <div 
+        className="p-4 border-y border-l backdrop-blur-3xl shadow-2xl flex flex-col gap-4 w-[64px] md:w-[60px]"
+        style={{ 
+          backgroundColor: 'var(--bg-navbar)', 
+          borderColor: 'var(--border-subtle)',
+        }}
+      >
+        <div className="flex flex-col gap-4 items-center">
+          {ACCENT_PALETTE.map((color) => (
+            <button
+              key={color.name}
+              onClick={() => {
+                setAccentColor(color.value)
+              }}
+              className={`w-7 h-7 md:w-6 md:h-6 rounded-full transition-all duration-300 hover:scale-110 relative group flex items-center justify-center ${
+                accentColor === color.value ? 'ring-2 ring-white ring-offset-2 ring-offset-black' : 'hover:ring-1 hover:ring-white/30'
+              }`}
+              style={{ 
+                backgroundColor: color.value,
+                boxShadow: accentColor === color.value ? `0 0 15px ${color.value}80` : 'none'
+              }}
+              title={`Switch to ${color.name} accent`}
+            >
+              {/* Tooltip */}
+              <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2.5 py-1.5 rounded bg-black/90 text-[9px] text-white opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap pointer-events-none uppercase tracking-widest border border-white/10 translate-x-2 group-hover:translate-x-0 hidden md:block z-[200]">
+                {color.name}
+              </span>
+              
+              {/* Checkmark for active */}
+              {accentColor === color.value && (
+                <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
-      
-      {/* Label */}
-      <span className="inline-block text-[9px] font-mono tracking-widest uppercase opacity-80 md:opacity-40 select-none px-2 py-0.5 rounded-full shadow-lg border md:border-transparent md:shadow-none md:bg-transparent" 
-            style={{ backgroundColor: 'var(--bg-base-95)', borderColor: 'var(--border-subtle)' }}>
-        theme accent
-      </span>
     </div>
   )
 }
