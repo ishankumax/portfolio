@@ -1,6 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { FaInstagram, FaLinkedin, FaXTwitter, FaGithub } from 'react-icons/fa6'
+import { FaInstagram, FaLinkedin, FaXTwitter, FaGithub, FaEnvelope } from 'react-icons/fa6'
+import { RiGlobalLine, RiMailLine, RiGithubLine, RiTwitterXLine, RiLinkedinBoxLine, RiInstagramLine } from 'react-icons/ri'
+import { supabase } from '../lib/supabase'
+
+// Map icon names from DB to components
+const getIcon = (name) => {
+  switch (name) {
+    case 'FaLinkedin': return <FaLinkedin size={15} />
+    case 'FaXTwitter': return <FaXTwitter size={15} />
+    case 'FaInstagram': return <FaInstagram size={15} />
+    case 'FaGithub': return <FaGithub size={15} />
+    case 'FaEnvelope': return <FaEnvelope size={15} />
+    case 'RiLinkedinBoxLine': return <RiLinkedinBoxLine size={15} />
+    case 'RiTwitterXLine': return <RiTwitterXLine size={15} />
+    case 'RiInstagramLine': return <RiInstagramLine size={15} />
+    case 'RiGithubLine': return <RiGithubLine size={15} />
+    case 'RiMailLine': return <RiMailLine size={15} />
+    default: return <RiGlobalLine size={15} />
+  }
+}
 
 const CONTACT_LINKS = [
   {
@@ -86,6 +105,48 @@ function ContactCard({ item }) {
 }
 
 function Network() {
+  const [dynamicLinks, setDynamicLinks] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchLinks()
+  }, [])
+
+  const fetchLinks = async () => {
+    if (!supabase) {
+      setDynamicLinks(CONTACT_LINKS)
+      setLoading(false)
+      return
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('links')
+        .select('*')
+        .eq('category', 'social')
+        .order('order_index', { ascending: true })
+      
+      if (data && data.length > 0) {
+        // Map Supabase schema to the UI structure
+        const mapped = data.map(l => ({
+          label: l.label,
+          value: l.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''),
+          href: l.url,
+          icon: getIcon(l.icon_name),
+          desc: '' // You could add a description column to links table if needed
+        }))
+        setDynamicLinks(mapped)
+      } else {
+        setDynamicLinks(CONTACT_LINKS)
+      }
+    } catch (err) {
+      console.error('Failed to fetch links:', err)
+      setDynamicLinks(CONTACT_LINKS)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="relative z-10">
       {/* Header */}
@@ -106,9 +167,13 @@ function Network() {
 
       {/* Contact links */}
       <div className="flex flex-col gap-3">
-        {CONTACT_LINKS.map((item) => (
-          <ContactCard key={item.label} item={item} />
-        ))}
+        {loading ? (
+          <div className="text-center py-10 text-[10px] uppercase tracking-widest text-[#444] animate-pulse">Syncing Network...</div>
+        ) : (
+          dynamicLinks.map((item) => (
+            <ContactCard key={item.label} item={item} />
+          ))
+        )}
       </div>
 
       {/* Footer note */}

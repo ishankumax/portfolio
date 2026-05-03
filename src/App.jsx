@@ -11,8 +11,14 @@ import MainLayout from './components/layout/MainLayout'
 import Terminal, { useTerminal } from './components/Terminal'
 import ScrollToTop from './components/ScrollToTop'
 import { ThemeProvider, useTheme } from './ThemeContext'
+import { ContentProvider } from './ContentContext'
 import RippleBackground from './components/RippleBackground'
-
+import AdminLayout from './components/admin/AdminLayout'
+import AdminLogin from './components/admin/AdminLogin'
+import AdminDashboard from './components/admin/AdminDashboard'
+import AdminBlogs from './components/admin/AdminBlogs'
+import AdminLinks from './components/admin/AdminLinks'
+import AdminContent from './components/admin/AdminContent'
 
 function AppInner() {
   const { open: terminalOpen, setOpen: setTerminalOpen } = useTerminal()
@@ -31,17 +37,31 @@ function AppInner() {
 
         {/* Content layer — pointer-events auto so all UI remains interactive */}
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <MainLayout onOpenTerminal={() => setTerminalOpen(true)}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/success" element={<Success />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/insights" element={<Insights />} />
-              <Route path="/experience" element={<Experience />} />
-              <Route path="/network" element={<Network />} />
-              <Route path="/contact" element={<Network />} />
-            </Routes>
-          </MainLayout>
+          <Routes>
+            {/* Public Routes wrapped in MainLayout */}
+            <Route path="/*" element={
+              <MainLayout onOpenTerminal={() => setTerminalOpen(true)}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/success" element={<Success />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/insights" element={<Insights />} />
+                  <Route path="/experience" element={<Experience />} />
+                  <Route path="/network" element={<Network />} />
+                  <Route path="/contact" element={<Network />} />
+                </Routes>
+              </MainLayout>
+            } />
+
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="login" element={<AdminLogin />} />
+              <Route path="content" element={<AdminContent />} />
+              <Route path="blogs" element={<AdminBlogs />} />
+              <Route path="links" element={<AdminLinks />} />
+            </Route>
+          </Routes>
         </div>
       </div>
     </Router>
@@ -50,9 +70,11 @@ function AppInner() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <AppInner />
-    </ThemeProvider>
+    <ContentProvider>
+      <ThemeProvider>
+        <AppInner />
+      </ThemeProvider>
+    </ContentProvider>
   )
 }
 

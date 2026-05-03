@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { supabase } from '../lib/supabase'
+import ReactMarkdown from 'react-markdown'
 
 // ============================================================================
 // DATA: Short Takes — brief, punchy observations
@@ -143,6 +145,16 @@ function ShortTakeCard({ item }) {
 function EssayCard({ item }) {
   const [expanded, setExpanded] = useState(false)
 
+  // Format date to "MMM YYYY"
+  const formatDate = (dateStr) => {
+    try {
+      const d = new Date(dateStr)
+      return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toLowerCase()
+    } catch {
+      return dateStr
+    }
+  }
+
   return (
     <article className="border rounded-xl overflow-hidden transition-all duration-300" style={{ borderColor: 'var(--border-card)' }}>
       {/* Header */}
@@ -154,15 +166,16 @@ function EssayCard({ item }) {
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <Tag name={item.tag} />
-              <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>{item.date}</span>
-              <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>· {item.readTime}</span>
+              <div className="flex gap-1.5">
+                {item.tags?.map(t => <Tag key={t} name={t} />)}
+              </div>
+              <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>{formatDate(item.published_at || item.created_at)}</span>
             </div>
             <h3 className="text-white font-bold text-base font-mono mb-2 group-hover:text-[color:var(--accent)] transition-colors">
               {item.title}
             </h3>
             <p className="text-xs leading-relaxed line-clamp-2" style={{ color: 'var(--text-secondary)' }}>
-              {item.preview}
+              {item.excerpt || item.preview}
             </p>
           </div>
           <span className="shrink-0 mt-1 transition-transform duration-300" style={{ color: 'var(--text-muted)', transform: expanded ? 'rotate(180deg)' : '' }}>
@@ -174,12 +187,10 @@ function EssayCard({ item }) {
       {/* Body — expandable */}
       {expanded && (
         <div className="px-6 pb-6 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
-          <div className="pt-5 flex flex-col gap-4">
-            {item.body.map((para, i) => (
-              <p key={i} className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                {para}
-              </p>
-            ))}
+          <div className="pt-5 prose prose-invert prose-sm max-w-none text-sm leading-relaxed text-[var(--text-secondary)] font-mono">
+            <ReactMarkdown>
+              {item.content}
+            </ReactMarkdown>
           </div>
           <button
             onClick={() => setExpanded(false)}
@@ -199,6 +210,40 @@ function EssayCard({ item }) {
 // ============================================================================
 function Insights() {
   const [activeTab, setActiveTab] = useState('takes')
+  const [dynamicEssays, setDynamicEssays] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchBlogs()
+  }, [])
+
+  const fetchBlogs = async () => {
+    if (!supabase) {
+      setDynamicEssays(ESSAYS)
+      setLoading(false)
+      return
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('blogs')
+        .select('*')
+        .eq('is_published', true)
+        .order('published_at', { ascending: false })
+      
+      if (data && data.length > 0) {
+        setDynamicEssays(data)
+      } else {
+        // Fallback to hardcoded essays if DB is empty
+        setDynamicEssays(ESSAYS)
+      }
+    } catch (err) {
+      console.error('Failed to fetch blogs:', err)
+      setDynamicEssays(ESSAYS)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="relative z-10">
@@ -252,9 +297,9 @@ function Insights() {
       {activeTab === 'essays' && (
         <div className="flex flex-col gap-4">
           <p className="text-[11px] font-mono mb-2" style={{ color: 'var(--text-muted)' }}>
-            {ESSAYS.length} essays — click to expand
+            {loading ? 'loading essays...' : `${dynamicEssays.length} essays — click to expand`}
           </p>
-          {ESSAYS.map(item => (
+          {dynamicEssays.map(item => (
             <EssayCard key={item.id} item={item} />
           ))}
         </div>
