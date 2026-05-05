@@ -8,6 +8,7 @@ import Insights from './components/Insights'
 import Experience from './components/Experience'
 import Network from './components/Network'
 import MainLayout from './components/layout/MainLayout'
+import AdminLayout from './components/admin/AdminLayout'
 import Terminal, { useTerminal } from './components/Terminal'
 import ScrollToTop from './components/ScrollToTop'
 import { ThemeProvider, useTheme } from './ThemeContext'
@@ -46,8 +47,8 @@ function AppInner() {
               </MainLayout>
             } />
 
-            {/* Admin redirect - Decap CMS lives in /admin/index.html */}
-            <Route path="/admin" element={<div className="min-h-screen bg-black flex items-center justify-center text-white font-mono">Redirecting to CMS... {window.location.href = '/admin/'}</div>} />
+            {/* Admin Dashboard */}
+            <Route path="/admin/*" element={<AdminLayout />} />
           </Routes>
         </div>
       </div>
