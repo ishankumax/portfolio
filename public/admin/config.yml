@@ -1,0 +1,56 @@
+backend:
+  name: github
+  repo: ishankumax/ishankumax # Replace with your GitHub repo: username/repo
+  branch: main # Branch to update
+
+media_folder: "public/images/uploads" # Folder where uploaded images will go
+public_folder: "/images/uploads" # The path used in the frontend
+
+collections:
+  - name: "content"
+    label: "Page Content"
+    delete: false # Prevent accidental deletion of core content
+    editor:
+      preview: false
+    files:
+      - name: "hero"
+        label: "Hero Section"
+        file: "src/data/content/hero.json"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+
+      - name: "about"
+        label: "About Section"
+        file: "src/data/content/about.json"
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Subtitle", name: "sub", widget: "string" }
+          - { label: "Body Content (Markdown)", name: "body", widget: "markdown" }
+
+  - name: "links"
+    label: "Links & Socials"
+    file: "src/data/links.json"
+    editor:
+      preview: false
+    fields:
+      - name: "links"
+        label: "Links"
+        widget: "list"
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - { label: "URL", name: "url", widget: "string" }
+          - { label: "Category", name: "category", widget: "select", options: ["social", "project", "company"] }
+
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/data/blogs"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Tags", name: "tags", widget: "list" }

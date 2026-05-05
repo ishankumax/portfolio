@@ -17,7 +17,7 @@ const STACK = [
     items: [
       { name: 'Node.js' },
       { name: 'Python' },
-      { name: 'Supabase' },
+      { name: 'Firebase' },
       { name: 'REST APIs' },
     ]
   },

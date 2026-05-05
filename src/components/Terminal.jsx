@@ -30,7 +30,7 @@ const FILES = {
   ],
   'skills': [
     'frontend:    react, vite, tailwind css, javascript (92%)',
-    'backend:     node.js, python, supabase, rest apis',
+    'backend:     node.js, python, firebase, rest apis',
     'tools:       git/github, figma, vs code, linux/cli',
     '',
     "run 'open /specs' for the full technical breakdown.",

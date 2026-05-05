@@ -1,11 +1,29 @@
 import React from 'react'
-import { FaLinkedin, FaXTwitter, FaGithub, FaInstagram } from 'react-icons/fa6'
+import { FaLinkedin, FaXTwitter, FaGithub, FaInstagram, FaGlobe } from 'react-icons/fa6'
+import { useContent } from '../ContentContext'
+
+const ICON_MAP = {
+  github: <FaGithub size={12} />,
+  linkedin: <FaLinkedin size={12} />,
+  twitter: <FaXTwitter size={12} />,
+  instagram: <FaInstagram size={12} />,
+  x: <FaXTwitter size={12} />,
+}
 
 /**
  * Hero Component
  * Follows the normalized left-aligned header pattern.
  */
 function Hero() {
+  const { getContent, getLinksByCategory } = useContent()
+  const heroContent = getContent('hero', {
+    title: 'ishan kumar',
+    subtitle: 'Builder, Designer, Developer',
+    description: '20-year-old CS undergrad building software for the next billion users.'
+  })
+  
+  const socialLinks = getLinksByCategory('social')
+
   return (
     <section className="relative mb-24 md:mb-32">
       {/* Header Pattern */}
@@ -14,32 +32,38 @@ function Hero() {
           portfolio / home
         </p>
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6">
-          ishan kumar<span className="animate-pulse" style={{ color: 'var(--accent)' }}>_</span>
+          {heroContent.title}<span className="animate-pulse" style={{ color: 'var(--accent)' }}>_</span>
         </h1>
         <p className="text-base md:text-lg leading-relaxed max-w-2xl" style={{ color: 'var(--text-secondary)' }}>
-          20-year-old CS undergrad building software for the next billion users. 
-          founder of <span className="border-b" style={{ borderColor: 'var(--accent)' }}>InTheBox</span>, 
-          leading tech communities, and documenting the messy journey of a developer.
+          {heroContent.description}
         </p>
       </div>
 
       {/* Social Links / CTA */}
       <div className="flex flex-wrap gap-4 text-[10px] font-mono uppercase tracking-widest items-center">
-        <a href="https://github.com/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
-          <FaGithub size={12} /> github
-        </a>
-        <span className="opacity-20">/</span>
-        <a href="https://linkedin.com/in/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
-          <FaLinkedin size={12} /> linkedin
-        </a>
-        <span className="opacity-20">/</span>
-        <a href="https://x.com/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
-          <FaXTwitter size={12} /> x.com
-        </a>
-        <span className="opacity-20">/</span>
-        <a href="https://instagram.com/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
-          <FaInstagram size={12} /> instagram
-        </a>
+        {socialLinks.length > 0 ? socialLinks.map((link, idx) => (
+          <React.Fragment key={link.id}>
+            <a 
+              href={link.url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5"
+            >
+              {ICON_MAP[link.label.toLowerCase()] || <FaGlobe size={12} />} {link.label.toLowerCase()}
+            </a>
+            {idx < socialLinks.length - 1 && <span className="opacity-20">/</span>}
+          </React.Fragment>
+        )) : (
+          <>
+            <a href="https://github.com/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
+              <FaGithub size={12} /> github
+            </a>
+            <span className="opacity-20">/</span>
+            <a href="https://linkedin.com/in/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
+              <FaLinkedin size={12} /> linkedin
+            </a>
+          </>
+        )}
       </div>
     </section>
   )

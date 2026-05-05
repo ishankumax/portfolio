@@ -1,0 +1,19 @@
+{
+  "links": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/ishankumax",
+      "category": "social"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://linkedin.com/in/ishankumax",
+      "category": "social"
+    },
+    {
+      "label": "X.com",
+      "url": "https://x.com/ishankumax",
+      "category": "social"
+    }
+  ]
+}

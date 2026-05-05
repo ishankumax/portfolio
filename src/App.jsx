@@ -13,13 +13,6 @@ import ScrollToTop from './components/ScrollToTop'
 import { ThemeProvider, useTheme } from './ThemeContext'
 import { ContentProvider } from './ContentContext'
 import RippleBackground from './components/RippleBackground'
-import AdminLayout from './components/admin/AdminLayout'
-import AdminLogin from './components/admin/AdminLogin'
-import AdminDashboard from './components/admin/AdminDashboard'
-import AdminBlogs from './components/admin/AdminBlogs'
-import AdminLinks from './components/admin/AdminLinks'
-import AdminContent from './components/admin/AdminContent'
-
 function AppInner() {
   const { open: terminalOpen, setOpen: setTerminalOpen } = useTerminal()
   const { rippleEnabled } = useTheme()
@@ -53,14 +46,8 @@ function AppInner() {
               </MainLayout>
             } />
 
-            {/* Admin Routes */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="login" element={<AdminLogin />} />
-              <Route path="content" element={<AdminContent />} />
-              <Route path="blogs" element={<AdminBlogs />} />
-              <Route path="links" element={<AdminLinks />} />
-            </Route>
+            {/* Admin redirect - Decap CMS lives in /admin/index.html */}
+            <Route path="/admin" element={<div className="min-h-screen bg-black flex items-center justify-center text-white font-mono">Redirecting to CMS... {window.location.href = '/admin/'}</div>} />
           </Routes>
         </div>
       </div>

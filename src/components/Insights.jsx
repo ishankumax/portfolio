@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
 import ReactMarkdown from 'react-markdown'
+import { useContent } from '../ContentContext'
 
 // ============================================================================
 // DATA: Short Takes — brief, punchy observations
@@ -205,45 +205,13 @@ function EssayCard({ item }) {
   )
 }
 
-// ============================================================================
-// PAGE: Insights
-// ============================================================================
+
 function Insights() {
   const [activeTab, setActiveTab] = useState('takes')
-  const [dynamicEssays, setDynamicEssays] = useState([])
-  const [loading, setLoading] = useState(true)
+  const { blogs: dynamicEssays, loading } = useContent()
 
-  useEffect(() => {
-    fetchBlogs()
-  }, [])
-
-  const fetchBlogs = async () => {
-    if (!supabase) {
-      setDynamicEssays(ESSAYS)
-      setLoading(false)
-      return
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from('blogs')
-        .select('*')
-        .eq('is_published', true)
-        .order('published_at', { ascending: false })
-      
-      if (data && data.length > 0) {
-        setDynamicEssays(data)
-      } else {
-        // Fallback to hardcoded essays if DB is empty
-        setDynamicEssays(ESSAYS)
-      }
-    } catch (err) {
-      console.error('Failed to fetch blogs:', err)
-      setDynamicEssays(ESSAYS)
-    } finally {
-      setLoading(false)
-    }
-  }
+  // Fallback to static ESSAYS if no dynamic blogs are available
+  const displayEssays = dynamicEssays.length > 0 ? dynamicEssays : ESSAYS
 
   return (
     <div className="relative z-10">
@@ -297,9 +265,9 @@ function Insights() {
       {activeTab === 'essays' && (
         <div className="flex flex-col gap-4">
           <p className="text-[11px] font-mono mb-2" style={{ color: 'var(--text-muted)' }}>
-            {loading ? 'loading essays...' : `${dynamicEssays.length} essays — click to expand`}
+            {loading ? 'loading essays...' : `${displayEssays.length} essays — click to expand`}
           </p>
-          {dynamicEssays.map(item => (
+          {displayEssays.map(item => (
             <EssayCard key={item.id} item={item} />
           ))}
         </div>
