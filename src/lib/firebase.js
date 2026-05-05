@@ -16,6 +16,14 @@ const firebaseConfig = {
   measurementId: "G-7P8G35DHDD"
 };
 
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
+// Export Firestore and Auth so the admin dashboard can use them!
+export const db = getFirestore(app);
+export const auth = getAuth(app);
+
