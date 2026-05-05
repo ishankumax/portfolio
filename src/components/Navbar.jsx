@@ -1,10 +1,65 @@
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../ThemeContext'
+import { subscribeToAuthChanges, logout } from '../lib/auth'
 
 function Navbar({ onOpenTerminal }) {
   const location = useLocation()
+  const navigate = useNavigate()
   const { theme, toggleTheme, rippleEnabled, toggleRipple } = useTheme()
+
+  const [adminMenuOpen, setAdminMenuOpen] = useState(false)
+  const [user, setUser] = useState(null)
+  const adminMenuRef = useRef(null)
+  
+  // Track keystrokes for 'admin'
+  const keysRef = useRef('')
+
+  useEffect(() => {
+    const unsubscribe = subscribeToAuthChanges((u) => {
+      setUser(u)
+    })
+
+    const handleKeyDown = (e) => {
+      // Ignore if typing in an input
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+      
+      const key = e.key.toLowerCase()
+      keysRef.current += key
+      
+      // Keep only last 5 chars
+      if (keysRef.current.length > 5) {
+        keysRef.current = keysRef.current.slice(-5)
+      }
+
+      if (keysRef.current === 'admin') {
+        setAdminMenuOpen(true)
+        keysRef.current = '' // Reset
+      }
+    }
+    
+    const handleClickOutside = (e) => {
+      if (adminMenuRef.current && !adminMenuRef.current.contains(e.target)) {
+        setAdminMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      unsubscribe()
+      window.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const handleLogout = async () => {
+    await logout()
+    setAdminMenuOpen(false)
+    if (location.pathname.startsWith('/admin')) {
+      navigate('/')
+    }
+  }
 
   // Helper to detect an active route
   const isActive = (path) => {
@@ -19,18 +74,49 @@ function Navbar({ onOpenTerminal }) {
     <header className="fixed top-0 left-0 right-0 z-[100] backdrop-blur-xl border-b" style={{ backgroundColor: 'var(--bg-navbar)', borderColor: 'var(--border-subtle)' }}>
       <div className="max-w-[1440px] mx-auto w-full px-6 md:px-12 h-16 md:h-20 flex items-center justify-between font-mono">
         
-        {/* Left: Brand */}
-        <Link 
-          to="/" 
-          className="group flex flex-col justify-center shrink-0"
-        >
-          <span className="group-hover:text-[color:var(--accent)] transition-colors font-bold tracking-tighter text-lg md:text-xl uppercase leading-none" style={{ color: 'var(--text-primary)' }}>
-            ishan kumar
-          </span>
-          <span className="text-[9px] md:text-[10px] font-mono tracking-widest mt-1 opacity-60 group-hover:opacity-100 group-hover:text-[color:var(--accent)] transition-all" style={{ color: 'var(--text-secondary)' }}>
-            @ishankumax
-          </span>
-        </Link>
+        {/* Left: Brand with Hidden Admin Entry */}
+        <div className="relative shrink-0" ref={adminMenuRef}>
+          <button 
+            onDoubleClick={() => setAdminMenuOpen(!adminMenuOpen)}
+            className="group flex flex-col justify-center text-left cursor-default select-none"
+          >
+            <span className="group-hover:text-[color:var(--accent)] transition-colors font-bold tracking-tighter text-lg md:text-xl uppercase leading-none" style={{ color: 'var(--text-primary)' }}>
+              ishan kumar
+            </span>
+            <span className="text-[9px] md:text-[10px] font-mono tracking-widest mt-1 opacity-60 group-hover:opacity-100 group-hover:text-[color:var(--accent)] transition-all" style={{ color: 'var(--text-secondary)' }}>
+              @ishankumax
+            </span>
+          </button>
+
+          {/* Hidden Admin Dropdown */}
+          {adminMenuOpen && (
+            <div 
+              className="absolute top-full left-0 mt-3 z-50 rounded-xl p-2 min-w-[220px] backdrop-blur-xl transition-all animate-in fade-in slide-in-from-top-2"
+              style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', boxShadow: '0 10px 40px rgba(0,0,0,0.5)' }}
+            >
+              <div className="px-3 py-2 border-b mb-1" style={{ borderColor: 'var(--border-subtle)' }}>
+                <span className="text-[10px] font-bold tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>Secure Access</span>
+              </div>
+              <Link 
+                to="/admin" 
+                onClick={() => setAdminMenuOpen(false)}
+                className="block px-3 py-2.5 text-sm rounded transition-colors hover:bg-white/5 font-bold"
+                style={{ color: 'var(--accent)' }}
+              >
+                Open Dashboard
+              </Link>
+              {user && (
+                <button 
+                  onClick={handleLogout}
+                  className="w-full text-left px-3 py-2.5 text-sm rounded transition-colors mt-1 hover:bg-red-500/10 hover:text-red-400"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  Logout
+                </button>
+              )}
+            </div>
+          )}
+        </div>
         
         {/* Center: Desktop Links */}
         <div className="hidden md:flex items-center gap-6 lg:gap-8 text-gray-500 text-sm">

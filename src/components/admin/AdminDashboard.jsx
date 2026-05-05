@@ -19,21 +19,27 @@ export default function AdminDashboard() {
     fetchStats();
   }, []);
 
-  if (loading) return <div>Loading dashboard...</div>;
+  if (loading) return <div className="animate-pulse tracking-widest text-sm uppercase">Loading Dashboard...</div>;
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Dashboard Overview</h1>
+    <div className="space-y-6">
+      <h2 className="text-xl font-bold tracking-tight uppercase" style={{ color: 'var(--text-primary)' }}>Overview</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-[#111] border border-[#333] rounded-lg p-6 flex flex-col items-center justify-center">
-          <h3 className="text-gray-400 text-sm mb-2">Total Links</h3>
-          <span className="text-4xl text-[var(--accent)] font-bold">{stats.links}</span>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div 
+          className="rounded-xl p-8 flex flex-col items-center justify-center transition-all hover:scale-[1.02]"
+          style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}
+        >
+          <h3 className="text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--text-secondary)' }}>Total Links</h3>
+          <span className="text-6xl font-bold" style={{ color: 'var(--accent)' }}>{stats.links}</span>
         </div>
         
-        <div className="bg-[#111] border border-[#333] rounded-lg p-6 flex flex-col items-center justify-center">
-          <h3 className="text-gray-400 text-sm mb-2">Total Blogs</h3>
-          <span className="text-4xl text-[var(--accent)] font-bold">{stats.blogs}</span>
+        <div 
+          className="rounded-xl p-8 flex flex-col items-center justify-center transition-all hover:scale-[1.02]"
+          style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}
+        >
+          <h3 className="text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--text-secondary)' }}>Total Blogs</h3>
+          <span className="text-6xl font-bold" style={{ color: 'var(--accent)' }}>{stats.blogs}</span>
         </div>
       </div>
     </div>
