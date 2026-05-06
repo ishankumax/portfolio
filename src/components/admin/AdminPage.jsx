@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAdmin } from '../../AdminContext';
 import LoginModal from './LoginModal';
 import AdminDashboard from './AdminDashboard';

@@ -103,21 +103,27 @@ function Navbar({ onOpenTerminal }) {
           )}
         </div>
         
-        {/* Center: Desktop Links (Compact Expandable) */}
-        <nav className="hidden md:flex items-center justify-center flex-1 gap-4 lg:gap-6 text-gray-500 text-sm font-mono">
+        {/* Center: Desktop Links */}
+        <nav className={`hidden md:flex items-center justify-center flex-1 text-gray-500 text-sm font-mono ${isEditing ? 'gap-4 lg:gap-6' : 'gap-6 lg:gap-8'}`}>
           {navItems.map((item) => (
             <Link 
               key={item.letter}
               to={item.path} 
               className={linkClass(item.path)}
-              title={item.label}
+              title={isEditing ? item.label : undefined}
             >
-              <span>[</span>
-              <span>{item.letter}</span>
-              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap opacity-0 group-hover:opacity-100 group-hover:ml-1">
-                {item.label}
-              </span>
-              <span>]</span>
+              {isEditing ? (
+                <>
+                  <span>[</span>
+                  <span>{item.letter}</span>
+                  <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap opacity-0 group-hover:opacity-100 group-hover:ml-1">
+                    {item.label}
+                  </span>
+                  <span>]</span>
+                </>
+              ) : (
+                <span>[{item.letter}] {item.label}</span>
+              )}
             </Link>
           ))}
         </nav>
