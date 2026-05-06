@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import PageHeader from './ui/PageHeader'
 import { timelineData } from '../data/timelineData'
 import Timeline from './Timeline'
+import EditableText from './admin/EditableText'
 
 // ============================================================================
 // COMPONENT: ImageMarquee
@@ -203,25 +204,29 @@ function Experience() {
                     <div className="exp-card__glow" />
                     <div className="relative z-10">
                       <header className="exp-card__header">
-                        <h2 className="exp-card__role">{item.role}</h2>
+                        <h2 className="exp-card__role flex">
+                          <EditableText id={`exp_role_${item.id}`} section="experience" defaultText={item.role} as="span" className="w-full block" />
+                        </h2>
                         <span className="exp-card__date">{item.date}</span>
                       </header>
 
-                      <div className="exp-card__company">
+                      <div className="exp-card__company flex items-center">
                         <span className="exp-card__dot" />
                         {item.website ? (
-                          <a href={item.website} target="_blank" rel="noopener noreferrer" className="exp-company-link">
-                            {item.company}
+                          <a href={item.website} target="_blank" rel="noopener noreferrer" className="exp-company-link flex items-center gap-1">
+                            <EditableText id={`exp_company_${item.id}`} section="experience" defaultText={item.company} as="span" />
                             <svg className="exp-company-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 10L10 2M10 2H5M10 2v5" /></svg>
                           </a>
-                        ) : item.company}
+                        ) : (
+                          <EditableText id={`exp_company_${item.id}`} section="experience" defaultText={item.company} as="span" className="w-full block" />
+                        )}
                       </div>
 
                       <ul className="exp-card__bullets">
                         {item.bullets.map((bullet, i) => (
                           <li key={i} className="exp-card__bullet">
-                            <span className="exp-card__bullet-icon">+</span>
-                            <span>{bullet}</span>
+                            <span className="exp-card__bullet-icon shrink-0">+</span>
+                            <EditableText id={`exp_bullet_${item.id}_${i}`} section="experience" defaultText={bullet} as="span" className="w-full block" />
                           </li>
                         ))}
                       </ul>

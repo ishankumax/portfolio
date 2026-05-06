@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import EditableText from './admin/EditableText'
 
 const METRICS = [
-  { value: '50+', label: 'clients served' },
-  { value: '₹1.25L', label: 'won at TiE U' },
-  { value: '3+', label: 'media features' },
-  { value: '2025', label: 'incorporated' },
+  { id: 'clients', value: '50+', label: 'clients served' },
+  { id: 'prize', value: '₹1.25L', label: 'won at TiE U' },
+  { id: 'media', value: '3+', label: 'media features' },
+  { id: 'year', value: '2025', label: 'incorporated' },
 ]
 
 const CASE_STUDY = [
@@ -51,20 +52,47 @@ function FounderOf() {
 
         <div className="flex-1 w-full text-left">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-baseline mb-2">
-            <h3 className="font-bold text-2xl font-mono" style={{ color: 'var(--text-primary)' }}>InTheBox</h3>
-            <span className="text-sm font-mono mt-1 md:mt-0" style={{ color: 'var(--text-muted)' }}>april 2025 - today</span>
+            <h3 className="font-bold text-2xl font-mono flex" style={{ color: 'var(--text-primary)' }}>
+              <EditableText id="founder_company" section="founder" defaultText="InTheBox" as="span" />
+            </h3>
+            <EditableText 
+              id="founder_date" 
+              section="founder" 
+              defaultText="april 2025 - today"
+              as="span" 
+              className="text-sm font-mono mt-1 md:mt-0" 
+              style={{ color: 'var(--text-muted)' }} 
+            />
           </div>
-          <p className="font-mono leading-relaxed mb-5" style={{ color: 'var(--text-secondary)' }}>
-            Where Packaging Meets Innovation —{' '}
-            building Custom, Premium Designs for brands that care about the unboxing moment.
-          </p>
+          <EditableText 
+            id="founder_tagline" 
+            section="founder" 
+            defaultText="Where Packaging Meets Innovation — building Custom, Premium Designs for brands that care about the unboxing moment."
+            as="p" 
+            className="font-mono leading-relaxed mb-5 block" 
+            style={{ color: 'var(--text-secondary)' }} 
+          />
 
           {/* Impact metrics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {METRICS.map((m) => (
-              <div key={m.label} className="border rounded-lg p-3 text-left transition-all duration-500 group/metric" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
-                <p className="font-bold text-lg font-mono group-hover/metric:text-[color:var(--accent)] transition-colors" style={{ color: 'var(--text-primary)' }}>{m.value}</p>
-                <p className="text-[11px] font-mono mt-0.5" style={{ color: 'var(--text-muted)' }}>{m.label}</p>
+              <div key={m.id} className="border rounded-lg p-3 text-left transition-all duration-500 group/metric" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
+                <EditableText 
+                  id={`founder_metric_${m.id}_value`}
+                  section="founder"
+                  defaultText={m.value}
+                  as="p"
+                  className="font-bold text-lg font-mono group-hover/metric:text-[color:var(--accent)] transition-colors block"
+                  style={{ color: 'var(--text-primary)' }}
+                />
+                <EditableText 
+                  id={`founder_metric_${m.id}_label`}
+                  section="founder"
+                  defaultText={m.label}
+                  as="p"
+                  className="text-[11px] font-mono mt-0.5 block"
+                  style={{ color: 'var(--text-muted)' }}
+                />
               </div>
             ))}
           </div>

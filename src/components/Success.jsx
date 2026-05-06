@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { successData, TAB_LABELS } from '../data/successData'
 import PageHeader from './ui/PageHeader'
+import EditableText from './admin/EditableText'
 
 /* ─────────────────────────────────────────────────────────────────────────────
    IMAGE CAROUSEL
@@ -152,7 +153,9 @@ function ItemList({ items, activeId, onSelect }) {
             <span className="success-itemlist__num">
               {String(idx + 1).padStart(2, '0')}
             </span>
-            <span className="success-itemlist__title">{item.title}</span>
+            <span className="success-itemlist__title block text-left">
+              <EditableText id={`success_title_${item.id}`} section="success" defaultText={item.title} as="span" />
+            </span>
             {activeId === item.id && (
               <span className="success-itemlist__indicator" aria-hidden />
             )}
@@ -171,8 +174,16 @@ function ContentPanel({ item, sectionLabel }) {
   return (
     <div className="success-content">
       <span className="success-content__tag">{sectionLabel}</span>
-      <h2 className="success-content__title">{item.title}</h2>
-      <p className="success-content__desc">{item.description}</p>
+      <h2 className="success-content__title flex">
+        <EditableText id={`success_title_${item.id}`} section="success" defaultText={item.title} as="span" className="w-full" />
+      </h2>
+      <EditableText 
+        id={`success_desc_${item.id}`} 
+        section="success" 
+        defaultText={item.description} 
+        as="p" 
+        className="success-content__desc block" 
+      />
     </div>
   )
 }

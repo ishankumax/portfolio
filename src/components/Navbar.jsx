@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../ThemeContext'
 import { useAdmin } from '../AdminContext'
+import { logout } from '../lib/auth'
 
 function Navbar({ onOpenTerminal }) {
   const location = useLocation()
@@ -42,7 +43,21 @@ function Navbar({ onOpenTerminal }) {
   }
 
   const linkClass = (path) =>
-    `hover:text-[color:var(--accent)] transition-colors whitespace-nowrap ${isActive(path) ? 'text-[color:var(--accent)] font-bold' : ''}`
+    `group flex items-center transition-all duration-300 hover:text-[color:var(--accent)] ${isActive(path) ? 'text-[color:var(--accent)] font-bold' : ''}`
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/')
+  }
+
+  const navItems = [
+    { path: '/insights', letter: 'i', label: 'insights' },
+    { path: '/success', letter: 's', label: 'success' },
+    { path: '/#highlights', letter: 'h', label: 'highlights' },
+    { path: '/about', letter: 'a', label: 'about' },
+    { path: '/network', letter: 'n', label: 'network' },
+    { path: '/experience', letter: 'x', label: 'experience' },
+  ]
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] backdrop-blur-xl border-b" style={{ backgroundColor: 'var(--bg-navbar)', borderColor: 'var(--border-subtle)' }}>
@@ -62,31 +77,49 @@ function Navbar({ onOpenTerminal }) {
             </span>
           </Link>
           
-          {/* Admin Toggle (Visible only when logged in) */}
+          {/* Admin Toggle & Logout (Visible only when logged in) */}
           {user && (
-            <button 
-              onClick={toggleEditing}
-              className={`transition-colors whitespace-nowrap font-bold tracking-widest uppercase text-xs flex items-center gap-1.5 px-2 py-1 rounded border`}
-              style={{ 
-                color: isEditing ? 'black' : 'var(--accent)',
-                backgroundColor: isEditing ? 'var(--accent)' : 'transparent',
-                borderColor: 'var(--accent)'
-              }}
-            >
-              <div className={`w-1.5 h-1.5 rounded-full ${isEditing ? 'bg-black' : 'bg-[var(--accent)]'}`} />
-              {isEditing ? 'Editing: ON' : 'Admin'}
-            </button>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={toggleEditing}
+                className={`transition-colors whitespace-nowrap font-bold tracking-widest uppercase text-[10px] flex items-center gap-1.5 px-2 py-1 rounded border`}
+                style={{ 
+                  color: isEditing ? 'black' : 'var(--accent)',
+                  backgroundColor: isEditing ? 'var(--accent)' : 'transparent',
+                  borderColor: 'var(--accent)'
+                }}
+              >
+                <div className={`w-1.5 h-1.5 rounded-full ${isEditing ? 'bg-black' : 'bg-[var(--accent)]'}`} />
+                {isEditing ? 'Editing: ON' : 'Admin'}
+              </button>
+              <button
+                onClick={handleLogout}
+                className="transition-colors whitespace-nowrap font-bold tracking-widest uppercase text-[10px] px-2 py-1 rounded border hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/50"
+                style={{ color: 'var(--text-secondary)', borderColor: 'var(--border-subtle)' }}
+              >
+                Logout
+              </button>
+            </div>
           )}
         </div>
         
-        {/* Center: Desktop Links */}
-        <nav className="hidden md:flex items-center justify-center flex-1 gap-6 lg:gap-8 text-gray-500 text-sm">
-          <Link to="/insights" className={linkClass('/insights')}>[i] insights</Link>
-          <Link to="/success" className={linkClass('/success')}>[s] success</Link>
-          <Link to="/#highlights" className="hover:text-[color:var(--accent)] transition-colors whitespace-nowrap">[h] highlights</Link>
-          <Link to="/about" className={linkClass('/about')}>[a] about me</Link>
-          <Link to="/network" className={linkClass('/network')}>[n] network</Link>
-          <Link to="/experience" className={linkClass('/experience')}>[x] experience</Link>
+        {/* Center: Desktop Links (Compact Expandable) */}
+        <nav className="hidden md:flex items-center justify-center flex-1 gap-4 lg:gap-6 text-gray-500 text-sm font-mono">
+          {navItems.map((item) => (
+            <Link 
+              key={item.letter}
+              to={item.path} 
+              className={linkClass(item.path)}
+              title={item.label}
+            >
+              <span>[</span>
+              <span>{item.letter}</span>
+              <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap opacity-0 group-hover:opacity-100 group-hover:ml-1">
+                {item.label}
+              </span>
+              <span>]</span>
+            </Link>
+          ))}
         </nav>
 
         {/* Right: Actions */}
