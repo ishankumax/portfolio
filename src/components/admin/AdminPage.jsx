@@ -20,7 +20,7 @@ export default function AdminPage() {
   if (!user) {
     return (
       <div className="relative z-10 min-h-[60vh] flex flex-col items-center justify-center">
-        <LoginModal forceOpen={true} />
+        <LoginModal forceOpen={true} onClose={() => navigate('/')} />
       </div>
     );
   }
