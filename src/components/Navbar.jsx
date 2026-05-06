@@ -50,9 +50,9 @@ function Navbar({ onOpenTerminal }) {
         
         {/* Left: Brand + Admin */}
         <div className="flex items-center gap-6 shrink-0">
-          <button 
-            onDoubleClick={() => navigate('/admin')}
-            className="group flex flex-col justify-center text-left cursor-default select-none"
+          <Link 
+            to="/"
+            className="group flex flex-col justify-center text-left cursor-pointer select-none"
           >
             <span className="group-hover:text-[color:var(--accent)] transition-colors font-bold tracking-tighter text-lg md:text-xl uppercase leading-none" style={{ color: 'var(--text-primary)' }}>
               ishan kumar
@@ -60,7 +60,7 @@ function Navbar({ onOpenTerminal }) {
             <span className="text-[9px] md:text-[10px] font-mono tracking-widest mt-1 opacity-60 group-hover:opacity-100 group-hover:text-[color:var(--accent)] transition-all" style={{ color: 'var(--text-secondary)' }}>
               @ishankumax
             </span>
-          </button>
+          </Link>
           
           {/* Admin Toggle (Visible only when logged in) */}
           {user && (
