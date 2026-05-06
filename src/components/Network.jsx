@@ -30,6 +30,27 @@ const DEFAULT_LINKS = [
     icon: <FaLinkedin size={15} />,
     desc: 'professional connect'
   },
+  {
+    label: 'x',
+    value: 'ishankumax',
+    href: 'https://twitter.com/ishankumax',
+    icon: <FaXTwitter size={15} />,
+    desc: 'where i share insights'
+  },
+  {
+    label: 'github',
+    value: 'ishankumax',
+    href: 'https://github.com/ishankumax',
+    icon: <FaGithub size={15} />,
+    desc: 'where i build'
+  },
+  {
+    label: 'instagram',
+    value: 'ishankumax',
+    href: 'https://instagram.com/ishankumax',
+    icon: <FaInstagram size={15} />,
+    desc: 'my visual journey'
+  }
 ]
 
 function ContactCard({ item }) {
