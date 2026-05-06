@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getLinks, addLink, deleteLink } from '../../lib/db';
+import { useContent } from '../../ContentContext';
 
 export default function AdminLinks() {
+  const { refreshContent } = useContent();
   const [links, setLinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newLink, setNewLink] = useState({ title: '', url: '', icon: '', order_index: 0 });
@@ -21,13 +23,15 @@ export default function AdminLinks() {
     e.preventDefault();
     await addLink({ ...newLink, order_index: Number(newLink.order_index) });
     setNewLink({ title: '', url: '', icon: '', order_index: 0 });
-    fetchLinks();
+    await fetchLinks();
+    refreshContent();
   }
 
   async function handleDelete(id) {
     if (confirm('Are you sure you want to delete this link?')) {
       await deleteLink(id);
-      fetchLinks();
+      await fetchLinks();
+      refreshContent();
     }
   }
 

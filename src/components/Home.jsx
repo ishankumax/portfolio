@@ -6,6 +6,7 @@ import WritingMyStory from './WritingMyStory'
 import TechStack from './TechStack'
 import Footer from './Footer'
 import GitHubActivity from './GitHubActivity'
+import MicroProjects from './MicroProjects'
 
 function Home() {
   const location = useLocation()
@@ -28,6 +29,7 @@ function Home() {
         <FounderOf />
         <TechStack />
         <GitHubActivity />
+        <MicroProjects />
         <WritingMyStory />
       </div>
       <Footer />

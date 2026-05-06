@@ -1,0 +1,20 @@
+[
+  {
+    "slug": "qr-generator",
+    "title": "QR Generator",
+    "description": "Instantly generate custom QR codes from any URL or text input.",
+    "icon": "qr"
+  },
+  {
+    "slug": "link-shortener",
+    "title": "Link Shortener",
+    "description": "Shorten and track your long URLs with a minimal interface.",
+    "icon": "link"
+  },
+  {
+    "slug": "mini-games",
+    "title": "Mini Games",
+    "description": "A collection of classic arcade games like Snake and Tic-Tac-Toe.",
+    "icon": "game"
+  }
+]

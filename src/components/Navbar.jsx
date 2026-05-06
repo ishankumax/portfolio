@@ -1,65 +1,39 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../ThemeContext'
-import { subscribeToAuthChanges, logout } from '../lib/auth'
+import { useAdmin } from '../AdminContext'
 
 function Navbar({ onOpenTerminal }) {
   const location = useLocation()
   const navigate = useNavigate()
   const { theme, toggleTheme, rippleEnabled, toggleRipple } = useTheme()
-
-  const [adminMenuOpen, setAdminMenuOpen] = useState(false)
-  const [user, setUser] = useState(null)
-  const adminMenuRef = useRef(null)
+  const { user } = useAdmin()
   
   // Track keystrokes for 'admin'
   const keysRef = useRef('')
 
   useEffect(() => {
-    const unsubscribe = subscribeToAuthChanges((u) => {
-      setUser(u)
-    })
-
     const handleKeyDown = (e) => {
-      // Ignore if typing in an input
       if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
       
       const key = e.key.toLowerCase()
       keysRef.current += key
       
-      // Keep only last 5 chars
       if (keysRef.current.length > 5) {
         keysRef.current = keysRef.current.slice(-5)
       }
 
       if (keysRef.current === 'admin') {
-        setAdminMenuOpen(true)
+        navigate('/admin')
         keysRef.current = '' // Reset
       }
     }
     
-    const handleClickOutside = (e) => {
-      if (adminMenuRef.current && !adminMenuRef.current.contains(e.target)) {
-        setAdminMenuOpen(false)
-      }
-    }
-
     window.addEventListener('keydown', handleKeyDown)
-    document.addEventListener('mousedown', handleClickOutside)
     return () => {
-      unsubscribe()
       window.removeEventListener('keydown', handleKeyDown)
-      document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [])
-
-  const handleLogout = async () => {
-    await logout()
-    setAdminMenuOpen(false)
-    if (location.pathname.startsWith('/admin')) {
-      navigate('/')
-    }
-  }
+  }, [navigate])
 
   // Helper to detect an active route
   const isActive = (path) => {
@@ -74,10 +48,10 @@ function Navbar({ onOpenTerminal }) {
     <header className="fixed top-0 left-0 right-0 z-[100] backdrop-blur-xl border-b" style={{ backgroundColor: 'var(--bg-navbar)', borderColor: 'var(--border-subtle)' }}>
       <div className="max-w-[1440px] mx-auto w-full px-6 md:px-12 h-16 md:h-20 flex items-center justify-between font-mono">
         
-        {/* Left: Brand with Hidden Admin Entry */}
-        <div className="relative shrink-0" ref={adminMenuRef}>
+        {/* Left: Brand + Admin */}
+        <div className="flex items-center gap-6 shrink-0">
           <button 
-            onDoubleClick={() => setAdminMenuOpen(!adminMenuOpen)}
+            onDoubleClick={() => navigate('/admin')}
             className="group flex flex-col justify-center text-left cursor-default select-none"
           >
             <span className="group-hover:text-[color:var(--accent)] transition-colors font-bold tracking-tighter text-lg md:text-xl uppercase leading-none" style={{ color: 'var(--text-primary)' }}>
@@ -87,51 +61,37 @@ function Navbar({ onOpenTerminal }) {
               @ishankumax
             </span>
           </button>
-
-          {/* Hidden Admin Dropdown */}
-          {adminMenuOpen && (
-            <div 
-              className="absolute top-full left-0 mt-3 z-50 rounded-xl p-2 min-w-[220px] backdrop-blur-xl transition-all animate-in fade-in slide-in-from-top-2"
-              style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', boxShadow: '0 10px 40px rgba(0,0,0,0.5)' }}
+          
+          {/* Admin Toggle (Visible only when logged in) */}
+          {user && (
+            <Link 
+              to="/admin"
+              className={`transition-colors whitespace-nowrap font-bold tracking-widest uppercase text-xs flex items-center gap-1.5 px-2 py-1 rounded border`}
+              style={{ 
+                color: location.pathname === '/admin' ? 'black' : 'var(--accent)',
+                backgroundColor: location.pathname === '/admin' ? 'var(--accent)' : 'transparent',
+                borderColor: 'var(--accent)'
+              }}
             >
-              <div className="px-3 py-2 border-b mb-1" style={{ borderColor: 'var(--border-subtle)' }}>
-                <span className="text-[10px] font-bold tracking-widest uppercase" style={{ color: 'var(--text-muted)' }}>Secure Access</span>
-              </div>
-              <Link 
-                to="/admin" 
-                onClick={() => setAdminMenuOpen(false)}
-                className="block px-3 py-2.5 text-sm rounded transition-colors hover:bg-white/5 font-bold"
-                style={{ color: 'var(--accent)' }}
-              >
-                Open Dashboard
-              </Link>
-              {user && (
-                <button 
-                  onClick={handleLogout}
-                  className="w-full text-left px-3 py-2.5 text-sm rounded transition-colors mt-1 hover:bg-red-500/10 hover:text-red-400"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
-                  Logout
-                </button>
-              )}
-            </div>
+              <div className={`w-1.5 h-1.5 rounded-full ${location.pathname === '/admin' ? 'bg-black' : 'bg-[var(--accent)]'}`} />
+              Admin
+            </Link>
           )}
         </div>
         
         {/* Center: Desktop Links */}
-        <div className="hidden md:flex items-center gap-6 lg:gap-8 text-gray-500 text-sm">
+        <nav className="hidden md:flex items-center justify-center flex-1 gap-6 lg:gap-8 text-gray-500 text-sm">
           <Link to="/insights" className={linkClass('/insights')}>[i] insights</Link>
           <Link to="/success" className={linkClass('/success')}>[s] success</Link>
           <Link to="/#highlights" className="hover:text-[color:var(--accent)] transition-colors whitespace-nowrap">[h] highlights</Link>
           <Link to="/about" className={linkClass('/about')}>[a] about me</Link>
           <Link to="/network" className={linkClass('/network')}>[n] network</Link>
           <Link to="/experience" className={linkClass('/experience')}>[x] experience</Link>
-        </div>
+        </nav>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-4 shrink-0">
-
-          {/* Ripple toggle — water drop icon */}
+        <div className="flex items-center justify-end gap-4 shrink-0 w-auto md:w-[200px]">
+          {/* Ripple toggle */}
           <div className="group relative">
             <button
               id="ripple-toggle"
@@ -144,88 +104,20 @@ function Navbar({ onOpenTerminal }) {
                 transition: 'color 0.25s ease, filter 0.25s ease',
               }}
             >
-              {/* Water drop SVG */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill={rippleEnabled ? 'currentColor' : 'none'}
-                stroke="currentColor"
-                strokeWidth={rippleEnabled ? 0 : 1.75}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-[18px] h-[18px] transition-all duration-300"
-                style={{ opacity: rippleEnabled ? 1 : 18 }}
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={rippleEnabled ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={rippleEnabled ? 0 : 1.75} strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] transition-all duration-300" style={{ opacity: rippleEnabled ? 1 : 18 }}>
                 <path d="M12 2C12 2 5 10 5 14a7 7 0 0 0 14 0c0-4-7-12-7-12z" />
               </svg>
             </button>
-
-            {/* Custom tooltip */}
-            <div
-              className="pointer-events-none absolute top-full right-0 mt-2 z-[200]
-                         opacity-0 group-hover:opacity-100
-                         translate-y-1 group-hover:translate-y-0
-                         transition-all duration-200 ease-out"
-              style={{ minWidth: '140px' }}
-            >
-              {/* Arrow */}
-              <div
-                className="absolute -top-1 right-3 w-2 h-2 rotate-45"
-                style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-card)', borderBottom: 'none', borderRight: 'none' }}
-              />
-              {/* Card */}
-              <div
-                className="rounded-lg px-3 py-2.5 text-left"
-                style={{
-                  background: 'var(--bg-elevated)',
-                  border: '1px solid var(--border-card)',
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-                }}
-              >
-                {/* Status row */}
-                <div className="flex items-center gap-1.5 mb-1">
-                  <span
-                    className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                    style={{ background: rippleEnabled ? 'var(--accent)' : 'var(--text-muted)', boxShadow: rippleEnabled ? '0 0 6px var(--accent)' : 'none' }}
-                  />
-                  <span
-                    className="font-mono text-[10px] font-bold tracking-widest uppercase"
-                    style={{ color: rippleEnabled ? 'var(--accent)' : 'var(--text-muted)' }}
-                  >
-                    ripple {rippleEnabled ? 'on' : 'off'}
-                  </span>
-                </div>
-                {/* Hint */}
-                <p className="font-mono text-[9px] leading-relaxed m-0" style={{ color: 'var(--text-muted)' }}>
-                  {rippleEnabled
-                    ? 'click anywhere → water ripple'
-                    : 'click to enable background ripple'}
-                </p>
-              </div>
-            </div>
           </div>
 
           <button
             id="theme-toggle"
             onClick={toggleTheme}
-            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             className="relative w-8 h-8 flex items-center justify-center rounded-full hover:text-[color:var(--accent)] transition-colors cursor-pointer"
             style={{ color: 'var(--text-secondary)' }}
-            aria-label="Toggle theme"
           >
-            {/* Sun icon — shown in dark mode */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.75}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={`absolute w-[18px] h-[18px] transition-all duration-300 ${
-                theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'
-              }`}
-            >
+            {/* Sun icon */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className={`absolute w-[18px] h-[18px] transition-all duration-300 ${theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'}`}>
               <circle cx="12" cy="12" r="4" />
               <line x1="12" y1="2" x2="12" y2="4" />
               <line x1="12" y1="20" x2="12" y2="22" />
@@ -236,20 +128,8 @@ function Navbar({ onOpenTerminal }) {
               <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
             </svg>
-
-            {/* Moon icon — shown in light mode */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.75}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={`absolute w-[18px] h-[18px] transition-all duration-300 ${
-                theme === 'light' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-50'
-              }`}
-            >
+            {/* Moon icon */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className={`absolute w-[18px] h-[18px] transition-all duration-300 ${theme === 'light' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-50'}`}>
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           </button>
@@ -275,6 +155,17 @@ function Navbar({ onOpenTerminal }) {
         <Link to="/about" className={linkClass('/about')}>about</Link>
         <Link to="/network" className={linkClass('/network')}>network</Link>
         <Link to="/experience" className={linkClass('/experience')}>experience</Link>
+        
+        {/* Admin Toggle Mobile */}
+        {user && (
+          <Link 
+            to="/admin"
+            className={`transition-colors whitespace-nowrap font-bold`}
+            style={{ color: location.pathname === '/admin' ? 'var(--accent)' : 'var(--text-secondary)' }}
+          >
+            admin
+          </Link>
+        )}
       </div>
     </header>
   )

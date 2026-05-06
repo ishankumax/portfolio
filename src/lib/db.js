@@ -1,5 +1,23 @@
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, getDoc, setDoc } from 'firebase/firestore';
 import { db } from './firebase';
+
+// ==========================================
+// CONTENT API
+// ==========================================
+
+export async function getContentDocument(docId) {
+  const docRef = doc(db, 'content', docId);
+  const snapshot = await getDoc(docRef);
+  if (snapshot.exists()) {
+    return snapshot.data();
+  }
+  return null;
+}
+
+export async function updateContentDocument(docId, data) {
+  const docRef = doc(db, 'content', docId);
+  await setDoc(docRef, data, { merge: true });
+}
 
 // ==========================================
 // LINKS API

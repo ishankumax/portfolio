@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getBlogs, addBlog, deleteBlog } from '../../lib/db';
+import { useContent } from '../../ContentContext';
 
 export default function AdminBlogs() {
+  const { refreshContent } = useContent();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -26,13 +28,15 @@ export default function AdminBlogs() {
     });
     setNewBlog({ title: '', slug: '', excerpt: '', content: '', is_published: false });
     setIsFormOpen(false);
-    fetchBlogs();
+    await fetchBlogs();
+    refreshContent();
   }
 
   async function handleDelete(id) {
     if (confirm('Are you sure you want to delete this blog?')) {
       await deleteBlog(id);
-      fetchBlogs();
+      await fetchBlogs();
+      refreshContent();
     }
   }
 

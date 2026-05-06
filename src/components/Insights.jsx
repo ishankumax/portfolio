@@ -189,7 +189,7 @@ function EssayCard({ item }) {
         <div className="px-6 pb-6 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
           <div className="pt-5 prose prose-invert prose-sm max-w-none text-sm leading-relaxed text-[var(--text-secondary)] font-mono">
             <ReactMarkdown>
-              {item.content}
+              {item.content || (Array.isArray(item.body) ? item.body.join('\n\n') : item.body)}
             </ReactMarkdown>
           </div>
           <button

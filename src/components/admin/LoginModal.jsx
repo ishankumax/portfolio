@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { setupRecaptcha, sendPhoneOTP, verifyOTP, login, logout } from '../../lib/auth';
-import { useNavigate } from 'react-router-dom';
+import { setupRecaptcha, sendPhoneOTP, verifyOTP, login } from '../../lib/auth';
+import { useAdmin } from '../../AdminContext';
 
 const ALLOWED_PHONES = ['+919501825673'];
 const ALLOWED_EMAILS = ['ishankumax@gmail.com'];
 
-export default function AdminLogin() {
-  const [method, setMethod] = useState('phone'); // 'phone' or 'email'
+export default function LoginModal({ forceOpen = false }) {
+  const { user } = useAdmin();
+  const [method, setMethod] = useState('phone'); 
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [email, setEmail] = useState('');
@@ -14,20 +15,19 @@ export default function AdminLogin() {
   const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    if (method === 'phone') {
-      setupRecaptcha('recaptcha-container');
+    if (forceOpen && method === 'phone' && !user) {
+      setTimeout(() => setupRecaptcha('recaptcha-container-modal'), 100);
     }
-  }, [method]);
+  }, [forceOpen, method, user]);
 
-  // Rate Limiting Simulator (Frontend)
+  if (!forceOpen || user) return null;
+
   const throttle = async (fn) => {
     setLoading(true);
     setError(null);
     await fn();
-    // Prevent immediate retry on failure
     setTimeout(() => setLoading(false), 500); 
   };
 
@@ -39,7 +39,6 @@ export default function AdminLogin() {
         setError("Unauthorized access. Number not whitelisted.");
         return;
       }
-
       const { success, error } = await sendPhoneOTP(normalizedPhone);
       if (success) {
         setOtpSent(true);
@@ -52,16 +51,10 @@ export default function AdminLogin() {
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     throttle(async () => {
-      const { user, error } = await verifyOTP(otp);
-      if (error) {
-        setError(error);
-      } else {
-        if (!user || !ALLOWED_PHONES.includes(user.phoneNumber)) {
-          await logout();
-          setError("Unauthorized access.");
-        } else {
-          navigate('/admin');
-        }
+      const { user: authedUser, error } = await verifyOTP(otp);
+      if (error) setError(error);
+      else if (!authedUser || !ALLOWED_PHONES.includes(authedUser.phoneNumber)) {
+        setError("Unauthorized access.");
       }
     });
   };
@@ -73,33 +66,27 @@ export default function AdminLogin() {
         setError("Unauthorized access. Email not whitelisted.");
         return;
       }
-
-      const { user, error } = await login(email, password);
-      if (error) {
-        setError(error);
-      } else {
-        if (!user || !ALLOWED_EMAILS.includes(user.email)) {
-          await logout();
-          setError("Unauthorized access.");
-        } else {
-          navigate('/admin');
-        }
+      const { user: authedUser, error } = await login(email, password);
+      if (error) setError(error);
+      else if (!authedUser || !ALLOWED_EMAILS.includes(authedUser.email)) {
+        setError("Unauthorized access.");
       }
     });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 font-mono" style={{ backgroundColor: 'var(--bg-default)', color: 'var(--text-primary)' }}>
+    <div className={forceOpen ? "w-full flex justify-center" : "fixed inset-0 z-[999] flex items-center justify-center p-4 font-mono animate-in fade-in duration-200"}>
+      {/* Modal */}
       <div 
-        className="w-full max-w-sm p-8 rounded-xl relative overflow-hidden"
-        style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+        className={`relative w-full max-w-sm p-8 rounded-xl overflow-hidden shadow-2xl animate-in ${forceOpen ? 'zoom-in-100' : 'zoom-in-95'}`}
+        style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)' }}
       >
-        <div className="mb-8 text-center">
+
+        <div className="mb-8 text-center mt-2">
           <h1 className="text-xl font-bold tracking-tighter uppercase" style={{ color: 'var(--accent)' }}>Secure Access</h1>
           <p className="text-xs mt-2" style={{ color: 'var(--text-muted)' }}>Admin authentication required</p>
         </div>
 
-        {/* Tab Toggle */}
         <div className="flex bg-black/50 p-1 rounded-lg border mb-6" style={{ borderColor: 'var(--border-subtle)' }}>
           <button 
             className={`flex-1 py-1.5 text-xs tracking-widest uppercase rounded transition-colors ${method === 'phone' ? 'font-bold' : ''}`}
@@ -128,7 +115,6 @@ export default function AdminLogin() {
             !otpSent ? (
               <form onSubmit={handleSendOTP} className="space-y-4 animate-in fade-in slide-in-from-right-4">
                 <div>
-                  <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>Phone Number</label>
                   <input
                     type="tel"
                     placeholder="+91..."
@@ -139,8 +125,7 @@ export default function AdminLogin() {
                     required
                   />
                 </div>
-                <div id="recaptcha-container" className="my-2 flex justify-center"></div>
-                
+                <div id="recaptcha-container-modal" className="my-2 flex justify-center"></div>
                 <button
                   type="submit"
                   disabled={loading}
@@ -153,9 +138,9 @@ export default function AdminLogin() {
             ) : (
               <form onSubmit={handleVerifyOTP} className="space-y-4 animate-in fade-in slide-in-from-right-4">
                 <div>
-                  <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>Enter 6-digit OTP</label>
                   <input
                     type="text"
+                    placeholder="123456"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     className="w-full rounded p-2.5 tracking-widest text-center text-lg outline-none transition-colors"
@@ -185,7 +170,6 @@ export default function AdminLogin() {
           ) : (
             <form onSubmit={handleEmailLogin} className="space-y-4 animate-in fade-in slide-in-from-left-4">
               <div>
-                <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>Email</label>
                 <input
                   type="email"
                   placeholder="admin@domain.com"
@@ -197,7 +181,6 @@ export default function AdminLogin() {
                 />
               </div>
               <div>
-                <label className="block text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>Password</label>
                 <input
                   type="password"
                   placeholder="••••••••"

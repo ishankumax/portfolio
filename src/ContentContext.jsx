@@ -1,83 +1,92 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { getBlogs, getLinks, getContentDocument, updateContentDocument } from './lib/db';
 
-// Import static data
-import heroData from './data/content/hero.json'
-import aboutData from './data/content/about.json'
-import linksData from './data/links.json'
+// Import static data as fallback
+import heroData from './data/content/hero.json';
+import aboutData from './data/content/about.json';
 
-const ContentContext = createContext()
+const ContentContext = createContext();
 
-export const useContent = () => useContext(ContentContext)
+export const useContent = () => useContext(ContentContext);
 
 export const ContentProvider = ({ children }) => {
   const [content, setContent] = useState({
     hero: heroData,
     about: aboutData
-  })
-  const [blogs, setBlogs] = useState([])
-  const [links, setLinks] = useState(linksData.links || [])
-  const [loading, setLoading] = useState(true)
+  });
+  const [blogs, setBlogs] = useState([]);
+  const [links, setLinks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch initial data
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      // Fetch dynamic content
+      const [dbLinks, dbBlogs, dbHero, dbAbout] = await Promise.all([
+        getLinks(),
+        getBlogs(),
+        getContentDocument('hero'),
+        getContentDocument('about')
+      ]);
+
+      setLinks(dbLinks || []);
+      setBlogs(dbBlogs || []);
+      
+      setContent(prev => ({
+        ...prev,
+        hero: { ...prev.hero, ...(dbHero || {}) },
+        about: { ...prev.about, ...(dbAbout || {}) }
+      }));
+    } catch (error) {
+      console.error('Error fetching content:', error);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const loadBlogs = async () => {
-      // Use Vite's glob import to get all markdown blogs
-      const blogFiles = import.meta.glob('./data/blogs/*.md', { eager: true, query: '?raw' })
-      
-      const loadedBlogs = Object.entries(blogFiles).map(([path, module]) => {
-        const content = module.default
-        // Simple frontmatter parser (assuming Decap CMS format)
-        const match = content.match(/^---([\s\S]*?)---([\s\S]*)$/)
-        if (!match) return { id: path, body: content }
-        
-        const yaml = match[1]
-        const body = match[2]
-        const data = {}
-        
-        yaml.split('\n').forEach(line => {
-          const [key, ...val] = line.split(':')
-          if (key && val.length) data[key.trim()] = val.join(':').trim()
-        })
-        
-        return {
-          id: path,
-          title: data.title || 'Untitled',
-          date: data.date,
-          excerpt: data.excerpt,
-          body: body.trim(),
-          tags: data.tags ? data.tags.replace(/[\[\]"]/g, '').split(',') : []
-        }
-      })
-
-      setBlogs(loadedBlogs.sort((a, b) => new Date(b.date) - new Date(a.date)))
-      setLoading(false)
-    }
-
-    loadBlogs()
-  }, [])
+    fetchData();
+  }, []);
 
   const getContent = (key, defaultValue = '') => {
-    // Try direct access first
-    if (content[key]) return content[key]
+    if (content[key]) return content[key];
 
-    // Handle underscore notation (e.g., about_eyebrow -> about.eyebrow)
     if (key.includes('_')) {
-      const [section, ...fieldParts] = key.split('_')
-      const field = fieldParts.join('_')
-      if (content[section]?.[field]) return content[section][field]
+      const [section, ...fieldParts] = key.split('_');
+      const field = fieldParts.join('_');
+      if (content[section]?.[field]) return content[section][field];
     }
 
-    // Handle dot notation
     if (key.includes('.')) {
-      const [section, field] = key.split('.')
-      return content[section]?.[field] || defaultValue
+      const [section, field] = key.split('.');
+      return content[section]?.[field] || defaultValue;
     }
     
-    return defaultValue
-  }
+    return defaultValue;
+  };
 
   const getLinksByCategory = (category) => {
-    return links.filter(link => link.category === category)
-  }
+    return links.filter(link => link.category === category);
+  };
+
+  const updateContentField = async (section, field, value) => {
+    // Optimistic UI Update
+    setContent(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [field]: value
+      }
+    }));
+
+    // Save to Firestore
+    try {
+      await updateContentDocument(section, { [field]: value });
+    } catch (error) {
+      console.error(`Failed to update ${section}.${field}:`, error);
+      // Optional: Revert on error
+    }
+  };
 
   return (
     <ContentContext.Provider value={{ 
@@ -86,9 +95,11 @@ export const ContentProvider = ({ children }) => {
       links, 
       loading, 
       getContent,
-      getLinksByCategory
+      getLinksByCategory,
+      updateContentField,
+      refreshContent: fetchData
     }}>
       {children}
     </ContentContext.Provider>
-  )
-}
+  );
+};

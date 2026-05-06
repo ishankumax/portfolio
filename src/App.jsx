@@ -8,12 +8,18 @@ import Insights from './components/Insights'
 import Experience from './components/Experience'
 import Network from './components/Network'
 import MainLayout from './components/layout/MainLayout'
-import AdminLayout from './components/admin/AdminLayout'
 import Terminal, { useTerminal } from './components/Terminal'
 import ScrollToTop from './components/ScrollToTop'
 import { ThemeProvider, useTheme } from './ThemeContext'
 import { ContentProvider } from './ContentContext'
+import { AdminProvider } from './AdminContext'
 import RippleBackground from './components/RippleBackground'
+import ProjectSidebar from './components/ui/ProjectSidebar'
+import AdminPage from './components/admin/AdminPage'
+import QRGenerator from './components/projects/qr-generator'
+import LinkShortener from './components/projects/link-shortener'
+import Games from './components/projects/games'
+
 function AppInner() {
   const { open: terminalOpen, setOpen: setTerminalOpen } = useTerminal()
   const { rippleEnabled } = useTheme()
@@ -25,6 +31,9 @@ function AppInner() {
       <div className="min-h-screen scroll-smooth overflow-x-hidden" id="app-root" style={{ position: 'relative' }}>
         {/* Interactive dot-grid ripple canvas — fixed background layer */}
         <RippleBackground enabled={rippleEnabled} />
+        
+        {/* Global Sidebars */}
+        <ProjectSidebar />
 
         {/* Global Terminal Overlay */}
         {terminalOpen && <Terminal onClose={() => setTerminalOpen(false)} />}
@@ -32,7 +41,7 @@ function AppInner() {
         {/* Content layer — pointer-events auto so all UI remains interactive */}
         <div style={{ position: 'relative', zIndex: 1 }}>
           <Routes>
-            {/* Public Routes wrapped in MainLayout */}
+            {/* All Routes wrapped in MainLayout */}
             <Route path="/*" element={
               <MainLayout onOpenTerminal={() => setTerminalOpen(true)}>
                 <Routes>
@@ -43,12 +52,13 @@ function AppInner() {
                   <Route path="/experience" element={<Experience />} />
                   <Route path="/network" element={<Network />} />
                   <Route path="/contact" element={<Network />} />
+                  <Route path="/projects/qr-generator" element={<QRGenerator />} />
+                  <Route path="/projects/link-shortener" element={<LinkShortener />} />
+                  <Route path="/projects/games" element={<Games />} />
+                  <Route path="/admin" element={<AdminPage />} />
                 </Routes>
               </MainLayout>
             } />
-
-            {/* Admin Dashboard */}
-            <Route path="/admin/*" element={<AdminLayout />} />
           </Routes>
         </div>
       </div>
@@ -58,11 +68,13 @@ function AppInner() {
 
 function App() {
   return (
-    <ContentProvider>
-      <ThemeProvider>
-        <AppInner />
-      </ThemeProvider>
-    </ContentProvider>
+    <AdminProvider>
+      <ContentProvider>
+        <ThemeProvider>
+          <AppInner />
+        </ThemeProvider>
+      </ContentProvider>
+    </AdminProvider>
   )
 }
 

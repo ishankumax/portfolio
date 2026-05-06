@@ -32,7 +32,7 @@ function Hero() {
           portfolio / home
         </p>
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6">
-          {heroContent.title}<span className="animate-pulse" style={{ color: 'var(--accent)' }}>_</span>
+          {heroContent.title}<span className="animate-pulse ml-1" style={{ color: 'var(--accent)' }}>_</span>
         </h1>
         <p className="text-base md:text-lg leading-relaxed max-w-2xl" style={{ color: 'var(--text-secondary)' }}>
           {heroContent.description}
