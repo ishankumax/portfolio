@@ -26,32 +26,35 @@ const AccentPicker = () => {
   return (
     <div 
       ref={pickerRef}
-      className={`fixed right-0 top-1/2 -translate-y-1/2 z-[150] flex items-center transition-all duration-500 ease-in-out ${
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      className={`fixed right-0 top-1/2 -translate-y-1/2 z-[150] flex items-center transition-all duration-300 ease-in-out border-y border-l rounded-l-xl backdrop-blur-3xl ${
         isOpen ? 'translate-x-0' : 'translate-x-[64px] md:translate-x-[60px]'
       }`}
+      style={{
+        backgroundColor: 'var(--bg-navbar)',
+        borderColor: 'var(--border-subtle)',
+        boxShadow: isOpen ? '-8px 0 32px var(--accent-glow)' : '-8px 0 24px rgba(0,0,0,0.3)'
+      }}
     >
       {/* Vertical Trigger Tab */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex flex-col items-center justify-center py-6 px-2 rounded-l-xl border-y border-l backdrop-blur-xl shadow-[-8px_0_24px_rgba(0,0,0,0.3)] hover:shadow-[-8px_0_32px_var(--accent-glow)] transition-all duration-300 group relative"
+        className="flex flex-col items-center justify-center py-6 px-2 transition-all duration-300 group relative"
         style={{ 
-          backgroundColor: 'var(--bg-navbar)', 
-          borderColor: 'var(--border-subtle)',
           color: isOpen ? 'var(--accent)' : 'var(--text-secondary)',
           minWidth: '32px'
         }}
         aria-label={isOpen ? "Close accent picker" : "Open accent picker"}
       >
         {/* Active Color Indicator on Tab */}
-        {!isOpen && (
-          <div 
-            className="absolute top-2 w-1.5 h-1.5 rounded-full shadow-[0_0_8px_var(--accent)]"
-            style={{ backgroundColor: 'var(--accent)' }}
-          />
-        )}
+        <div 
+          className={`absolute top-4 w-1.5 h-1.5 rounded-full transition-all duration-300 ${isOpen ? 'opacity-0' : 'opacity-100 shadow-[0_0_8px_var(--accent)]'}`}
+          style={{ backgroundColor: 'var(--accent)' }}
+        />
 
         <span 
-          className="font-mono text-[10px] font-bold tracking-[0.3em] uppercase whitespace-nowrap"
+          className="font-mono text-[10px] font-bold tracking-[0.3em] uppercase whitespace-nowrap transition-colors duration-300"
           style={{ 
             writingMode: 'vertical-lr', 
             transform: 'rotate(180deg)',
@@ -64,11 +67,7 @@ const AccentPicker = () => {
 
       {/* Expanded Panel */}
       <div 
-        className="p-4 border-y border-l backdrop-blur-3xl shadow-2xl flex flex-col gap-4 w-[64px] md:w-[60px]"
-        style={{ 
-          backgroundColor: 'var(--bg-navbar)', 
-          borderColor: 'var(--border-subtle)',
-        }}
+        className="py-4 pr-4 pl-2 flex flex-col gap-4 w-[64px] md:w-[60px]"
       >
         <div className="flex flex-col gap-4 items-center">
           {ACCENT_PALETTE.map((color) => (
