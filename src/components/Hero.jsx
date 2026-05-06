@@ -1,6 +1,7 @@
 import React from 'react'
 import { FaLinkedin, FaXTwitter, FaGithub, FaInstagram, FaGlobe } from 'react-icons/fa6'
 import { useContent } from '../ContentContext'
+import EditableText from './admin/EditableText'
 
 const ICON_MAP = {
   github: <FaGithub size={12} />,
@@ -31,12 +32,23 @@ function Hero() {
         <p className="text-[10px] uppercase tracking-[0.3em] font-mono mb-4 opacity-50" style={{ color: 'var(--text-primary)' }}>
           portfolio / home
         </p>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6">
-          {heroContent.title}<span className="animate-pulse ml-1" style={{ color: 'var(--accent)' }}>_</span>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 flex">
+          <EditableText 
+            as="span" 
+            id="hero_title" 
+            section="hero" 
+            defaultText="ishan kumar"
+          />
+          <span className="animate-pulse ml-1" style={{ color: 'var(--accent)' }}>_</span>
         </h1>
-        <p className="text-base md:text-lg leading-relaxed max-w-2xl" style={{ color: 'var(--text-secondary)' }}>
-          {heroContent.description}
-        </p>
+        <EditableText 
+          as="p" 
+          id="hero_description" 
+          section="hero" 
+          defaultText="20-year-old CS undergrad building software for the next billion users."
+          className="text-base md:text-lg leading-relaxed max-w-2xl block"
+          style={{ color: 'var(--text-secondary)' }}
+        />
       </div>
 
       {/* Social Links / CTA */}
@@ -61,6 +73,15 @@ function Hero() {
             <span className="opacity-20">/</span>
             <a href="https://linkedin.com/in/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
               <FaLinkedin size={12} /> linkedin
+            </a>
+                        <span className="opacity-20">/</span>
+
+            <a href="https://instagram.com/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
+              <FaInstagram size={12} /> instagram
+            </a>
+            <span className="opacity-20">/</span>
+            <a href="https://twitter.com/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
+              <FaXTwitter size={12} /> TWITTER 
             </a>
           </>
         )}

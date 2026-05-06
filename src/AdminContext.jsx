@@ -8,6 +8,7 @@ const ALLOWED_EMAILS = ['ishankumax@gmail.com'];
 
 export function AdminProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const unsubscribe = subscribeToAuthChanges((u) => {
@@ -18,13 +19,17 @@ export function AdminProvider({ children }) {
         setUser(u);
       } else {
         setUser(null);
+        setIsEditing(false); // disable edit mode on logout
       }
     });
     return () => unsubscribe();
   }, []);
 
+  const toggleEditing = () => setIsEditing(prev => !prev);
+  const isAdmin = !!user;
+
   return (
-    <AdminContext.Provider value={{ user }}>
+    <AdminContext.Provider value={{ user, isAdmin, isEditing, toggleEditing }}>
       {children}
     </AdminContext.Provider>
   );

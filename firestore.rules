@@ -21,6 +21,11 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
+    match /content_blocks/{block} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
     // Default deny for anything else
     match /{document=**} {
       allow read, write: if false;

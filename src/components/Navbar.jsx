@@ -7,7 +7,7 @@ function Navbar({ onOpenTerminal }) {
   const location = useLocation()
   const navigate = useNavigate()
   const { theme, toggleTheme, rippleEnabled, toggleRipple } = useTheme()
-  const { user } = useAdmin()
+  const { user, isEditing, toggleEditing } = useAdmin()
   
   // Track keystrokes for 'admin'
   const keysRef = useRef('')
@@ -64,18 +64,18 @@ function Navbar({ onOpenTerminal }) {
           
           {/* Admin Toggle (Visible only when logged in) */}
           {user && (
-            <Link 
-              to="/admin"
+            <button 
+              onClick={toggleEditing}
               className={`transition-colors whitespace-nowrap font-bold tracking-widest uppercase text-xs flex items-center gap-1.5 px-2 py-1 rounded border`}
               style={{ 
-                color: location.pathname === '/admin' ? 'black' : 'var(--accent)',
-                backgroundColor: location.pathname === '/admin' ? 'var(--accent)' : 'transparent',
+                color: isEditing ? 'black' : 'var(--accent)',
+                backgroundColor: isEditing ? 'var(--accent)' : 'transparent',
                 borderColor: 'var(--accent)'
               }}
             >
-              <div className={`w-1.5 h-1.5 rounded-full ${location.pathname === '/admin' ? 'bg-black' : 'bg-[var(--accent)]'}`} />
-              Admin
-            </Link>
+              <div className={`w-1.5 h-1.5 rounded-full ${isEditing ? 'bg-black' : 'bg-[var(--accent)]'}`} />
+              {isEditing ? 'Editing: ON' : 'Admin'}
+            </button>
           )}
         </div>
         
@@ -158,13 +158,13 @@ function Navbar({ onOpenTerminal }) {
         
         {/* Admin Toggle Mobile */}
         {user && (
-          <Link 
-            to="/admin"
+          <button 
+            onClick={toggleEditing}
             className={`transition-colors whitespace-nowrap font-bold`}
-            style={{ color: location.pathname === '/admin' ? 'var(--accent)' : 'var(--text-secondary)' }}
+            style={{ color: isEditing ? 'var(--accent)' : 'var(--text-secondary)' }}
           >
-            admin
-          </Link>
+            {isEditing ? 'editing' : 'admin'}
+          </button>
         )}
       </div>
     </header>
