@@ -8,7 +8,6 @@ const ICON_MAP = {
   linkedin: <FaLinkedin size={12} />,
   twitter: <FaXTwitter size={12} />,
   instagram: <FaInstagram size={12} />,
-  x: <FaXTwitter size={12} />,
 }
 
 /**
@@ -27,28 +26,72 @@ function Hero() {
 
   return (
     <section className="relative mb-24 md:mb-32">
-      {/* Header Pattern */}
-      <div className="mb-10">
-        <p className="text-[10px] uppercase tracking-[0.3em] font-mono mb-4 opacity-50" style={{ color: 'var(--text-primary)' }}>
-          portfolio / home
-        </p>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 flex">
+      {/* Two-column layout: portrait image LEFT + text RIGHT */}
+      <div className="flex flex-col md:flex-row md:items-center gap-10 mb-10">
+
+        {/* Profile Picture — portrait, left side */}
+        <div className="flex-shrink-0 flex justify-center md:justify-start">
+          <div
+            style={{
+              position: 'relative',
+              width: '160px',
+              height: '230px',
+            }}
+          >
+            
+            
+            {/* Portrait image */}
+            <img
+              src="/profile.jpeg"
+              alt="Ishan Kumar"
+              style={{
+                position: 'relative',
+                width: '154px',
+                height: '224px',
+                borderRadius: '14px',
+                objectFit: 'cover',
+                objectPosition: 'center top',
+                border: '3px solid var(--bg-primary)',
+                display: 'block',
+                margin: '3px',
+                transition: 'transform 0.4s ease, box-shadow 0.4s ease',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'scale(1.03)'
+                e.currentTarget.style.boxShadow = '0 0 32px color-mix(in srgb, var(--accent) 35%, transparent)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'scale(1)'
+                e.currentTarget.style.boxShadow = 'none'
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Header Pattern — right side */}
+        <div className="flex-1">
+          <p className="text-[10px] uppercase tracking-[0.3em] font-mono mb-4 opacity-50" style={{ color: 'var(--text-primary)' }}>
+            portfolio / home
+          </p>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-6 flex">
+            <EditableText 
+              as="span" 
+              id="hero_title" 
+              section="hero" 
+              defaultText="ishan kumar"
+            />
+            <span className="animate-pulse ml-1" style={{ color: 'var(--accent)' }}>_</span>
+          </h1>
           <EditableText 
-            as="span" 
-            id="hero_title" 
+            as="p" 
+            id="hero_description" 
             section="hero" 
-            defaultText="ishan kumar"
+            defaultText="20-year-old CS undergrad building software for the next billion users."
+            className="text-base md:text-lg leading-relaxed max-w-2xl block"
+            style={{ color: 'var(--text-secondary)' }}
           />
-          <span className="animate-pulse ml-1" style={{ color: 'var(--accent)' }}>_</span>
-        </h1>
-        <EditableText 
-          as="p" 
-          id="hero_description" 
-          section="hero" 
-          defaultText="20-year-old CS undergrad building software for the next billion users."
-          className="text-base md:text-lg leading-relaxed max-w-2xl block"
-          style={{ color: 'var(--text-secondary)' }}
-        />
+        </div>
+
       </div>
 
       {/* Social Links / CTA */}
