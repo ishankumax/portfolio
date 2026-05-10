@@ -17,6 +17,7 @@ import RippleBackground from './components/RippleBackground'
 import ProjectSidebar from './components/ui/ProjectSidebar'
 import AdminPage from './components/admin/AdminPage'
 import QRGenerator from './components/projects/qr-generator'
+import QRPreview from './components/projects/qr-generator/QRPreview'
 import LinkShortener from './components/projects/link-shortener'
 import Games from './components/projects/games'
 
@@ -53,6 +54,7 @@ function AppInner() {
                   <Route path="/network" element={<Network />} />
                   <Route path="/contact" element={<Network />} />
                   <Route path="/projects/qr-generator" element={<QRGenerator />} />
+                  <Route path="/projects/qr-generator-preview" element={<QRPreview />} />
                   <Route path="/projects/link-shortener" element={<LinkShortener />} />
                   <Route path="/projects/games" element={<Games />} />
                   <Route path="/admin" element={<AdminPage />} />
