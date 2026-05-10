@@ -3,9 +3,9 @@ import { Link, useLocation } from 'react-router-dom'
 import { RiQrCodeLine, RiLinksLine, RiGamepadLine } from 'react-icons/ri'
 
 const PROJECTS = [
-  { slug: 'qr-generator', title: 'QR Generator', icon: <RiQrCodeLine size={20} /> },
-  { slug: 'link-shortener', title: 'Link Shortener', icon: <RiLinksLine size={20} /> },
-  { slug: 'games', title: 'Mini Games', icon: <RiGamepadLine size={20} /> },
+  { slug: 'qr-generator', title: 'QR Generator', icon: <RiQrCodeLine size={20} />, path: '/qr' },
+  { slug: 'link-shortener', title: 'Link Shortener', icon: <RiLinksLine size={20} />, path: '/projects/link-shortener' },
+  { slug: 'games', title: 'Mini Games', icon: <RiGamepadLine size={20} />, path: '/projects/games' },
 ]
 
 export default function ProjectSidebar() {
@@ -46,11 +46,11 @@ export default function ProjectSidebar() {
     >
       <div className="flex flex-col py-6 w-full font-mono">
         {PROJECTS.map((project) => {
-          const isActive = location.pathname.includes(`/projects/${project.slug}`)
+          const isActive = location.pathname === (project.path || `/projects/${project.slug}`)
           return (
             <Link 
               key={project.slug} 
-              to={`/projects/${project.slug}`}
+              to={project.path || `/projects/${project.slug}`}
               className="relative flex items-center h-12 w-full group transition-colors"
             >
               {/* Active Indicator Line */}

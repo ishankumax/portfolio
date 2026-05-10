@@ -53,7 +53,7 @@ function AppInner() {
                   <Route path="/experience" element={<Experience />} />
                   <Route path="/network" element={<Network />} />
                   <Route path="/contact" element={<Network />} />
-                  <Route path="/projects/qr-generator" element={<QRGenerator />} />
+                  <Route path="/qr" element={<QRGenerator />} />
                   <Route path="/projects/qr-generator-preview" element={<QRPreview />} />
                   <Route path="/projects/link-shortener" element={<LinkShortener />} />
                   <Route path="/projects/games" element={<Games />} />
