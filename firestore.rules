@@ -25,6 +25,13 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
+
+    match /short_links/{slug} {
+      allow read: if true;
+      allow create: if true;
+      // Allow incrementing click count
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['clicks']);
+    }
     
     // Default deny for anything else
     match /{document=**} {

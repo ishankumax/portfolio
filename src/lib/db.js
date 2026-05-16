@@ -72,3 +72,29 @@ export async function deleteBlog(id) {
   const blogRef = doc(db, 'blogs', id);
   await deleteDoc(blogRef);
 }
+
+// ==========================================
+// SHORT LINKS API
+// ==========================================
+
+export async function createShortLink(longUrl, customSlug) {
+  const slug = customSlug || Math.random().toString(36).substring(2, 8);
+  const docRef = doc(db, 'short_links', slug);
+  await setDoc(docRef, {
+    longUrl,
+    createdAt: new Date(),
+    clicks: 0
+  });
+  return slug;
+}
+
+export async function getLongUrl(slug) {
+  const docRef = doc(db, 'short_links', slug);
+  const snapshot = await getDoc(docRef);
+  if (snapshot.exists()) {
+    // Increment clicks (fire and forget)
+    updateDoc(docRef, { clicks: snapshot.data().clicks + 1 });
+    return snapshot.data().longUrl;
+  }
+  return null;
+}

@@ -20,6 +20,7 @@ import QRGenerator from './components/projects/qr-generator'
 import QRPreview from './components/projects/qr-generator/QRPreview'
 import LinkShortener from './components/projects/link-shortener'
 import Games from './components/projects/games'
+import ShortLinkRedirect from './components/ShortLinkRedirect'
 
 function AppInner() {
   const { open: terminalOpen, setOpen: setTerminalOpen } = useTerminal()
@@ -58,6 +59,7 @@ function AppInner() {
                   <Route path="/projects/link-shortener" element={<LinkShortener />} />
                   <Route path="/projects/games" element={<Games />} />
                   <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/s/:slug" element={<ShortLinkRedirect />} />
                 </Routes>
               </MainLayout>
             } />
