@@ -5,30 +5,30 @@ const STACK = [
     category: 'frontend',
     icon: '◈',
     items: [
-      { name: 'React' },
-      { name: 'Vite' },
-      { name: 'Tailwind CSS' },
-      { name: 'JavaScript' },
+      { name: 'React', level: 90 },
+      { name: 'Vite', level: 85 },
+      { name: 'Tailwind CSS', level: 95 },
+      { name: 'JavaScript', level: 90 },
     ]
   },
   {
     category: 'backend & infra',
     icon: '◇',
     items: [
-      { name: 'Node.js' },
-      { name: 'Python' },
-      { name: 'Firebase' },
-      { name: 'REST APIs' },
+      { name: 'Node.js', level: 80 },
+      { name: 'Python', level: 75 },
+      { name: 'Firebase', level: 85 },
+      { name: 'REST APIs', level: 90 },
     ]
   },
   {
     category: 'tools & workflows',
     icon: '◉',
     items: [
-      { name: 'Git / GitHub' },
-      { name: 'Figma' },
-      { name: 'VS Code' },
-      { name: 'Linux / CLI' },
+      { name: 'Git / GitHub', level: 95 },
+      { name: 'Figma', level: 80 },
+      { name: 'VS Code', level: 95 },
+      { name: 'Linux / CLI', level: 85 },
     ]
   },
 ]
