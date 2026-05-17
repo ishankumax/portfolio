@@ -25,15 +25,14 @@ export default function LinkShortener() {
     
     try {
       const slug = await createShortLink(longUrl);
-      const origin = window.location.origin;
-      const generatedShort = `${origin.replace(/^https?:\/\//, '')}/s/${slug}`;
+      const generatedShort = `ishankumax/${slug}`;
       setShortUrl(generatedShort);
       
       const newEntry = {
         id: Date.now(),
         long: longUrl,
         short: generatedShort,
-        url: `${origin}/s/${slug}`,
+        url: `https://ishankumar.dev/s/${slug}`, // Actual URL to resolve 
         date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
       };
       
@@ -47,7 +46,9 @@ export default function LinkShortener() {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(shortUrl);
+    const slug = shortUrl.split('/').pop();
+    const fullUrl = `${window.location.origin}/s/${slug}`;
+    navigator.clipboard.writeText(fullUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -281,7 +282,7 @@ export default function LinkShortener() {
                     )}
                   </button>
                   <a
-                    href={shortUrl.startsWith('http') ? shortUrl : `https://${shortUrl}`}
+                    href={`/s/${shortUrl.split('/').pop()}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center p-4 rounded-xl border hover:bg-[var(--accent-faint)] transition-all"
