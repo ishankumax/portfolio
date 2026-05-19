@@ -46,6 +46,7 @@ function FounderOf() {
           <img
             src="/intheboxpvt_logo.jpg"
             alt="InTheBox Logo"
+            loading="lazy"
             className="w-24 h-24 rounded-lg object-cover"
           />
         </div>

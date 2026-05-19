@@ -1,60 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { RiLink, RiClipboardLine, RiCheckLine, RiArrowRightLine, RiDeleteBinLine, RiExternalLinkLine } from 'react-icons/ri';
-import { createShortLink } from '../../../lib/db';
+import { RiLink, RiClipboardLine, RiCheckLine, RiArrowRightLine, RiExternalLinkLine } from 'react-icons/ri';
 
 export default function LinkShortener() {
   const [longUrl, setLongUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [isShortening, setIsShortening] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [history, setHistory] = useState(() => {
-    const saved = localStorage.getItem('shortener-history');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem('shortener-history', JSON.stringify(history));
-  }, [history]);
-
-  const handleShorten = async (e) => {
+  const handleShorten = (e) => {
     e?.preventDefault();
     if (!longUrl.trim()) return;
 
     setIsShortening(true);
     
-    try {
-      const slug = await createShortLink(longUrl);
-      const origin = window.location.origin;
-      const generatedShort = `${origin.replace(/^https?:\/\//, '')}/s/${slug}`;
+    // Simulate API delay for the frontend preview
+    setTimeout(() => {
+      const slug = Math.random().toString(36).substring(2, 8);
+      const generatedShort = `ishankumax.me/${slug}`;
       setShortUrl(generatedShort);
-      
-      const newEntry = {
-        id: Date.now(),
-        long: longUrl,
-        short: generatedShort,
-        url: `${origin}/s/${slug}`,
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-      };
-      
-      setHistory(prev => [newEntry, ...prev.slice(0, 4)]); // Keep last 5
-    } catch (err) {
-      console.error("Shortening error:", err);
-      alert("Failed to shorten link. Please try again.");
-    } finally {
       setIsShortening(false);
-    }
+    }, 600);
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(shortUrl);
+    const slug = shortUrl.split('/').pop();
+    const fullUrl = `https://ishankumax.me/s/${slug}`;
+    navigator.clipboard.writeText(fullUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const clearHistory = () => {
-    setHistory([]);
-    localStorage.removeItem('shortener-history');
   };
 
   return (
@@ -65,9 +38,9 @@ export default function LinkShortener() {
         minHeight: 'calc(100vh - 220px)',
       }}
     >
-      {/* ── Top row: breadcrumb ── */}
-      <div className="flex items-center justify-between mb-10">
-        <div className="flex items-center gap-2">
+      {/* ── Top row: breadcrumb · CTA ── */}
+      <div className="flex items-center justify-between mb-10" style={{ overflow: 'visible' }}>
+        <div className="flex items-center gap-2" style={{ flexWrap: 'nowrap', overflow: 'visible' }}>
           <Link
             to="/"
             className="font-mono uppercase hover:opacity-100 transition-opacity"
@@ -83,6 +56,29 @@ export default function LinkShortener() {
             link-shortener
           </span>
         </div>
+
+        {/* Ghost CTA — top-right */}
+        <a
+          id="link-full-tool-cta"
+          href="https://antigravity-link.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-mono"
+          style={{
+            fontSize: 10,
+            letterSpacing: '0.2em',
+            color: 'var(--text-secondary)',
+            textDecoration: 'none',
+            opacity: 0.8,
+            whiteSpace: 'nowrap',
+            marginLeft: 16,
+            transition: 'color 0.2s, opacity 0.2s',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent)'; e.currentTarget.style.opacity = '1'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.opacity = '0.8'; }}
+        >
+          open full shortener ↗
+        </a>
       </div>
 
       {/* ── Main two-column ── */}
@@ -183,47 +179,24 @@ export default function LinkShortener() {
             </button>
           </form>
 
-          {/* History */}
-          {history.length > 0 && (
-            <div className="mt-4">
-              <div className="flex items-center justify-between mb-4">
-                <span className="font-mono uppercase text-[9px] tracking-widest" style={{ color: 'var(--text-muted)' }}>
-                  Recent History
-                </span>
-                <button 
-                  onClick={clearHistory}
-                  className="text-[9px] font-mono uppercase tracking-widest hover:text-red-400 transition-colors"
-                  style={{ color: 'var(--text-muted)' }}
-                >
-                  Clear
-                </button>
-              </div>
-              <div className="flex flex-col gap-2">
-                {history.map((item) => (
-                  <div 
-                    key={item.id} 
-                    className="flex items-center justify-between p-3 rounded-lg border transition-all hover:border-[var(--accent-border)]"
-                    style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}
-                  >
-                    <div className="flex flex-col gap-0.5 overflow-hidden">
-                      <span className="text-[10px] font-mono truncate max-w-[180px]" style={{ color: 'var(--text-primary)' }}>{item.short}</span>
-                      <span className="text-[9px] font-mono truncate max-w-[180px]" style={{ color: 'var(--text-muted)' }}>{item.long}</span>
-                    </div>
-                    <button 
-                      onClick={() => {
-                        setShortUrl(item.short);
-                        setLongUrl(item.long);
-                      }}
-                      className="p-1.5 rounded-md hover:bg-[var(--accent-faint)] transition-colors"
-                      style={{ color: 'var(--accent)' }}
-                    >
-                      <RiExternalLinkLine size={14} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Hint */}
+          <p
+            className="font-mono"
+            style={{ fontSize: 10, color: 'var(--text-secondary)', opacity: 0.65, lineHeight: 1.8 }}
+          >
+            basic preview — custom domains, analytics,<br />
+            history &amp; more in the{' '}
+            <a
+              href="https://antigravity-link.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--accent)', opacity: 0.9, textDecoration: 'none', transition: 'opacity 0.15s' }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = '1')}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = '0.9')}
+            >
+              full shortener ↗
+            </a>
+          </p>
         </div>
 
         {/* RIGHT — large Result Card */}
@@ -281,7 +254,7 @@ export default function LinkShortener() {
                     )}
                   </button>
                   <a
-                    href={shortUrl.startsWith('http') ? shortUrl : `https://${shortUrl}`}
+                    href={`/s/${shortUrl.split('/').pop()}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center p-4 rounded-xl border hover:bg-[var(--accent-faint)] transition-all"

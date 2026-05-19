@@ -21,7 +21,7 @@ function MicroProjects() {
         {projectsData.map((project) => (
           <Link
             key={project.slug}
-            to={`/projects/${project.slug}`}
+            to={`/${project.slug}`}
             className="group relative flex flex-col justify-between p-6 rounded-xl border transition-all duration-300 hover:-translate-y-1"
             style={{ 
               borderColor: 'var(--border-card)', 

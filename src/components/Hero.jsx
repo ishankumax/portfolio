@@ -43,6 +43,7 @@ function Hero() {
             {/* Portrait image */}
             <img
               src="/profile.jpeg"
+              loading="lazy"
               alt="Ishan Kumar"
               style={{
                 position: 'relative',

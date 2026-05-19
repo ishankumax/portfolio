@@ -9,7 +9,7 @@ function StoryCard({ imageSrc, altText, label }) {
   
   const cardContent = (
     <div className="shrink-0 w-64 border rounded-2xl snap-start transition-colors cursor-pointer overflow-hidden group" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
-      <img src={imageSrc} alt={altText} className="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      <img src={imageSrc} alt={altText} loading="lazy" className="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-500" />
       <div className="p-4 flex items-center justify-between">
         <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{label}</p>
         {slug && (
