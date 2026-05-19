@@ -69,6 +69,7 @@ function Carousel({ images }) {
             <img
               src={src}
               alt={`slide-${i}`}
+              loading="lazy"
               className={`success-carousel__img ${isHovered ? 'success-carousel__img--zoomed' : ''}`}
               draggable={false}
             />

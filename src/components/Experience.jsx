@@ -71,7 +71,7 @@ function ImageMarquee({ images }) {
 
       {zoomedImg && (
         <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6 md:hidden" onClick={() => setZoomedImg(null)}>
-          <img src={zoomedImg} alt="" className="max-w-full max-h-[80vh] object-contain rounded-xl shadow-2xl" />
+          <img src={zoomedImg} alt="" loading="lazy" className="max-w-full max-h-[80vh] object-contain rounded-xl shadow-2xl" />
           <button className="absolute top-6 right-6 text-white/60 hover:text-white text-2xl" onClick={() => setZoomedImg(null)}>✕</button>
         </div>
       )}
