@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getBlogs, getLinks, getContentDocument, updateContentDocument } from './lib/db';
 
@@ -45,7 +46,10 @@ export const ContentProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchData();
+    const handle = setTimeout(() => {
+      fetchData();
+    }, 0);
+    return () => clearTimeout(handle);
   }, []);
 
   const getContent = (key, defaultValue = '') => {

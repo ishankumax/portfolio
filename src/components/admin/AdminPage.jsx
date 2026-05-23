@@ -1,21 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useAdmin } from '../../AdminContext';
 import LoginModal from './LoginModal';
-import AdminDashboard from './AdminDashboard';
-import AdminBlogs from './AdminBlogs';
-import AdminLinks from './AdminLinks';
-import { logout } from '../../lib/auth';
 import { useNavigate } from 'react-router-dom';
 
 export default function AdminPage() {
   const { user } = useAdmin();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('dashboard');
-
-  const handleLogout = async () => {
-    await logout();
-    navigate('/');
-  };
 
   useEffect(() => {
     if (user) {

@@ -1,29 +1,41 @@
-import React, { Suspense, lazy } from 'react'
+import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './index.css'
 
-// Route-based code-splitting: lazy-load heavier route components
-const Home = lazy(() => import('./components/Home'))
-const Success = lazy(() => import('./components/Success'))
-const About = lazy(() => import('./components/About'))
-const Insights = lazy(() => import('./components/Insights'))
-const Experience = lazy(() => import('./components/Experience'))
-const Network = lazy(() => import('./components/Network'))
-const AdminPage = lazy(() => import('./components/admin/AdminPage'))
-const QRGenerator = lazy(() => import('./components/projects/qr-generator'))
-const QRPreview = lazy(() => import('./components/projects/qr-generator/QRPreview'))
-const LinkShortener = lazy(() => import('./components/projects/link-shortener'))
-const Games = lazy(() => import('./components/projects/games'))
-const ShortLinkRedirect = lazy(() => import('./components/ShortLinkRedirect'))
-
+import Home from './components/Home'
 import MainLayout from './components/layout/MainLayout'
-import Terminal, { useTerminal } from './components/Terminal'
+import Terminal from './components/Terminal'
+import { useTerminal } from './hooks/useTerminal'
 import ScrollToTop from './components/ScrollToTop'
 import { ThemeProvider, useTheme } from './ThemeContext'
 import { ContentProvider } from './ContentContext'
 import { AdminProvider } from './AdminContext'
 import RippleBackground from './components/RippleBackground'
 import ProjectSidebar from './components/ui/ProjectSidebar'
+
+// Lazy load sub-pages to split bundle and speed up initial page load
+const Success = React.lazy(() => import('./components/Success'))
+const About = React.lazy(() => import('./components/About'))
+const Insights = React.lazy(() => import('./components/Insights'))
+const Experience = React.lazy(() => import('./components/Experience'))
+const Network = React.lazy(() => import('./components/Network'))
+const QRGenerator = React.lazy(() => import('./components/projects/qr-generator'))
+const LinkShortener = React.lazy(() => import('./components/projects/link-shortener'))
+const Games = React.lazy(() => import('./components/projects/games'))
+const AdminPage = React.lazy(() => import('./components/admin/AdminPage'))
+const ShortLinkRedirect = React.lazy(() => import('./components/ShortLinkRedirect'))
+
+// Monospace page-level loader matching portfolio styling
+function PageLoader() {
+  return (
+    <div className="min-h-[60vh] flex flex-col items-center justify-center font-mono">
+      <div className="w-8 h-8 border-2 border-[var(--accent-faint)] border-t-[var(--accent)] rounded-full animate-spin mb-6" />
+      <p className="text-[10px] uppercase tracking-[0.3em] text-[var(--accent)] opacity-80 animate-pulse">
+        Loading System Module...
+      </p>
+    </div>
+  )
+}
 
 function AppInner() {
   const { open: terminalOpen, setOpen: setTerminalOpen } = useTerminal()
@@ -49,7 +61,7 @@ function AppInner() {
             {/* All Routes wrapped in MainLayout */}
             <Route path="/*" element={
               <MainLayout onOpenTerminal={() => setTerminalOpen(true)}>
-                <Suspense fallback={<div style={{ padding: 40 }}>Loading...</div>}>
+                <React.Suspense fallback={<PageLoader />}>
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/success" element={<Success />} />
@@ -59,13 +71,12 @@ function AppInner() {
                     <Route path="/network" element={<Network />} />
                     <Route path="/contact" element={<Network />} />
                     <Route path="/qr" element={<QRGenerator />} />
-                    <Route path="/projects/qr-generator-preview" element={<QRPreview />} />
-                    <Route path="/projects/link-shortener" element={<LinkShortener />} />
-                    <Route path="/projects/games" element={<Games />} />
+                    <Route path="/link" element={<LinkShortener />} />
+                    <Route path="/games" element={<Games />} />
                     <Route path="/admin" element={<AdminPage />} />
                     <Route path="/s/:slug" element={<ShortLinkRedirect />} />
                   </Routes>
-                </Suspense>
+                </React.Suspense>
               </MainLayout>
             } />
           </Routes>

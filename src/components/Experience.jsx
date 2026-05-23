@@ -179,7 +179,7 @@ function Experience() {
             />
 
           {/* Content Groups */}
-          {timelineData.map((yearGroup, groupIndex) => (
+          {timelineData.map((yearGroup) => (
             <div
               key={yearGroup.year}
               id={`year-section-${yearGroup.year}`}

@@ -28,7 +28,8 @@ export default function ProjectSidebar() {
 
   // Auto-close on route change
   useEffect(() => {
-    setIsOpen(false)
+    const handle = setTimeout(() => setIsOpen(false), 0)
+    return () => clearTimeout(handle)
   }, [location.pathname])
 
   return (

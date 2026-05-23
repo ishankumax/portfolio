@@ -118,7 +118,7 @@ function Timeline({ isMobileMode = false, activeYear = null }) {
         <div className="timeline-track absolute left-[30px] md:left-[35px] top-10 bottom-10 w-[3px] shadow-[0_0_15px_var(--accent-glow)]" style={{ background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)', opacity: 0.6 }}></div>
         
         <div className="flex flex-col gap-16">
-          {timelineData.map((yearGroup, yIndex) => {
+          {timelineData.map((yearGroup) => {
             const isYearActive = activeYear === yearGroup.year;
             return (
             <div key={yearGroup.year} className="relative z-10">

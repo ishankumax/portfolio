@@ -10,20 +10,18 @@ function Carousel({ images }) {
   const [current, setCurrent] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
   const [dragStart, setDragStart] = useState(null)
-  const [animDir, setAnimDir] = useState(null) // 'left' | 'right'
   const timerRef = useRef(null)
   const total = images.length
 
   const goTo = useCallback(
-    (idx, dir) => {
-      setAnimDir(dir)
+    (idx) => {
       setCurrent((idx + total) % total)
     },
     [total]
   )
 
-  const next = useCallback(() => goTo(current + 1, 'left'), [current, goTo])
-  const prev = useCallback(() => goTo(current - 1, 'right'), [current, goTo])
+  const next = useCallback(() => goTo(current + 1), [current, goTo])
+  const prev = useCallback(() => goTo(current - 1), [current, goTo])
 
   // Auto-play
   useEffect(() => {
@@ -31,12 +29,6 @@ function Carousel({ images }) {
     timerRef.current = setInterval(next, 3500)
     return () => clearInterval(timerRef.current)
   }, [isHovered, next, total])
-
-  // Reset carousel when images array changes (tab/item switch)
-  useEffect(() => {
-    setCurrent(0)
-    setAnimDir(null)
-  }, [images])
 
   // Touch / pointer swipe
   const handlePointerDown = (e) => setDragStart(e.clientX)
@@ -121,7 +113,7 @@ function Carousel({ images }) {
               <button
                 key={i}
                 className={`success-carousel__dot ${i === current ? 'success-carousel__dot--active' : ''}`}
-                onClick={() => goTo(i, i > current ? 'left' : 'right')}
+                onClick={() => goTo(i)}
                 aria-label={`Go to image ${i + 1}`}
               />
             ))}

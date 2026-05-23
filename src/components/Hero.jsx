@@ -15,13 +15,7 @@ const ICON_MAP = {
  * Follows the normalized left-aligned header pattern.
  */
 function Hero() {
-  const { getContent, getLinksByCategory } = useContent()
-  const heroContent = getContent('hero', {
-    title: 'ishan kumar',
-    subtitle: 'Builder, Designer, Developer',
-    description: '20-year-old CS undergrad building software for the next billion users.'
-  })
-  
+  const { getLinksByCategory } = useContent()
   const socialLinks = getLinksByCategory('social')
 
   return (
