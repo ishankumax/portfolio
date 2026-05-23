@@ -7,7 +7,6 @@ const ACCENT = '#a855f7' // purple-500
 
 export default function QRPreview() {
   const [text, setText] = useState('https://ishankumar.dev')
-  const [copied, setCopied] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const canvasRef = useRef(null)
 

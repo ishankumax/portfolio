@@ -8,16 +8,19 @@ export default function AdminLinks() {
   const [loading, setLoading] = useState(true);
   const [newLink, setNewLink] = useState({ title: '', url: '', icon: '', order_index: 0 });
 
-  useEffect(() => {
-    fetchLinks();
-  }, []);
-
   async function fetchLinks() {
     setLoading(true);
     const data = await getLinks();
     setLinks(data);
     setLoading(false);
   }
+
+  useEffect(() => {
+    const handle = setTimeout(() => {
+      fetchLinks();
+    }, 0);
+    return () => clearTimeout(handle);
+  }, []);
 
   async function handleAdd(e) {
     e.preventDefault();

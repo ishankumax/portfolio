@@ -10,7 +10,6 @@ export default function EditableText({ id, section, defaultText, as: Component =
   const [content, setContent] = useState(defaultText);
   const [isEditMode, setIsEditMode] = useState(false);
   const [draft, setDraft] = useState(defaultText);
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -24,8 +23,6 @@ export default function EditableText({ id, section, defaultText, as: Component =
         }
       } catch (err) {
         console.error("Failed to fetch content block:", id, err);
-      } finally {
-        setLoading(false);
       }
     }
     fetchContent();

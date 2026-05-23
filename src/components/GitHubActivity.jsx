@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { FaGithub } from 'react-icons/fa'
-import { useTheme } from '../ThemeContext'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const USERNAME    = 'ishankumax'

@@ -9,16 +9,19 @@ export default function AdminBlogs() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [newBlog, setNewBlog] = useState({ title: '', slug: '', excerpt: '', content: '', is_published: false });
 
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
-
   async function fetchBlogs() {
     setLoading(true);
     const data = await getBlogs();
     setBlogs(data);
     setLoading(false);
   }
+
+  useEffect(() => {
+    const handle = setTimeout(() => {
+      fetchBlogs();
+    }, 0);
+    return () => clearTimeout(handle);
+  }, []);
 
   async function handleAdd(e) {
     e.preventDefault();
