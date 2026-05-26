@@ -5,13 +5,13 @@ const ThemeContext = createContext(null)
 
 // Curated high-contrast accent colors
 export const ACCENT_PALETTE = [
-  { name: 'green',  value: '#39ff14' }, // Neon Green (Original)
-  { name: 'cyan',   value: '#00f0ff' }, // Neon Cyan
+  { name: 'green',  value: '#39ff14' }, // Neon Green
   { name: 'yellow', value: '#e9ff1c' }, // Neon Yellow
-  { name: 'purple', value: '#a855f7' }, // Purple
-  { name: 'blue',   value: '#3b82f6' }, // Blue
   { name: 'orange', value: '#f97316' }, // Orange
+  { name: 'red',    value: '#ff3131' }, // Neon Red
+  { name: 'purple', value: '#a855f7' }, // Purple
   { name: 'pink',   value: '#ec4899' }, // Pink
+  { name: 'cyan',   value: '#00f0ff' }, // Neon Cyan
 ]
 
 export function ThemeProvider({ children }) {
