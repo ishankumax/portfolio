@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useTheme, ACCENT_PALETTE } from '../../ThemeContext'
+import { useTheme, THEME_PRESETS } from '../../ThemeContext'
 
 /**
  * AccentPicker
- * A premium right-side collapsible control to switch global accent colors.
+ * A premium right-side collapsible control to switch curated theme presets.
  */
 const AccentPicker = () => {
-  const { accentColor, setAccentColor } = useTheme()
+  const { activePreset, selectPreset } = useTheme()
   const [isOpen, setIsOpen] = useState(false)
   const pickerRef = useRef(null)
 
@@ -29,7 +29,7 @@ const AccentPicker = () => {
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
       className={`fixed right-0 top-1/2 -translate-y-1/2 z-[150] flex items-center transition-all duration-300 ease-in-out border-y border-l rounded-l-xl backdrop-blur-3xl ${
-        isOpen ? 'translate-x-0' : 'translate-x-[64px] md:translate-x-[60px]'
+        isOpen ? 'translate-x-0' : 'translate-x-[150px]'
       }`}
       style={{
         backgroundColor: 'var(--bg-navbar)',
@@ -40,12 +40,12 @@ const AccentPicker = () => {
       {/* Vertical Trigger Tab */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex flex-col items-center justify-center py-6 px-2 transition-all duration-300 group relative"
+        className="flex flex-col items-center justify-center py-6 px-2 transition-all duration-300 group relative cursor-pointer"
         style={{ 
           color: isOpen ? 'var(--accent)' : 'var(--text-secondary)',
           minWidth: '32px'
         }}
-        aria-label={isOpen ? "Close accent picker" : "Open accent picker"}
+        aria-label={isOpen ? "Close theme panel" : "Open theme panel"}
       >
         {/* Active Color Indicator on Tab */}
         <div 
@@ -61,43 +61,45 @@ const AccentPicker = () => {
             color: isOpen ? 'var(--accent)' : 'inherit'
           }}
         >
-          theme accent
+          theme presets
         </span>
       </button>
 
       {/* Expanded Panel */}
       <div 
-        className="py-4 pr-4 pl-2 flex flex-col gap-4 w-[64px] md:w-[60px]"
+        className="py-4 pr-4 pl-3 flex flex-col gap-3 w-[150px]"
       >
-        <div className="flex flex-col gap-4 items-center">
-          {ACCENT_PALETTE.map((color) => (
-            <button
-              key={color.name}
-              onClick={() => {
-                setAccentColor(color.value)
-              }}
-              className={`w-7 h-7 md:w-6 md:h-6 rounded-full transition-all duration-300 hover:scale-110 relative group flex items-center justify-center ${
-                accentColor === color.value ? 'ring-2 ring-white ring-offset-2 ring-offset-black' : 'hover:ring-1 hover:ring-white/30'
-              }`}
-              style={{ 
-                backgroundColor: color.value,
-                boxShadow: accentColor === color.value ? `0 0 15px ${color.value}80` : 'none'
-              }}
-              title={`Switch to ${color.name} accent`}
-            >
-              {/* Tooltip */}
-              <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2.5 py-1.5 rounded bg-black/90 text-[9px] text-white opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap pointer-events-none uppercase tracking-widest border border-white/10 translate-x-2 group-hover:translate-x-0 hidden md:block z-[200]">
-                {color.name}
-              </span>
-              
-              {/* Checkmark for active */}
-              {accentColor === color.value && (
-                <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              )}
-            </button>
-          ))}
+        <div className="flex flex-col gap-1.5 text-left font-mono">
+          {THEME_PRESETS.map((preset) => {
+            const isActive = activePreset?.id === preset.id
+            return (
+              <button
+                key={preset.id}
+                onClick={() => {
+                  selectPreset(preset.id)
+                }}
+                className="flex items-center gap-2 text-[11px] transition-all duration-250 py-1 px-2 rounded text-left border group/item cursor-pointer w-full"
+                style={{
+                  color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
+                  backgroundColor: isActive ? 'var(--accent-faint)' : 'transparent',
+                  borderColor: isActive ? 'var(--accent-border)' : 'transparent',
+                }}
+                title={`Switch to ${preset.name} theme`}
+              >
+                {/* Custom dot bullet */}
+                <span 
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 shrink-0 ${
+                    isActive ? 'scale-110' : 'opacity-40 group-hover/item:opacity-100 group-hover/item:scale-110'
+                  }`}
+                  style={{
+                    backgroundColor: preset.accent,
+                    boxShadow: isActive ? `0 0 8px ${preset.accent}` : 'none'
+                  }}
+                />
+                <span className="truncate tracking-wide">{preset.name}</span>
+              </button>
+            )
+          })}
         </div>
       </div>
     </div>

@@ -45,8 +45,9 @@ export default function RippleBackground({ enabled }) {
   const lastActiveTimeRef = useRef(0)
   const isAnimatingRef = useRef(false)
   const tickRef      = useRef(null)
-  const { accentColor } = useTheme()
+  const { accentColor, activePreset, theme } = useTheme()
   const accentRgbRef = useRef(hexToRgb(accentColor))
+  const dotsRgbRef = useRef({ r: 255, g: 255, b: 255 })
   const enabledRef   = useRef(enabled)
 
   // Helper to start the animation loop if it's not already running
@@ -63,11 +64,13 @@ export default function RippleBackground({ enabled }) {
     enabledRef.current = enabled
   }, [enabled])
 
-  // Sync accent color to ref whenever theme changes
+  // Sync accent color and base dots color whenever preset/theme changes
   useEffect(() => {
     accentRgbRef.current = hexToRgb(accentColor)
+    const dotsColor = theme === 'light' ? '#000000' : (activePreset?.dotsColor || '#ffffff')
+    dotsRgbRef.current = hexToRgb(dotsColor)
     requestFrame()
-  }, [accentColor, requestFrame])
+  }, [accentColor, activePreset, theme, requestFrame])
 
   // Helper functions used by mouse/touch callbacks
 
@@ -177,9 +180,10 @@ export default function RippleBackground({ enabled }) {
           const combinedInfluence = Math.max(rippleInfluence, hoverInfluence)
           const totalOpacity = Math.min(CONFIG.dotOpacity + combinedInfluence * 0.4, 0.95)
           const tint = Math.min(combinedInfluence * 1.4, 1)
-          const ir = Math.round(255 * (1 - tint) + accent.r * tint)
-          const ig = Math.round(255 * (1 - tint) + accent.g * tint)
-          const ib = Math.round(255 * (1 - tint) + accent.b * tint)
+          const dots = dotsRgbRef.current
+          const ir = Math.round(dots.r * (1 - tint) + accent.r * tint)
+          const ig = Math.round(dots.g * (1 - tint) + accent.g * tint)
+          const ib = Math.round(dots.b * (1 - tint) + accent.b * tint)
           const dotR = CONFIG.dotRadius + combinedInfluence * 0.8
 
           ctx.beginPath()
