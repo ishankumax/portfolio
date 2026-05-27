@@ -3,7 +3,7 @@ import EditableText from './admin/EditableText'
 
 const METRICS = [
   { id: 'clients', value: '50+', label: 'clients served' },
-  { id: 'prize', value: '₹1.25L', label: 'won at TiE U' },
+  { id: 'prize', value: '₹1.2L', label: 'won at TiE U' },
   { id: 'media', value: '3+', label: 'media features' },
   { id: 'year', value: '2025', label: 'incorporated' },
 ]
