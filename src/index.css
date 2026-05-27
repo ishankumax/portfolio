@@ -118,20 +118,20 @@ p {
 
 /* ── Text selection — Dynamic highlight ─────────────────────────────────── */
 ::selection {
-  background: var(--selection-bg);
-  color: var(--selection-text);
+  background: var(--accent-glow);
+  color: var(--text-primary);
 }
 
 /* ── Scrollbar — Dynamic accent thumb ──────────────────────────────────── */
 ::-webkit-scrollbar        { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track  { background: transparent; }
 ::-webkit-scrollbar-thumb  { 
-  background: var(--scrollbar-thumb); 
+  background: var(--accent-border); 
   border-radius: 10px;
   transition: background 0.3s ease;
 }
 ::-webkit-scrollbar-thumb:hover { 
-  background: var(--scrollbar-hover); 
+  background: var(--accent); 
 }
 
 /* Hide scrollbar utility */
