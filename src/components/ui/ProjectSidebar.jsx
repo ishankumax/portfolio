@@ -4,8 +4,8 @@ import { RiQrCodeLine, RiLinksLine, RiGamepadLine } from 'react-icons/ri'
 
 const PROJECTS = [
   { slug: 'qr-generator', title: 'QR Generator', icon: <RiQrCodeLine size={20} />, path: '/qr' },
-  { slug: 'link-shortener', title: 'Link Shortener', icon: <RiLinksLine size={20} />, path: '/projects/link-shortener' },
-  { slug: 'games', title: 'Mini Games', icon: <RiGamepadLine size={20} />, path: '/projects/games' },
+  { slug: 'link-shortener', title: 'Link Shortener', icon: <RiLinksLine size={20} />, path: '/link' },
+  { slug: 'games', title: 'Mini Games', icon: <RiGamepadLine size={20} />, path: '/games' },
 ]
 
 export default function ProjectSidebar() {
