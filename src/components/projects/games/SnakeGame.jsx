@@ -5,9 +5,9 @@ import { useTheme } from '../../../ThemeContext'
 const GRID_SIZE = 20
 const CELL_COUNT = 20
 const DIFFICULTY_SPEEDS = {
-  easy: 140,
-  medium: 95,
-  hard: 65
+  easy: 200,
+  medium: 120,
+  hard: 70
 }
 
 // Web Audio API Sound Synthesizer
