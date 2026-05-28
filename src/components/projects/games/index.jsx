@@ -1,25 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProjectLayout from '../ProjectLayout';
 import projectsData from '../../../data/projects.json';
+import SnakeGame from './SnakeGame';
+import TicTacToe from './TicTacToe';
+import { useTheme } from '../../../ThemeContext';
 
 export default function Games() {
   const project = projectsData.find(p => p.slug === 'games');
+  const { accentColor } = useTheme();
+  const [activeTab, setActiveTab] = useState('snake'); // 'snake' or 'ttt'
 
   return (
     <ProjectLayout slug={project.slug} title={project.title} description={project.description}>
-      <div 
-        className="w-full min-h-[40vh] border-2 border-dashed rounded-2xl flex flex-col items-center justify-center p-8 text-center"
-        style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-card)' }}
-      >
-        <div className="w-12 h-12 rounded-xl mb-6 border flex items-center justify-center animate-pulse" style={{ borderColor: 'var(--accent)', color: 'var(--accent)', backgroundColor: 'var(--bg-navbar)' }}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-          </svg>
+      <div className="w-full flex flex-col items-center gap-8 font-mono pb-20">
+        
+        {/* Navigation Selector */}
+        <div 
+          className="flex border rounded-xl p-1 bg-black/35 backdrop-blur" 
+          style={{ borderColor: 'var(--border-subtle)' }}
+        >
+          <button
+            onClick={() => setActiveTab('snake')}
+            className={`px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+              activeTab === 'snake'
+                ? 'text-black shadow-[0_0_15px_var(--accent-glow)]'
+                : 'hover:text-[color:var(--accent)]'
+            }`}
+            style={{
+              backgroundColor: activeTab === 'snake' ? accentColor : 'transparent',
+              color: activeTab === 'snake' ? 'black' : 'var(--text-secondary)'
+            }}
+          >
+            Snake Game
+          </button>
+          <button
+            onClick={() => setActiveTab('ttt')}
+            className={`px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+              activeTab === 'ttt'
+                ? 'text-black shadow-[0_0_15px_var(--accent-glow)]'
+                : 'hover:text-[color:var(--accent)]'
+            }`}
+            style={{
+              backgroundColor: activeTab === 'ttt' ? accentColor : 'transparent',
+              color: activeTab === 'ttt' ? 'black' : 'var(--text-secondary)'
+            }}
+          >
+            Tic-Tac-Toe
+          </button>
         </div>
-        <h3 className="font-bold text-xl mb-2 font-mono" style={{ color: 'var(--text-primary)' }}>System Initializing...</h3>
-        <p className="text-sm font-mono max-w-md" style={{ color: 'var(--text-muted)' }}>
-          The interactive component for <strong>{project.title}</strong> is currently being scaffolded. Check back later.
-        </p>
+
+        {/* Game Render Frame */}
+        <div className="w-full flex justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+          {activeTab === 'snake' ? (
+            <SnakeGame />
+          ) : (
+            <TicTacToe />
+          )}
+        </div>
       </div>
     </ProjectLayout>
   );
