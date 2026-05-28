@@ -108,19 +108,11 @@ export default function Games() {
         {/* RIGHT — Game Preview Card */}
         <div className="flex-1 w-full flex items-center justify-center py-10 lg:py-0">
           <div
-            className="relative w-full max-w-md flex flex-col items-center justify-center p-8 pb-14 rounded-2xl border transition-all duration-500 min-h-[460px]"
+            className="relative w-full max-w-md flex flex-col items-center justify-center p-10 rounded-2xl border transition-all duration-500"
             style={{
               background: 'var(--bg-card)',
-              borderColor: 'var(--border-subtle)',
-              boxShadow: '0 0 40px rgba(0,0,0,0.3)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = accentColor;
-              e.currentTarget.style.boxShadow = `0 0 48px ${accentColor}14`;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border-subtle)';
-              e.currentTarget.style.boxShadow = '0 0 40px rgba(0,0,0,0.3)';
+              borderColor: 'var(--accent)',
+              boxShadow: '0 0 60px color-mix(in srgb, var(--accent) 8%, transparent)',
             }}
           >
             <div className="w-full flex justify-center">
@@ -133,7 +125,7 @@ export default function Games() {
             
             {/* Watermark */}
             <div 
-              className="absolute bottom-5 left-1/2 -translate-x-1/2 font-mono uppercase text-[8px] tracking-[0.5em] opacity-35 select-none"
+              className="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono uppercase text-[8px] tracking-[0.5em] opacity-35 select-none"
               style={{ color: 'var(--text-secondary)' }}
             >
               ishankumax / arcade
