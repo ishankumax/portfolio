@@ -38,7 +38,7 @@ export default function Games() {
 
       {/* ── Main two-column ── */}
       <div
-        className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start lg:items-center"
+        className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start"
         style={{ flex: 1 }}
       >
         {/* LEFT — controls */}
