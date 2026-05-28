@@ -231,7 +231,7 @@ export default function TicTacToe() {
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-md mx-auto font-mono">
+    <div className="w-full flex flex-col items-center font-mono">
       {/* Top Controls/Scoreboard */}
       <div className="w-full flex justify-between items-center mb-6 px-2 text-sm text-[var(--text-secondary)]">
         <div className="flex items-center gap-2">
@@ -317,7 +317,7 @@ export default function TicTacToe() {
       </div>
 
       {/* Score Card / Status messages */}
-      <div className="w-full flex flex-col gap-4 border rounded-xl p-4 mb-4" style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-card)' }}>
+      <div className="w-full flex flex-col gap-4 border-t pt-4 mt-2" style={{ borderColor: 'var(--border-subtle)' }}>
         {/* Game Info Status */}
         <div className="text-center font-bold text-sm tracking-wider min-h-[20px]">
           {!isGameOver ? (

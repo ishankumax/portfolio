@@ -383,7 +383,7 @@ export default function SnakeGame() {
   }, [isPlaying, isPaused, isGameOver])
 
   return (
-    <div className="flex flex-col items-center w-full max-w-lg mx-auto font-mono">
+    <div className="w-full flex flex-col items-center font-mono">
       {/* Panel Top Status */}
       <div className="w-full flex justify-between items-center mb-4 px-2 text-sm text-[var(--text-secondary)]">
         <div>
@@ -408,7 +408,7 @@ export default function SnakeGame() {
       </div>
 
       {/* Screen container */}
-      <div className="relative border rounded-2xl overflow-hidden aspect-square w-full max-w-[400px] md:max-w-[400px] mb-6" style={{ borderColor: 'var(--border-card)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+      <div className="relative border rounded-xl overflow-hidden aspect-square w-full max-w-[340px] mb-6" style={{ borderColor: 'var(--border-subtle)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
         <canvas
           ref={canvasRef}
           width={GRID_SIZE * CELL_COUNT}
@@ -462,9 +462,9 @@ export default function SnakeGame() {
           </div>
         )}
       </div>
-
+ 
       {/* Control Buttons & difficulty */}
-      <div className="w-full flex flex-col gap-4 border rounded-xl p-4" style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'var(--bg-card)' }}>
+      <div className="w-full flex flex-col gap-4 border-t pt-4 mt-2" style={{ borderColor: 'var(--border-subtle)' }}>
         {/* Difficulty Controls */}
         <div className="flex items-center justify-between text-xs">
           <span style={{ color: 'var(--text-muted)' }}>SPEED MULTIPLIER:</span>
