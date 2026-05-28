@@ -108,7 +108,7 @@ export default function Games() {
         {/* RIGHT — Game Preview Card */}
         <div className="flex-1 w-full flex items-center justify-center py-10 lg:py-0">
           <div
-            className="relative w-full max-w-md flex flex-col items-center justify-center p-10 rounded-2xl border transition-all duration-500"
+            className="relative w-full max-w-[380px] flex flex-col items-center justify-center p-6 pb-12 rounded-2xl border transition-all duration-500"
             style={{
               background: 'var(--bg-card)',
               borderColor: 'var(--accent)',
