@@ -383,92 +383,95 @@ export default function SnakeGame() {
   }, [isPlaying, isPaused, isGameOver])
 
   return (
-    <div className="w-full flex flex-col items-center font-mono">
-      {/* Panel Top Status */}
-      <div className="w-full flex justify-between items-center mb-4 px-2 text-sm text-[var(--text-secondary)]">
-        <div>
-          SCORE: <span className="font-bold text-[color:var(--accent)] font-mono">{score}</span>
-        </div>
-        <div className="flex items-center gap-4">
+    <div className="w-full flex flex-col lg:flex-row gap-6 lg:gap-8 items-center lg:items-stretch font-mono">
+      {/* Left Column — Canvas & Status */}
+      <div className="w-full max-w-[340px] flex flex-col items-center">
+        {/* Panel Top Status */}
+        <div className="w-full flex justify-between items-center mb-4 px-2 text-sm text-[var(--text-secondary)]">
           <div>
-            HI-SCORE: <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{highScore}</span>
+            SCORE: <span className="font-bold text-[color:var(--accent)] font-mono">{score}</span>
           </div>
-          <button 
-            onClick={() => setMuted(!muted)} 
-            className="hover:text-[color:var(--accent)] transition-colors"
-            title={muted ? 'Unmute Sound' : 'Mute Sound'}
-          >
-            {muted ? (
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6L4.5 9H1.5v6h3l4.5 3.75V3.75z" /></svg>
-            ) : (
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" /></svg>
-            )}
-          </button>
+          <div className="flex items-center gap-4">
+            <div>
+              HI-SCORE: <span className="font-bold" style={{ color: 'var(--text-primary)' }}>{highScore}</span>
+            </div>
+            <button 
+              onClick={() => setMuted(!muted)} 
+              className="hover:text-[color:var(--accent)] transition-colors"
+              title={muted ? 'Unmute Sound' : 'Mute Sound'}
+            >
+              {muted ? (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6L4.5 9H1.5v6h3l4.5 3.75V3.75z" /></svg>
+              ) : (
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" /></svg>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Screen container */}
+        <div className="relative border rounded-xl overflow-hidden aspect-square w-full max-w-[340px]" style={{ borderColor: 'var(--border-subtle)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+          <canvas
+            ref={canvasRef}
+            width={GRID_SIZE * CELL_COUNT}
+            height={GRID_SIZE * CELL_COUNT}
+            className="w-full h-full block"
+          />
+
+          {/* Overlay screens */}
+          {!isPlaying && !isGameOver && (
+            <div className="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
+              <h4 className="text-xl font-bold tracking-widest text-[color:var(--accent)] mb-3 animate-pulse">NEON SNAKE</h4>
+              <p className="text-xs max-w-[280px] leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
+                Guide the glowing snake using keyboard <span className="text-[color:var(--accent)] font-bold">W-A-S-D</span> or <span className="text-[color:var(--accent)] font-bold">Arrow Keys</span>.
+              </p>
+              <button 
+                onClick={resetGame}
+                className="px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-[0_0_15px_var(--accent-glow)] hover:scale-105 active:scale-95" 
+                style={{ background: 'var(--accent)', color: 'black' }}
+              >
+                LAUNCH GAME
+              </button>
+            </div>
+          )}
+
+          {isPaused && (
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center">
+              <h4 className="text-2xl font-bold tracking-widest text-white mb-4">PAUSED</h4>
+              <button 
+                onClick={togglePause}
+                className="px-6 py-2.5 rounded-lg text-sm font-bold transition-all hover:scale-105" 
+                style={{ background: 'white', color: 'black' }}
+              >
+                RESUME
+              </button>
+            </div>
+          )}
+
+          {isGameOver && (
+            <div className="absolute inset-0 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in fade-in zoom-in duration-300">
+              <h4 className="text-2xl font-bold tracking-widest text-red-500 mb-2">SYSTEM CRASH</h4>
+              <p className="text-xs uppercase tracking-wider mb-6" style={{ color: 'var(--text-muted)' }}>
+                Final Score: <span className="text-[color:var(--accent)] font-bold">{score}</span>
+              </p>
+              <button 
+                onClick={resetGame}
+                className="px-6 py-2.5 rounded-lg text-sm font-bold transition-all hover:scale-105 shadow-[0_0_15px_rgba(239,68,68,0.4)]" 
+                style={{ background: '#ef4444', color: 'white' }}
+              >
+                RESTART SYSTEM
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Screen container */}
-      <div className="relative border rounded-xl overflow-hidden aspect-square w-full max-w-[340px] mb-6" style={{ borderColor: 'var(--border-subtle)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
-        <canvas
-          ref={canvasRef}
-          width={GRID_SIZE * CELL_COUNT}
-          height={GRID_SIZE * CELL_COUNT}
-          className="w-full h-full block"
-        />
-
-        {/* Overlay screens */}
-        {!isPlaying && !isGameOver && (
-          <div className="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
-            <h4 className="text-xl font-bold tracking-widest text-[color:var(--accent)] mb-3 animate-pulse">NEON SNAKE</h4>
-            <p className="text-xs max-w-[280px] leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
-              Guide the glowing snake using keyboard <span className="text-[color:var(--accent)] font-bold">W-A-S-D</span> or <span className="text-[color:var(--accent)] font-bold">Arrow Keys</span>.
-            </p>
-            <button 
-              onClick={resetGame}
-              className="px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-[0_0_15px_var(--accent-glow)] hover:scale-105 active:scale-95" 
-              style={{ background: 'var(--accent)', color: 'black' }}
-            >
-              LAUNCH GAME
-            </button>
-          </div>
-        )}
-
-        {isPaused && (
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center">
-            <h4 className="text-2xl font-bold tracking-widest text-white mb-4">PAUSED</h4>
-            <button 
-              onClick={togglePause}
-              className="px-6 py-2.5 rounded-lg text-sm font-bold transition-all hover:scale-105" 
-              style={{ background: 'white', color: 'black' }}
-            >
-              RESUME
-            </button>
-          </div>
-        )}
-
-        {isGameOver && (
-          <div className="absolute inset-0 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in fade-in zoom-in duration-300">
-            <h4 className="text-2xl font-bold tracking-widest text-red-500 mb-2">SYSTEM CRASH</h4>
-            <p className="text-xs uppercase tracking-wider mb-6" style={{ color: 'var(--text-muted)' }}>
-              Final Score: <span className="text-[color:var(--accent)] font-bold">{score}</span>
-            </p>
-            <button 
-              onClick={resetGame}
-              className="px-6 py-2.5 rounded-lg text-sm font-bold transition-all hover:scale-105 shadow-[0_0_15px_rgba(239,68,68,0.4)]" 
-              style={{ background: '#ef4444', color: 'white' }}
-            >
-              RESTART SYSTEM
-            </button>
-          </div>
-        )}
-      </div>
- 
-      {/* Control Buttons & difficulty */}
-      <div className="w-full flex flex-col gap-4 border-t pt-4 mt-2" style={{ borderColor: 'var(--border-subtle)' }}>
+      {/* Right Column — Difficulty & Controls */}
+      <div className="w-full lg:w-[200px] flex flex-col justify-center gap-6 border-t lg:border-t-0 lg:border-l pt-6 lg:pt-0 lg:pl-6 mt-2 lg:mt-0" style={{ borderColor: 'var(--border-subtle)' }}>
         {/* Difficulty Controls */}
-        <div className="flex items-center justify-between text-xs">
+        <div className="flex flex-col gap-2 text-xs">
           <span style={{ color: 'var(--text-muted)' }}>SPEED MULTIPLIER:</span>
-          <div className="flex border rounded-lg overflow-hidden" style={{ borderColor: 'var(--border-subtle)' }}>
+          <div className="flex border rounded-lg overflow-hidden w-fit" style={{ borderColor: 'var(--border-subtle)' }}>
             {['easy', 'medium', 'hard'].map((d) => (
               <button
                 key={d}
@@ -496,17 +499,17 @@ export default function SnakeGame() {
 
         {/* Action Controls */}
         {isPlaying && (
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2">
             <button 
               onClick={togglePause}
-              className="flex-1 py-2 rounded-lg text-xs font-bold border transition-colors hover:bg-white/5"
+              className="w-full py-2 rounded-lg text-xs font-bold border transition-colors hover:bg-white/5"
               style={{ borderColor: 'var(--border-subtle)', color: 'var(--text-primary)' }}
             >
               {isPaused ? 'RESUME' : 'PAUSE'}
             </button>
             <button 
               onClick={triggerGameOver}
-              className="py-2 px-4 rounded-lg text-xs font-bold bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 transition-colors"
+              className="w-full py-2 px-4 rounded-lg text-xs font-bold bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 transition-colors"
             >
               ABORT
             </button>

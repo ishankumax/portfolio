@@ -231,93 +231,96 @@ export default function TicTacToe() {
   }
 
   return (
-    <div className="w-full flex flex-col items-center font-mono">
-      {/* Top Controls/Scoreboard */}
-      <div className="w-full flex justify-between items-center mb-6 px-2 text-sm text-[var(--text-secondary)]">
-        <div className="flex items-center gap-2">
-          MODE: 
+    <div className="w-full flex flex-col lg:flex-row gap-6 lg:gap-8 items-center lg:items-stretch font-mono">
+      {/* Left Column — Game Board */}
+      <div className="w-full max-w-[320px] flex flex-col items-center">
+        {/* Top Controls/Scoreboard */}
+        <div className="w-full flex justify-between items-center mb-6 px-2 text-sm text-[var(--text-secondary)]">
+          <div className="flex items-center gap-2">
+            MODE: 
+            <button 
+              onClick={() => {
+                if (!muted) playSound('click')
+                setVsAI(!vsAI)
+                resetGame()
+              }}
+              className="font-bold border rounded px-2.5 py-0.5 text-xs hover:text-[color:var(--accent)] transition-colors"
+              style={{ borderColor: 'var(--border-subtle)' }}
+            >
+              {vsAI ? 'VS COMPUTER' : 'PASS & PLAY'}
+            </button>
+          </div>
           <button 
-            onClick={() => {
-              if (!muted) playSound('click')
-              setVsAI(!vsAI)
-              resetGame()
-            }}
-            className="font-bold border rounded px-2.5 py-0.5 text-xs hover:text-[color:var(--accent)] transition-colors"
-            style={{ borderColor: 'var(--border-subtle)' }}
+            onClick={() => setMuted(!muted)} 
+            className="hover:text-[color:var(--accent)] transition-colors"
+            title={muted ? 'Unmute Sound' : 'Mute Sound'}
           >
-            {vsAI ? 'VS COMPUTER' : 'PASS & PLAY'}
+            {muted ? (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6L4.5 9H1.5v6h3l4.5 3.75V3.75z" /></svg>
+            ) : (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" /></svg>
+            )}
           </button>
         </div>
-        <button 
-          onClick={() => setMuted(!muted)} 
-          className="hover:text-[color:var(--accent)] transition-colors"
-          title={muted ? 'Unmute Sound' : 'Mute Sound'}
-        >
-          {muted ? (
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6L4.5 9H1.5v6h3l4.5 3.75V3.75z" /></svg>
-          ) : (
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" /></svg>
+
+        {/* Grid container */}
+        <div className="relative w-full aspect-square max-w-[320px] grid grid-cols-3 gap-3 p-3 rounded-2xl border bg-black/45" style={{ borderColor: 'var(--border-card)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+          {board.map((cell, i) => {
+            const isWinningCell = winningLine.includes(i)
+            
+            return (
+              <button
+                key={i}
+                onClick={() => handleClick(i)}
+                disabled={isGameOver || cell !== null || (vsAI && !isXNext)}
+                className="relative aspect-square rounded-xl border flex items-center justify-center transition-all duration-300 font-sans text-3xl font-bold overflow-hidden"
+                style={{
+                  borderColor: isWinningCell 
+                    ? 'var(--accent)' 
+                    : cell 
+                      ? 'var(--border-subtle)' 
+                      : 'rgba(255,255,255,0.05)',
+                  backgroundColor: isWinningCell 
+                    ? 'var(--accent-faint)' 
+                    : 'var(--bg-navbar)',
+                  boxShadow: isWinningCell 
+                    ? '0 0 15px var(--accent-glow)' 
+                    : 'none'
+                }}
+              >
+                {cell === 'X' && (
+                  <span 
+                    className="animate-in zoom-in-50 duration-200" 
+                    style={{ color: accentColor, textShadow: `0 0 12px ${accentColor}80` }}
+                  >
+                    X
+                  </span>
+                )}
+                {cell === 'O' && (
+                  <span 
+                    className="animate-in zoom-in-50 duration-200" 
+                    style={{ color: '#ec4899', textShadow: '0 0 12px rgba(236,72,153,0.8)' }}
+                  >
+                    O
+                  </span>
+                )}
+              </button>
+            )
+          })}
+
+          {/* AI Thinking Indicator overlay */}
+          {vsAI && !isXNext && !isGameOver && (
+            <div className="absolute inset-0 bg-black/10 backdrop-blur-[0.5px] rounded-2xl flex items-center justify-center pointer-events-none">
+              <span className="bg-black/80 px-3 py-1.5 rounded-lg border text-[10px] tracking-[0.2em] animate-pulse uppercase" style={{ borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }}>
+                AI THINKING...
+              </span>
+            </div>
           )}
-        </button>
+        </div>
       </div>
 
-      {/* Grid container */}
-      <div className="relative w-full aspect-square max-w-[320px] grid grid-cols-3 gap-3 mb-6 p-3 rounded-2xl border bg-black/45" style={{ borderColor: 'var(--border-card)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
-        {board.map((cell, i) => {
-          const isWinningCell = winningLine.includes(i)
-          
-          return (
-            <button
-              key={i}
-              onClick={() => handleClick(i)}
-              disabled={isGameOver || cell !== null || (vsAI && !isXNext)}
-              className="relative aspect-square rounded-xl border flex items-center justify-center transition-all duration-300 font-sans text-3xl font-bold overflow-hidden"
-              style={{
-                borderColor: isWinningCell 
-                  ? 'var(--accent)' 
-                  : cell 
-                    ? 'var(--border-subtle)' 
-                    : 'rgba(255,255,255,0.05)',
-                backgroundColor: isWinningCell 
-                  ? 'var(--accent-faint)' 
-                  : 'var(--bg-navbar)',
-                boxShadow: isWinningCell 
-                  ? '0 0 15px var(--accent-glow)' 
-                  : 'none'
-              }}
-            >
-              {cell === 'X' && (
-                <span 
-                  className="animate-in zoom-in-50 duration-200" 
-                  style={{ color: accentColor, textShadow: `0 0 12px ${accentColor}80` }}
-                >
-                  X
-                </span>
-              )}
-              {cell === 'O' && (
-                <span 
-                  className="animate-in zoom-in-50 duration-200" 
-                  style={{ color: '#ec4899', textShadow: '0 0 12px rgba(236,72,153,0.8)' }}
-                >
-                  O
-                </span>
-              )}
-            </button>
-          )
-        })}
-
-        {/* AI Thinking Indicator overlay */}
-        {vsAI && !isXNext && !isGameOver && (
-          <div className="absolute inset-0 bg-black/10 backdrop-blur-[0.5px] rounded-2xl flex items-center justify-center pointer-events-none">
-            <span className="bg-black/80 px-3 py-1.5 rounded-lg border text-[10px] tracking-[0.2em] animate-pulse uppercase" style={{ borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }}>
-              AI THINKING...
-            </span>
-          </div>
-        )}
-      </div>
-
-      {/* Score Card / Status messages */}
-      <div className="w-full flex flex-col gap-4 border-t pt-4 mt-2" style={{ borderColor: 'var(--border-subtle)' }}>
+      {/* Right Column — Score Card & Status Info */}
+      <div className="w-full lg:w-[220px] flex flex-col justify-center gap-6 border-t lg:border-t-0 lg:border-l pt-6 lg:pt-0 lg:pl-6 mt-2 lg:mt-0" style={{ borderColor: 'var(--border-subtle)' }}>
         {/* Game Info Status */}
         <div className="text-center font-bold text-sm tracking-wider min-h-[20px]">
           {!isGameOver ? (
@@ -352,18 +355,18 @@ export default function TicTacToe() {
             <p className="text-sm font-bold mt-1" style={{ color: 'var(--text-primary)' }}>{stats.aiWins}</p>
           </div>
         </div>
-      </div>
 
-      {/* Restart Button */}
-      {isGameOver && (
-        <button 
-          onClick={resetGame}
-          className="w-full py-2.5 rounded-lg text-sm font-bold transition-all shadow-[0_0_15px_var(--accent-glow)] hover:scale-105 active:scale-95" 
-          style={{ background: 'var(--accent)', color: 'black' }}
-        >
-          PLAY AGAIN
-        </button>
-      )}
+        {/* Restart Button */}
+        {isGameOver && (
+          <button 
+            onClick={resetGame}
+            className="w-full py-2.5 rounded-lg text-sm font-bold transition-all shadow-[0_0_15px_var(--accent-glow)] hover:scale-105 active:scale-95" 
+            style={{ background: 'var(--accent)', color: 'black' }}
+          >
+            PLAY AGAIN
+          </button>
+        )}
+      </div>
     </div>
   )
 }
