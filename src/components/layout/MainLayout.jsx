@@ -10,9 +10,10 @@ import AccentPicker from '../ui/AccentPicker'
 const MainLayout = ({ children, onOpenTerminal }) => {
   const location = useLocation()
   
-  // The experience page has a sidebar, so we give it more breathing room
+  // The experience and games pages have sidebars/multi-column layouts, so we give them more breathing room
   const isExperiencePage = location.pathname === '/experience'
-  const maxWidth = "max-w-4xl"
+  const isLargePage = isExperiencePage || location.pathname === '/games'
+  const maxWidth = isLargePage ? "max-w-6xl" : "max-w-4xl"
 
   return (
     <div className="min-h-screen flex flex-col text-[var(--text-primary)] font-mono selection:bg-[var(--selection-bg)] selection:text-[var(--selection-text)]">
