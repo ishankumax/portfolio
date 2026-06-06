@@ -5,7 +5,7 @@ const ThemeContext = createContext(null)
 
 // Curated high-contrast accent colors
 export const ACCENT_PALETTE = [
-  { name: 'green',  value: '#39ff14' }, // Neon Green (Original)
+  { name: 'green',  value: '#39ff14' }, // Neon Green
   { name: 'yellow', value: '#e9ff1c' }, // Neon Yellow
   { name: 'orange', value: '#f97316' }, // Orange
   { name: 'red',    value: '#ff3131' }, // Neon Red
