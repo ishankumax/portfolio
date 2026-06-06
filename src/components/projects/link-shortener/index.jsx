@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RiLink, RiClipboardLine, RiCheckLine, RiArrowRightLine, RiExternalLinkLine } from 'react-icons/ri';
+import { createShortLink } from '../../../lib/db';
+
 
 export default function LinkShortener() {
   const [longUrl, setLongUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [isShortening, setIsShortening] = useState(false);
   const [copied, setCopied] = useState(false);
-  const handleShorten = (e) => {
+  const handleShorten = async (e) => {
     e?.preventDefault();
     if (!longUrl.trim()) return;
 
     setIsShortening(true);
-    
-    // Simulate API delay for the frontend preview
-    setTimeout(() => {
-      const slug = Math.random().toString(36).substring(2, 8);
+    try {
+      const slug = await createShortLink(longUrl);
       const generatedShort = `ishankumax.me/${slug}`;
       setShortUrl(generatedShort);
+    } catch (err) {
+      console.error("Failed to shorten link:", err);
+    } finally {
       setIsShortening(false);
-    }, 600);
+    }
   };
 
   const copyToClipboard = () => {
