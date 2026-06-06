@@ -25,7 +25,7 @@ export function ThemeProvider({ children }) {
 
   const [rippleEnabled, setRippleEnabled] = useState(() => {
     const stored = localStorage.getItem('portfolio-ripple')
-    return stored !== null ? stored === 'true' : false // OFF by default
+    return stored !== null ? stored === 'true' : true // ON by default
   })
 
   const toggleRipple = () => setRippleEnabled(prev => {
