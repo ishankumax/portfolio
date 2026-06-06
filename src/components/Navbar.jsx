@@ -143,7 +143,7 @@ function Navbar({ onOpenTerminal }) {
                 transition: 'color 0.25s ease, filter 0.25s ease',
               }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={rippleEnabled ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={rippleEnabled ? 0 : 1.75} strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] transition-all duration-300" style={{ opacity: rippleEnabled ? 1 : 18 }}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={rippleEnabled ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={rippleEnabled ? 0 : 1.75} strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px] transition-all duration-300" style={{ opacity: rippleEnabled ? 1 : 0.4 }}>
                 <path d="M12 2C12 2 5 10 5 14a7 7 0 0 0 14 0c0-4-7-12-7-12z" />
               </svg>
             </button>

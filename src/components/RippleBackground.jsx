@@ -45,7 +45,7 @@ export default function RippleBackground({ enabled }) {
   const lastActiveTimeRef = useRef(0)
   const isAnimatingRef = useRef(false)
   const tickRef      = useRef(null)
-  const { accentColor } = useTheme()
+  const { accentColor, theme } = useTheme()
   const accentRgbRef = useRef(hexToRgb(accentColor))
   const enabledRef   = useRef(enabled)
 
@@ -106,6 +106,9 @@ export default function RippleBackground({ enabled }) {
       ctx.clearRect(0, 0, W, H)
 
       const accent = accentRgbRef.current
+      const baseR = theme === 'light' ? 15 : 255
+      const baseG = theme === 'light' ? 14 : 255
+      const baseB = theme === 'light' ? 23 : 255
 
       // Cull dead ripples
       ripplesRef.current = ripplesRef.current.filter(r => {
@@ -177,9 +180,9 @@ export default function RippleBackground({ enabled }) {
           const combinedInfluence = Math.max(rippleInfluence, hoverInfluence)
           const totalOpacity = Math.min(CONFIG.dotOpacity + combinedInfluence * 0.4, 0.95)
           const tint = Math.min(combinedInfluence * 1.4, 1)
-          const ir = Math.round(255 * (1 - tint) + accent.r * tint)
-          const ig = Math.round(255 * (1 - tint) + accent.g * tint)
-          const ib = Math.round(255 * (1 - tint) + accent.b * tint)
+          const ir = Math.round(baseR * (1 - tint) + accent.r * tint)
+          const ig = Math.round(baseG * (1 - tint) + accent.g * tint)
+          const ib = Math.round(baseB * (1 - tint) + accent.b * tint)
           const dotR = CONFIG.dotRadius + combinedInfluence * 0.8
 
           ctx.beginPath()
@@ -222,7 +225,7 @@ export default function RippleBackground({ enabled }) {
       cancelAnimationFrame(rafRef.current)
       window.removeEventListener('resize', resize)
     }
-  }, [requestFrame])
+  }, [theme, requestFrame])
 
   // ── Event listeners — only attached when enabled ───────────────────────────
   useEffect(() => {
