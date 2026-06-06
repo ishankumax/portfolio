@@ -193,15 +193,15 @@ export default function RippleBackground({ enabled }) {
       }
     }
 
-    const tick = (timestamp) => {
+    const tick = () => {
       if (!canvasRef.current) {
         isAnimatingRef.current = false
         return
       }
 
-      draw(timestamp)
-
       const now = performance.now()
+      draw(now)
+
       const hasRipples = ripplesRef.current.length > 0
       const mouseActive = enabledRef.current && (mouseRef.current.x !== -1000 || mouseRef.current.y !== -1000)
       const recentlyMoved = now - lastActiveTimeRef.current < 250
@@ -210,7 +210,7 @@ export default function RippleBackground({ enabled }) {
         rafRef.current = requestAnimationFrame(tick)
       } else {
         // Draw one final static frame to make sure it settles perfectly
-        draw(timestamp)
+        draw(now)
         isAnimatingRef.current = false
       }
     }
