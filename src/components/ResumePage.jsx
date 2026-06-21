@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import resumeData from '../data/resumeData.json'
-import RoleSidebar from './resume/RoleSidebar'
+import ConfigurationPanel from './resume/ConfigurationPanel'
 import ResumePreview from './resume/ResumePreview'
 import PDFExporter from './resume/PDFExporter'
 
@@ -25,7 +25,7 @@ export default function ResumePage() {
           />
         </div>
 
-        <RoleSidebar 
+        <ConfigurationPanel 
           roles={roles} 
           selectedRole={selectedRole} 
           onSelectRole={setSelectedRole} 
