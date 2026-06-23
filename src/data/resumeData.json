@@ -1,0 +1,135 @@
+{
+  "header": {
+    "name": "ISHAN KUMAR",
+    "location": "Chandigarh, India",
+    "phone": "950-182-5673",
+    "email": "ishankumax@gmail.com",
+    "linkedin": "linkedin.com/in/ishankumax",
+    "website": "ishankumax.me"
+  },
+  "summaries": {
+    "Business Analyst": "Business Analyst driving measurable outcomes across organisations and stakeholders. Proven ability to translate ambiguous business problems into structured requirements, execute gap analyses, and deliver Agile-aligned products.",
+    "Full Stack Engineer": "Full Stack Engineer with a product mindset, specialising in React.js, Node.js, and MongoDB. Proven ability to build and scale cross-functional systems that improve efficiency and drive measurable business growth.",
+    "Data Engineer": "Data-driven professional with strong skills in Python, SQL, and data reporting tools. Experienced in building unified engagement dashboards, consolidating scattered data into single sources of truth, and running gap analyses.",
+    "Product Manager": "Product Manager and thinker with full-stack development skills. Proven ability to translate business problems into requirements, align cross-functional teams in Agile sprints, and execute strategic roadmaps from brief to UAT.",
+    "Technical Staff Member": "Technical Staff Member with strong cross-functional coordination skills. Experienced in building tools and tracking mechanisms that eliminate process ambiguity and reduce procurement/decision times.",
+    "Frontend Engineer": "Frontend Engineer focused on building intuitive, real-time web applications. Experienced in React.js and creating full-stack web apps with complex search, filtering, and interactive dashboards.",
+    "Backend Engineer": "Backend Engineer proficient in Node.js, REST APIs, and MongoDB. Experienced in designing robust RESTful endpoints for CRUD operations and structuring scalable schemas to support multi-field filtering and reporting.",
+    "TPM": "Technical Program Manager with a track record of orchestrating cross-functional teams in Agile sprints. Adept at enforcing UAT sign-offs, executing gap analyses, and reducing post-release rework and process ambiguity."
+  },
+  "education": [
+    {
+      "institution": "Chitkara University",
+      "degree": "B.E. Computer Science Engineering",
+      "location": "Punjab, India",
+      "duration": "2023 – Present",
+      "coursework": "SDLC, System Design, Database Management Systems, Software Engineering"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Chief Marketing Officer",
+      "company": "InTheBox Pvt. Ltd.",
+      "type": "Full-time",
+      "location": "Chandigarh, India",
+      "duration": "Nov 2024 – March 2026",
+      "bullets": [
+        {
+          "text": "Executed gap analysis on a 40%+ decline in B2B orders; reframed business model from B2B to B2C by synthesising requirements from sales, ops, and marketing stakeholders — launched Rakhi campaign that sold 200 boxes and delivered 300% growth in social impressions within 4 weeks.",
+          "tags": ["Business Analyst", "Product Manager", "TPM", "Technical Staff Member"]
+        },
+        {
+          "text": "Engineered a centralised Excel tracker covering 100+ manufacturers — consolidating supplier profiles, order timelines, and financial data into a single source of truth, cutting procurement decision time by ~30% and eliminating duplicate supplier outreach.",
+          "tags": ["Data Engineer", "Business Analyst", "Product Manager"]
+        },
+        {
+          "text": "Orchestrated a 10-person cross-functional team across ops, logistics, and marketing in Agile sprints; enforced UAT-equivalent sign-off against defined acceptance criteria before each campaign launch, cutting post-release rework by ~40%.",
+          "tags": ["Product Manager", "TPM", "Business Analyst", "Full Stack Engineer"]
+        }
+      ]
+    },
+    {
+      "role": "Region Head",
+      "company": "DevLearn",
+      "type": "Part-time",
+      "location": "Chandigarh, India",
+      "duration": "May 2024 – Sep 2025",
+      "bullets": [
+        {
+          "text": "Scaled regional tech community 5x — from 0 to 550+ members — across 7+ offline events; built a unified engagement dashboard in Google Sheets and Notion tracking attendance, task completion, and event ROI, cutting reporting time by ~50%.",
+          "tags": ["Data Engineer", "Product Manager", "Business Analyst", "Technical Staff Member"]
+        },
+        {
+          "text": "Diagnosed a 30%+ drop in active participation through qualitative root cause analysis; redesigned member experience with weekly standups and a points-based incentive system — reversing churn and lifting retention by ~35% within 6 weeks.",
+          "tags": ["Product Manager", "Business Analyst", "TPM"]
+        },
+        {
+          "text": "Codified onboarding from scratch into a structured, reusable event playbook adopted organisation-wide — reducing new coordinator ramp-up time by ~25% and eliminating repeated process ambiguity across regions.",
+          "tags": ["Technical Staff Member", "TPM", "Business Analyst"]
+        }
+      ]
+    },
+    {
+      "role": "Community & Ecosystem Manager",
+      "company": "HackQuest",
+      "type": "Part-time",
+      "location": "",
+      "duration": "Jan 2025 – Mar 2025",
+      "bullets": [
+        {
+          "text": "Activated 12 communities, onboarding 800+ students within 3 months; crafted sponsor pitch decks and coordination briefs for 3+ tech events, cutting partner onboarding cycles by ~2x through structured documentation.",
+          "tags": ["Business Analyst", "Product Manager", "Technical Staff Member"]
+        },
+        {
+          "text": "Ran a structured gap analysis on a fully-online engagement model; surfaced trust deficit as the primary drop-off driver and redesigned touchpoint strategy — increasing active participation rates by ~40% within 4 weeks.",
+          "tags": ["Product Manager", "Business Analyst", "Data Engineer"]
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Supplier Intelligence Dashboard",
+      "tech": "React.js, Node.js, MongoDB, REST APIs",
+      "tags": ["Full Stack Engineer", "Frontend Engineer", "Backend Engineer", "Technical Staff Member", "Data Engineer"],
+      "bullets": [
+        {
+          "text": "Replaced a manual Excel-based supplier tracker at InTheBox with a full-stack web app — featuring real-time search and filtering, order status tracking, and one-click exportable reports across 100+ manufacturer profiles.",
+          "tags": ["Full Stack Engineer", "Frontend Engineer", "Product Manager", "Business Analyst"]
+        },
+        {
+          "text": "Designed RESTful API endpoints for CRUD operations on supplier and order data; structured MongoDB schema to support multi-field filtering and financial reporting — enabling data-driven procurement decisions without manual effort.",
+          "tags": ["Full Stack Engineer", "Backend Engineer", "Data Engineer", "Technical Staff Member"]
+        }
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "group": "Business & Analysis",
+      "items": ["Agile/Scrum", "Requirement Elicitation", "Gap Analysis", "UAT Support", "Root Cause Analysis", "Stakeholder Management", "Business Process Modelling", "SDLC"],
+      "tags": ["Business Analyst", "Product Manager", "TPM"]
+    },
+    {
+      "group": "Data & Reporting",
+      "items": ["Excel (Dashboards, Tracking)", "Google Sheets", "Google Data Studio", "SQL", "Python", "Notion"],
+      "tags": ["Data Engineer", "Business Analyst"]
+    },
+    {
+      "group": "Documentation & Collaboration",
+      "items": ["BRD-style Pitch Decks", "Process Documentation", "Confluence-style Wikis", "Cross-functional Coordination"],
+      "tags": ["Technical Staff Member", "TPM", "Product Manager", "Business Analyst"]
+    },
+    {
+      "group": "Technical",
+      "items": ["SQL", "Python", "REST APIs", "React.js", "Node.js", "MongoDB", "Firebase", "JavaScript", "Git"],
+      "tags": ["Full Stack Engineer", "Frontend Engineer", "Backend Engineer", "Data Engineer", "Technical Staff Member"]
+    }
+  ],
+  "certifications": [
+    "CS50 – Harvard University",
+    "GitHub Foundations",
+    "Conceptualised and delivered India’s first Ivy League MUN — owned full stakeholder pipeline from speaker outreach to delegate briefing; executed a 100+ participant event end-to-end as sole organiser.",
+    "Coached 5+ national-level teams at CodeX 2.0 PIET on requirement breakdown, MVP scoping, and structured project planning — measurably improving submission quality and on-time delivery rates across mentored teams."
+  ]
+}
