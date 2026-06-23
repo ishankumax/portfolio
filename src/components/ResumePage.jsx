@@ -45,9 +45,9 @@ export default function ResumePage() {
   }, [selectedRole, mode]) // Syncs when in role mode
 
   return (
-    <div className="min-h-screen pt-24 md:pt-28 pb-16 px-4 md:px-8 max-w-[1500px] mx-auto flex flex-col md:flex-row gap-8">
-      {/* Configuration Panel - 32% width on desktop */}
-      <div className="w-full md:w-[32%] flex-shrink-0 flex flex-col gap-6 h-[calc(100vh-140px)] sticky top-28">
+    <div className="min-h-screen pt-24 md:pt-28 pb-16 px-4 md:px-8 max-w-[1500px] mx-auto flex flex-col md:flex-row gap-8 items-start">
+      {/* Configuration Panel - 32% width on desktop, scrolls */}
+      <div className="w-full md:w-[32%] flex-shrink-0 flex flex-col gap-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight mb-2" style={{ color: 'var(--text-primary)' }}>
             Resume Builder
@@ -73,10 +73,10 @@ export default function ResumePage() {
         />
       </div>
 
-      {/* Main Resume Content - 68% width on desktop, scrollable independently */}
-      <div className="w-full md:w-[68%] relative">
-        <div className="overflow-x-auto pb-8 rounded-xl no-scrollbar flex justify-center w-full">
-          <div className="min-w-[800px] flex justify-center bg-white shadow-2xl rounded-sm overflow-hidden border border-gray-200 mb-20">
+      {/* Main Resume Content - 68% width on desktop, sticky */}
+      <div className="w-full md:w-[68%] sticky top-28 h-[calc(100vh-140px)] flex justify-center">
+        <div className="overflow-auto pb-8 rounded-xl no-scrollbar flex justify-center w-full max-w-full">
+          <div className="min-w-[800px] flex justify-center bg-white shadow-2xl rounded-sm overflow-hidden border border-gray-200" style={{ transform: 'scale(0.9)', transformOrigin: 'top center' }}>
             <ResumePreview 
               resumeData={resumeData} 
               selectedRole={selectedRole}
