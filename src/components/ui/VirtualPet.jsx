@@ -1,118 +1,69 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-const PET_SIZE = 40
 const HOUSE_SIZE = 60
 
 export default function VirtualPet() {
-  const [pos, setPos] = useState({ x: 50, y: window.innerHeight - 100 })
-  const [target, setTarget] = useState(null)
-  const [state, setState] = useState('sit') // sit, stand, walk, drag, sleep
-  const [facingRight, setFacingRight] = useState(true)
   const [inHouse, setInHouse] = useState(false)
-  
   const houseRef = useRef(null)
-  const isDragging = useRef(false)
-  const posRef = useRef(pos)
+  const petRef = useRef(null)
   
-  // Sync state pos to ref for event listeners
+  // Refs for animation loop state to avoid React re-renders
+  const stateRef = useRef({
+    x: 32,
+    y: 32,
+    mouseX: 0,
+    mouseY: 0,
+    frameCount: 0,
+    idleTime: 0,
+    idleAnimation: null,
+    idleAnimationFrame: 0,
+    isDragging: false,
+    inHouse: false
+  })
+
+  // Sync inHouse state to ref
   useEffect(() => {
-    posRef.current = pos
-  }, [pos])
-
-  // Initial position to be near the bottom left
-  useEffect(() => {
-    setPos({ x: 50, y: window.innerHeight - 100 })
-  }, [])
-
-  // Handle global click to set target
-  useEffect(() => {
-    const handleGlobalClick = (e) => {
-      // Ignore if clicking on pet, house, or if dragging/in-house
-      if (isDragging.current || inHouse) return
-      if (e.target.closest('.virtual-pet-element')) return
-
-      // Add a small offset so the pet goes near the cursor, not exactly on it
-      const targetX = e.clientX - PET_SIZE / 2
-      const targetY = e.clientY - PET_SIZE / 2
-
-      setTarget({ x: targetX, y: targetY })
-      setState('walk')
-      if (targetX > posRef.current.x) setFacingRight(true)
-      else if (targetX < posRef.current.x) setFacingRight(false)
-    }
-
-    window.addEventListener('click', handleGlobalClick)
-    return () => window.removeEventListener('click', handleGlobalClick)
+    stateRef.current.inHouse = inHouse
   }, [inHouse])
 
-  // Movement loop
-  useEffect(() => {
-    if (state !== 'walk' || inHouse || !target) return
-
-    let raf
-    const move = () => {
-      setPos(prev => {
-        const dx = target.x - prev.x
-        const dy = target.y - prev.y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        
-        if (dist < 5) {
-          setState('stand')
-          return target
-        }
-
-        const speed = 4 // pixels per frame
-        return { 
-          x: prev.x + (dx / dist) * speed, 
-          y: prev.y + (dy / dist) * speed 
-        }
-      })
-      raf = requestAnimationFrame(move)
-    }
-    raf = requestAnimationFrame(move)
-    return () => cancelAnimationFrame(raf)
-  }, [state, target, inHouse])
-
-  // Idle timer to sit
-  useEffect(() => {
-    if (state === 'stand') {
-      const timer = setTimeout(() => {
-        setState('sit')
-      }, 4000)
-      return () => clearTimeout(timer)
-    }
-  }, [state])
-
-  // Dragging logic
+  // Mouse tracking for follow and dragging
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (!isDragging.current) return
-      setPos({ x: e.clientX - PET_SIZE / 2, y: e.clientY - PET_SIZE / 2 })
+      const s = stateRef.current
+      if (s.isDragging) {
+        s.x = e.clientX
+        s.y = e.clientY
+        if (petRef.current) {
+          petRef.current.style.left = `${s.x - 16}px`
+          petRef.current.style.top = `${s.y - 16}px`
+          petRef.current.style.backgroundPosition = `-96px -96px` // A generic 'grabbed' or idle frame
+        }
+      } else {
+        s.mouseX = e.clientX
+        s.mouseY = e.clientY
+      }
     }
 
     const handleMouseUp = (e) => {
-      if (!isDragging.current) return
-      isDragging.current = false
+      const s = stateRef.current
+      if (!s.isDragging) return
+      s.isDragging = false
       
-      // Check if dropped in house
+      // Check drop in house
       if (houseRef.current) {
         const rect = houseRef.current.getBoundingClientRect()
-        // Adding a bit of padding to make it easier to drop
-        const dropX = e.clientX
-        const dropY = e.clientY
         if (
-          dropX >= rect.left - 20 &&
-          dropX <= rect.right + 20 &&
-          dropY >= rect.top - 20 &&
-          dropY <= rect.bottom + 20
+          e.clientX >= rect.left - 20 &&
+          e.clientX <= rect.right + 20 &&
+          e.clientY >= rect.top - 20 &&
+          e.clientY <= rect.bottom + 20
         ) {
           setInHouse(true)
-          setState('sleep')
           return
         }
       }
-      
-      setState('stand')
+      // If dropped outside, wake up and follow cursor again
+      s.idleTime = 0
     }
 
     window.addEventListener('mousemove', handleMouseMove)
@@ -123,64 +74,149 @@ export default function VirtualPet() {
     }
   }, [])
 
+  // Neko Animation Loop
+  useEffect(() => {
+    if (!petRef.current) return
+    const el = petRef.current
+    const s = stateRef.current
+    const speed = 10
+
+    const spriteSets = {
+      idle: [[-3, -3]],
+      alert: [[-7, -3]],
+      scratchSelf: [[-5, 0], [-6, 0], [-7, 0]],
+      scratchWallN: [[0, 0], [0, -1]],
+      scratchWallS: [[-7, -1], [-6, -2]],
+      scratchWallE: [[-2, -2], [-2, -3]],
+      scratchWallW: [[-4, 0], [-4, -1]],
+      tired: [[-3, -2]],
+      sleeping: [[-2, 0], [-2, -1]],
+      N: [[-1, -2], [-1, -3]],
+      NE: [[0, -2], [0, -3]],
+      E: [[-3, 0], [-3, -1]],
+      SE: [[-5, -1], [-5, -2]],
+      S: [[-6, -3], [-7, -2]],
+      SW: [[-5, -3], [-6, -1]],
+      W: [[-4, -2], [-4, -3]],
+      NW: [[-1, 0], [-1, -1]],
+    }
+
+    const setSprite = (name, frame) => {
+      const sprite = spriteSets[name][frame % spriteSets[name].length]
+      if (el) {
+        el.style.backgroundPosition = `${sprite[0] * 32}px ${sprite[1] * 32}px`
+      }
+    }
+
+    const resetIdleAnimation = () => {
+      s.idleAnimation = null
+      s.idleAnimationFrame = 0
+    }
+
+    const idle = () => {
+      s.idleTime += 1
+      if (s.idleTime > 10 && Math.floor(Math.random() * 200) === 0 && s.idleAnimation === null) {
+        let availableIdle = ["sleeping", "scratchSelf"]
+        if (s.x < 32) availableIdle.push("scratchWallW")
+        if (s.y < 32) availableIdle.push("scratchWallN")
+        if (s.x > window.innerWidth - 32) availableIdle.push("scratchWallE")
+        if (s.y > window.innerHeight - 32) availableIdle.push("scratchWallS")
+        s.idleAnimation = availableIdle[Math.floor(Math.random() * availableIdle.length)]
+      }
+
+      switch (s.idleAnimation) {
+        case "sleeping":
+          if (s.idleAnimationFrame < 8) {
+            setSprite("tired", 0)
+            break
+          }
+          setSprite("sleeping", Math.floor(s.idleAnimationFrame / 4))
+          if (s.idleAnimationFrame > 192) resetIdleAnimation()
+          break
+        case "scratchWallN":
+        case "scratchWallS":
+        case "scratchWallE":
+        case "scratchWallW":
+        case "scratchSelf":
+          setSprite(s.idleAnimation, s.idleAnimationFrame)
+          if (s.idleAnimationFrame > 9) resetIdleAnimation()
+          break
+        default:
+          setSprite("idle", 0)
+          return
+      }
+      s.idleAnimationFrame += 1
+    }
+
+    const frame = () => {
+      if (s.inHouse || s.isDragging) return
+      
+      s.frameCount += 1
+      const diffX = s.x - s.mouseX
+      const diffY = s.y - s.mouseY
+      const distance = Math.sqrt(diffX ** 2 + diffY ** 2)
+
+      if (distance < speed || distance < 48) {
+        idle()
+        return
+      }
+
+      s.idleAnimation = null
+      s.idleAnimationFrame = 0
+
+      if (s.idleTime > 1) {
+        setSprite("alert", 0)
+        s.idleTime = Math.min(s.idleTime, 7)
+        s.idleTime -= 1
+        return
+      }
+
+      let direction = ""
+      direction = diffY / distance > 0.5 ? "N" : ""
+      direction += diffY / distance < -0.5 ? "S" : ""
+      direction += diffX / distance > 0.5 ? "W" : ""
+      direction += diffX / distance < -0.5 ? "E" : ""
+      setSprite(direction, s.frameCount)
+
+      s.x -= (diffX / distance) * speed
+      s.y -= (diffY / distance) * speed
+
+      s.x = Math.min(Math.max(16, s.x), window.innerWidth - 16)
+      s.y = Math.min(Math.max(16, s.y), window.innerHeight - 16)
+
+      el.style.left = `${s.x - 16}px`
+      el.style.top = `${s.y - 16}px`
+    }
+
+    let lastFrameTimestamp
+    let rafId
+    const onAnimationFrame = (timestamp) => {
+      if (!lastFrameTimestamp) lastFrameTimestamp = timestamp
+      if (timestamp - lastFrameTimestamp > 100) {
+        lastFrameTimestamp = timestamp
+        frame()
+      }
+      rafId = requestAnimationFrame(onAnimationFrame)
+    }
+    rafId = requestAnimationFrame(onAnimationFrame)
+    return () => cancelAnimationFrame(rafId)
+  }, [])
+
   const handleMouseDown = (e) => {
     e.preventDefault()
     if (inHouse) return
-    isDragging.current = true
-    setState('drag')
+    stateRef.current.isDragging = true
   }
 
   const coaxOut = () => {
     if (!inHouse) return
     setInHouse(false)
-    setState('stand')
-    // Place outside the house
     if (houseRef.current) {
       const rect = houseRef.current.getBoundingClientRect()
-      setPos({ x: rect.left - PET_SIZE - 20, y: rect.bottom - PET_SIZE })
-      setTarget(null)
+      stateRef.current.x = rect.left - 20
+      stateRef.current.y = rect.bottom - 20
+      stateRef.current.idleTime = 0
     }
-  }
-
-  // Pet Sprite (simple SVG representation of a dog)
-  const renderPet = () => {
-    // A simple minimalist pixel/vector dog
-    return (
-      <div 
-        style={{
-          width: '100%',
-          height: '100%',
-          position: 'relative',
-          transform: facingRight ? 'scaleX(-1)' : 'scaleX(1)',
-          transition: 'transform 0.2s',
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'center'
-        }}
-      >
-        <style>
-          {`
-            @keyframes walkBounce {
-              0%, 100% { transform: translateY(0); }
-              50% { transform: translateY(-6px); }
-            }
-          `}
-        </style>
-        <span 
-          style={{ 
-            fontSize: '32px', 
-            lineHeight: 1, 
-            filter: state === 'drag' ? 'drop-shadow(0 10px 10px rgba(0,0,0,0.5))' : 'none',
-            transform: state === 'drag' ? 'translateY(-10px)' : 'none',
-            transition: state === 'drag' ? 'all 0.2s ease' : 'none',
-            cursor: state === 'drag' ? 'grabbing' : 'grab',
-            animation: state === 'walk' ? 'walkBounce 0.25s infinite' : 'none'
-          }}
-        >
-          {state === 'sit' ? '🐕‍🦺' : state === 'sleep' ? '💤' : '🐕'}
-        </span>
-      </div>
-    )
   }
 
   return (
@@ -215,7 +251,6 @@ export default function VirtualPet() {
           justifyContent: 'center',
           overflow: 'hidden'
         }}>
-          {/* Door */}
           <div style={{
             width: '40%',
             height: '60%',
@@ -224,14 +259,12 @@ export default function VirtualPet() {
             borderTopRightRadius: '20px',
           }} />
 
-          {/* Pet sleeping inside */}
           {inHouse && (
             <div style={{ position: 'absolute', bottom: '2px', fontSize: '20px' }}>
               💤
             </div>
           )}
         </div>
-        {/* Roof */}
         <div style={{
           position: 'absolute',
           top: '0',
@@ -243,21 +276,21 @@ export default function VirtualPet() {
         }} />
       </div>
 
-      {/* The Pet */}
+      {/* The Neko Pet */}
       {!inHouse && (
         <div 
+          ref={petRef}
           className="virtual-pet-element fixed z-50 select-none"
           style={{
-            left: pos.x,
-            top: pos.y,
-            width: PET_SIZE,
-            height: PET_SIZE,
+            width: '32px',
+            height: '32px',
+            imageRendering: 'pixelated',
+            backgroundImage: "url('https://raw.githubusercontent.com/adryd325/oneko.js/main/oneko.gif')",
+            cursor: 'grab',
             touchAction: 'none'
           }}
           onMouseDown={handleMouseDown}
-        >
-          {renderPet()}
-        </div>
+        />
       )}
     </>
   )
