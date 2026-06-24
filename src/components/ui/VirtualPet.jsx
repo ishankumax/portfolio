@@ -158,14 +158,23 @@ export default function VirtualPet() {
           justifyContent: 'center'
         }}
       >
+        <style>
+          {`
+            @keyframes walkBounce {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-6px); }
+            }
+          `}
+        </style>
         <span 
           style={{ 
             fontSize: '32px', 
             lineHeight: 1, 
             filter: state === 'drag' ? 'drop-shadow(0 10px 10px rgba(0,0,0,0.5))' : 'none',
             transform: state === 'drag' ? 'translateY(-10px)' : 'none',
-            transition: 'all 0.2s ease',
-            cursor: state === 'drag' ? 'grabbing' : 'grab'
+            transition: state === 'drag' ? 'all 0.2s ease' : 'none',
+            cursor: state === 'drag' ? 'grabbing' : 'grab',
+            animation: state === 'walk' ? 'walkBounce 0.25s infinite' : 'none'
           }}
         >
           {state === 'sit' ? '🐕‍🦺' : state === 'sleep' ? '💤' : '🐕'}
@@ -248,11 +257,6 @@ export default function VirtualPet() {
           onMouseDown={handleMouseDown}
         >
           {renderPet()}
-          {state === 'walk' && (
-            <div className="absolute -bottom-2 w-full text-center text-[8px] text-[var(--accent)] font-mono opacity-50">
-              *pitter patter*
-            </div>
-          )}
         </div>
       )}
     </>
