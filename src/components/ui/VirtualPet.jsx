@@ -1,55 +1,121 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-const HOUSE_SIZE = 60
+const PET_SIZE = 50
+const HOUSE_SIZE = 80
+
+// CSS Animations
+const styles = `
+  @keyframes sheroWalk {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(-3deg); }
+    75% { transform: translateY(-4px) rotate(3deg); }
+  }
+  @keyframes sheroSleep {
+    0%, 100% { transform: scaleY(1) translateY(0); }
+    50% { transform: scaleY(0.9) translateY(4px); }
+  }
+  @keyframes zzz {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+    50% { opacity: 1; transform: translate(10px, -15px) scale(1); }
+    100% { opacity: 0; transform: translate(20px, -30px) scale(1.5); }
+  }
+`
 
 export default function VirtualPet() {
+  const [pos, setPos] = useState({ x: 100, y: window.innerHeight - 150 })
+  const [target, setTarget] = useState(null)
+  const [state, setState] = useState('sit') // sit, stand, walk, drag, sleep
+  const [facingRight, setFacingRight] = useState(true)
   const [inHouse, setInHouse] = useState(false)
-  const houseRef = useRef(null)
-  const petRef = useRef(null)
   
-  // Refs for animation loop state to avoid React re-renders
-  const stateRef = useRef({
-    x: 32,
-    y: 32,
-    mouseX: 0,
-    mouseY: 0,
-    frameCount: 0,
-    idleTime: 0,
-    idleAnimation: null,
-    idleAnimationFrame: 0,
-    isDragging: false,
-    inHouse: false
-  })
-
-  // Sync inHouse state to ref
+  const houseRef = useRef(null)
+  const isDragging = useRef(false)
+  const posRef = useRef(pos)
+  
   useEffect(() => {
-    stateRef.current.inHouse = inHouse
+    posRef.current = pos
+  }, [pos])
+
+  useEffect(() => {
+    setPos({ x: 100, y: window.innerHeight - 150 })
+  }, [])
+
+  // Click to set target
+  useEffect(() => {
+    const handleGlobalClick = (e) => {
+      if (isDragging.current || inHouse) return
+      if (e.target.closest('.virtual-pet-element')) return
+
+      const targetX = e.clientX - PET_SIZE / 2
+      const targetY = e.clientY - PET_SIZE / 2
+
+      setTarget({ x: targetX, y: targetY })
+      setState('walk')
+      if (targetX > posRef.current.x) setFacingRight(true)
+      else if (targetX < posRef.current.x) setFacingRight(false)
+    }
+
+    window.addEventListener('click', handleGlobalClick)
+    return () => window.removeEventListener('click', handleGlobalClick)
   }, [inHouse])
 
-  // Mouse tracking for follow and dragging
+  // Movement loop
+  useEffect(() => {
+    if (state !== 'walk' || inHouse || !target) return
+
+    let raf
+    const move = () => {
+      setPos(prev => {
+        const dx = target.x - prev.x
+        const dy = target.y - prev.y
+        const dist = Math.sqrt(dx * dx + dy * dy)
+        
+        if (dist < 5) {
+          setState('stand')
+          return target
+        }
+
+        const speed = 4
+        return { 
+          x: prev.x + (dx / dist) * speed, 
+          y: prev.y + (dy / dist) * speed 
+        }
+      })
+      raf = requestAnimationFrame(move)
+    }
+    raf = requestAnimationFrame(move)
+    return () => cancelAnimationFrame(raf)
+  }, [state, target, inHouse])
+
+  // Idle timer to sit -> sleep
+  useEffect(() => {
+    if (state === 'stand' || state === 'sit') {
+      const sitTimer = setTimeout(() => {
+        if (state === 'stand') setState('sit')
+      }, 3000)
+      
+      const sleepTimer = setTimeout(() => {
+        if (state === 'sit') setState('sleep')
+      }, 8000)
+
+      return () => {
+        clearTimeout(sitTimer)
+        clearTimeout(sleepTimer)
+      }
+    }
+  }, [state])
+
+  // Dragging logic
   useEffect(() => {
     const handleMouseMove = (e) => {
-      const s = stateRef.current
-      if (s.isDragging) {
-        s.x = e.clientX
-        s.y = e.clientY
-        if (petRef.current) {
-          petRef.current.style.left = `${s.x - 16}px`
-          petRef.current.style.top = `${s.y - 16}px`
-          petRef.current.style.backgroundPosition = `-96px -96px` // A generic 'grabbed' or idle frame
-        }
-      } else {
-        s.mouseX = e.clientX
-        s.mouseY = e.clientY
-      }
+      if (!isDragging.current) return
+      setPos({ x: e.clientX - PET_SIZE / 2, y: e.clientY - PET_SIZE / 2 })
     }
 
     const handleMouseUp = (e) => {
-      const s = stateRef.current
-      if (!s.isDragging) return
-      s.isDragging = false
+      if (!isDragging.current) return
+      isDragging.current = false
       
-      // Check drop in house
       if (houseRef.current) {
         const rect = houseRef.current.getBoundingClientRect()
         if (
@@ -59,11 +125,11 @@ export default function VirtualPet() {
           e.clientY <= rect.bottom + 20
         ) {
           setInHouse(true)
+          setState('sleep')
           return
         }
       }
-      // If dropped outside, wake up and follow cursor again
-      s.idleTime = 0
+      setState('stand')
     }
 
     window.addEventListener('mousemove', handleMouseMove)
@@ -74,154 +140,107 @@ export default function VirtualPet() {
     }
   }, [])
 
-  // Neko Animation Loop
-  useEffect(() => {
-    if (!petRef.current) return
-    const el = petRef.current
-    const s = stateRef.current
-    const speed = 10
-
-    const spriteSets = {
-      idle: [[-3, -3]],
-      alert: [[-7, -3]],
-      scratchSelf: [[-5, 0], [-6, 0], [-7, 0]],
-      scratchWallN: [[0, 0], [0, -1]],
-      scratchWallS: [[-7, -1], [-6, -2]],
-      scratchWallE: [[-2, -2], [-2, -3]],
-      scratchWallW: [[-4, 0], [-4, -1]],
-      tired: [[-3, -2]],
-      sleeping: [[-2, 0], [-2, -1]],
-      N: [[-1, -2], [-1, -3]],
-      NE: [[0, -2], [0, -3]],
-      E: [[-3, 0], [-3, -1]],
-      SE: [[-5, -1], [-5, -2]],
-      S: [[-6, -3], [-7, -2]],
-      SW: [[-5, -3], [-6, -1]],
-      W: [[-4, -2], [-4, -3]],
-      NW: [[-1, 0], [-1, -1]],
-    }
-
-    const setSprite = (name, frame) => {
-      const sprite = spriteSets[name][frame % spriteSets[name].length]
-      if (el) {
-        el.style.backgroundPosition = `${sprite[0] * 32}px ${sprite[1] * 32}px`
-      }
-    }
-
-    const resetIdleAnimation = () => {
-      s.idleAnimation = null
-      s.idleAnimationFrame = 0
-    }
-
-    const idle = () => {
-      s.idleTime += 1
-      if (s.idleTime > 10 && Math.floor(Math.random() * 200) === 0 && s.idleAnimation === null) {
-        let availableIdle = ["sleeping", "scratchSelf"]
-        if (s.x < 32) availableIdle.push("scratchWallW")
-        if (s.y < 32) availableIdle.push("scratchWallN")
-        if (s.x > window.innerWidth - 32) availableIdle.push("scratchWallE")
-        if (s.y > window.innerHeight - 32) availableIdle.push("scratchWallS")
-        s.idleAnimation = availableIdle[Math.floor(Math.random() * availableIdle.length)]
-      }
-
-      switch (s.idleAnimation) {
-        case "sleeping":
-          if (s.idleAnimationFrame < 8) {
-            setSprite("tired", 0)
-            break
-          }
-          setSprite("sleeping", Math.floor(s.idleAnimationFrame / 4))
-          if (s.idleAnimationFrame > 192) resetIdleAnimation()
-          break
-        case "scratchWallN":
-        case "scratchWallS":
-        case "scratchWallE":
-        case "scratchWallW":
-        case "scratchSelf":
-          setSprite(s.idleAnimation, s.idleAnimationFrame)
-          if (s.idleAnimationFrame > 9) resetIdleAnimation()
-          break
-        default:
-          setSprite("idle", 0)
-          return
-      }
-      s.idleAnimationFrame += 1
-    }
-
-    const frame = () => {
-      if (s.inHouse || s.isDragging) return
-      
-      s.frameCount += 1
-      const diffX = s.x - s.mouseX
-      const diffY = s.y - s.mouseY
-      const distance = Math.sqrt(diffX ** 2 + diffY ** 2)
-
-      if (distance < speed || distance < 48) {
-        idle()
-        return
-      }
-
-      s.idleAnimation = null
-      s.idleAnimationFrame = 0
-
-      if (s.idleTime > 1) {
-        setSprite("alert", 0)
-        s.idleTime = Math.min(s.idleTime, 7)
-        s.idleTime -= 1
-        return
-      }
-
-      let direction = ""
-      direction = diffY / distance > 0.5 ? "N" : ""
-      direction += diffY / distance < -0.5 ? "S" : ""
-      direction += diffX / distance > 0.5 ? "W" : ""
-      direction += diffX / distance < -0.5 ? "E" : ""
-      setSprite(direction, s.frameCount)
-
-      s.x -= (diffX / distance) * speed
-      s.y -= (diffY / distance) * speed
-
-      s.x = Math.min(Math.max(16, s.x), window.innerWidth - 16)
-      s.y = Math.min(Math.max(16, s.y), window.innerHeight - 16)
-
-      el.style.left = `${s.x - 16}px`
-      el.style.top = `${s.y - 16}px`
-    }
-
-    let lastFrameTimestamp
-    let rafId
-    const onAnimationFrame = (timestamp) => {
-      if (!lastFrameTimestamp) lastFrameTimestamp = timestamp
-      if (timestamp - lastFrameTimestamp > 100) {
-        lastFrameTimestamp = timestamp
-        frame()
-      }
-      rafId = requestAnimationFrame(onAnimationFrame)
-    }
-    rafId = requestAnimationFrame(onAnimationFrame)
-    return () => cancelAnimationFrame(rafId)
-  }, [])
-
   const handleMouseDown = (e) => {
     e.preventDefault()
     if (inHouse) return
-    stateRef.current.isDragging = true
+    isDragging.current = true
+    setState('drag')
   }
 
   const coaxOut = () => {
     if (!inHouse) return
     setInHouse(false)
+    setState('stand')
     if (houseRef.current) {
       const rect = houseRef.current.getBoundingClientRect()
-      stateRef.current.x = rect.left - 20
-      stateRef.current.y = rect.bottom - 20
-      stateRef.current.idleTime = 0
+      setPos({ x: rect.left - PET_SIZE - 20, y: rect.bottom - PET_SIZE })
+      setTarget(null)
     }
+  }
+
+  // Shero SVG Rendering
+  const renderShero = () => {
+    const isSleeping = state === 'sleep'
+    const isWalking = state === 'walk'
+    const isDraggingLocal = state === 'drag'
+
+    return (
+      <div style={{
+        width: '100%', height: '100%',
+        position: 'relative',
+        transform: `scaleX(${facingRight ? -1 : 1})`,
+        transition: 'transform 0.3s ease',
+      }}>
+        {/* Sleeping Zzzs */}
+        {isSleeping && !inHouse && (
+          <div style={{ position: 'absolute', top: '-20px', right: '-10px', color: '#fff', fontSize: '14px', fontWeight: 'bold' }}>
+            <span style={{ animation: 'zzz 2s infinite linear', display: 'inline-block' }}>Z</span>
+            <span style={{ animation: 'zzz 2s infinite linear 0.6s', display: 'inline-block', position: 'absolute', left: '8px' }}>z</span>
+            <span style={{ animation: 'zzz 2s infinite linear 1.2s', display: 'inline-block', position: 'absolute', left: '16px' }}>z</span>
+          </div>
+        )}
+
+        <svg 
+          viewBox="0 0 100 100" 
+          style={{
+            width: '100%',
+            height: '100%',
+            filter: isDraggingLocal ? 'drop-shadow(0 15px 15px rgba(0,0,0,0.4))' : 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))',
+            animation: isWalking ? 'sheroWalk 0.4s infinite linear' : isSleeping ? 'sheroSleep 2s infinite ease-in-out' : 'none',
+            transform: isDraggingLocal ? 'translateY(-10px)' : 'none',
+            transition: 'transform 0.2s',
+            cursor: isDraggingLocal ? 'grabbing' : 'grab'
+          }}
+        >
+          {/* Fluffy Body (Cotton Candy shape) */}
+          <path 
+            d="M 30 50 C 30 35, 45 30, 50 30 C 65 30, 75 40, 75 50 C 85 50, 85 65, 75 75 C 75 85, 60 85, 50 85 C 35 85, 25 75, 30 65 C 20 60, 20 50, 30 50 Z" 
+            fill="#FFFFFF" 
+            stroke="#111" 
+            strokeWidth="3"
+            strokeLinejoin="round"
+          />
+
+          {/* Ears */}
+          <path d="M 35 45 C 25 40, 15 50, 25 60" fill="#FFFFFF" stroke="#111" strokeWidth="3" strokeLinecap="round" />
+          
+          {/* Eyes */}
+          {isSleeping ? (
+            <>
+              {/* Closed Eyes */}
+              <path d="M 58 45 Q 62 48 66 45" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
+              <path d="M 72 45 Q 76 48 80 45" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
+            </>
+          ) : (
+            <>
+              {/* Open Eyes */}
+              <circle cx="62" cy="45" r="3" fill="#111" />
+              <circle cx="76" cy="45" r="3" fill="#111" />
+            </>
+          )}
+
+          {/* Nose */}
+          <circle cx="70" cy="52" r="2.5" fill="#111" />
+
+          {/* Collar */}
+          <path d="M 55 60 Q 65 65 75 60" fill="none" stroke="#4B9CD3" strokeWidth="4" strokeLinecap="round" />
+
+          {/* Legs */}
+          {!isSleeping && (
+            <>
+              <line x1="45" y1="80" x2="45" y2="90" stroke="#111" strokeWidth="3" strokeLinecap="round" />
+              <line x1="60" y1="82" x2="60" y2="92" stroke="#111" strokeWidth="3" strokeLinecap="round" />
+            </>
+          )}
+        </svg>
+      </div>
+    )
   }
 
   return (
     <>
-      {/* The Dog House */}
+      <style>{styles}</style>
+      {/* Dog House */}
       <div 
         ref={houseRef}
         className="virtual-pet-element fixed z-50 flex flex-col items-center justify-end cursor-pointer"
@@ -229,68 +248,73 @@ export default function VirtualPet() {
           bottom: '24px', 
           right: '24px', 
           width: HOUSE_SIZE, 
-          height: HOUSE_SIZE,
+          height: HOUSE_SIZE + 20,
           transition: 'transform 0.2s ease'
         }}
         onClick={coaxOut}
         onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
         onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-        title={inHouse ? "Click to call out" : "Dog House"}
+        title={inHouse ? "Click to call Shero out" : "Shero's House"}
       >
         <div style={{
           width: '100%',
-          height: '80%',
-          backgroundColor: '#222',
-          border: '2px solid var(--border-card)',
+          height: '75%',
+          backgroundColor: '#e24a4a', // Shin-chan style red roof/house
+          border: '3px solid #111',
           borderBottom: 'none',
-          borderTopLeftRadius: '30px',
-          borderTopRightRadius: '30px',
           position: 'relative',
           display: 'flex',
           alignItems: 'flex-end',
           justifyContent: 'center',
           overflow: 'hidden'
         }}>
+          {/* Door */}
           <div style={{
-            width: '40%',
-            height: '60%',
-            backgroundColor: '#0a0a0a',
-            borderTopLeftRadius: '20px',
-            borderTopRightRadius: '20px',
+            width: '45%',
+            height: '65%',
+            backgroundColor: '#111',
+            borderTopLeftRadius: '30px',
+            borderTopRightRadius: '30px',
           }} />
 
+          {/* Shero sleeping inside */}
           {inHouse && (
-            <div style={{ position: 'absolute', bottom: '2px', fontSize: '20px' }}>
-              💤
+            <div style={{ position: 'absolute', bottom: '0', width: '50px', height: '50px', transform: 'translateY(10px)' }}>
+              <svg viewBox="0 0 100 100">
+                <path d="M 30 50 C 30 35, 45 30, 50 30 C 65 30, 75 40, 75 50 C 85 50, 85 65, 75 75 C 75 85, 60 85, 50 85 C 35 85, 25 75, 30 65 C 20 60, 20 50, 30 50 Z" fill="#FFFFFF" />
+                <path d="M 58 45 Q 62 48 66 45" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
+                <path d="M 72 45 Q 76 48 80 45" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
+              </svg>
             </div>
           )}
         </div>
+        {/* Roof */}
         <div style={{
           position: 'absolute',
           top: '0',
           width: '120%',
-          height: '20px',
-          backgroundColor: 'var(--accent)',
+          height: '35px',
+          backgroundColor: '#4B9CD3', // Blue roof
+          border: '3px solid #111',
           clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)',
-          opacity: 0.8
         }} />
       </div>
 
-      {/* The Neko Pet */}
+      {/* The Pet */}
       {!inHouse && (
         <div 
-          ref={petRef}
           className="virtual-pet-element fixed z-50 select-none"
           style={{
-            width: '32px',
-            height: '32px',
-            imageRendering: 'pixelated',
-            backgroundImage: "url('https://raw.githubusercontent.com/adryd325/oneko.js/main/oneko.gif')",
-            cursor: 'grab',
+            left: pos.x,
+            top: pos.y,
+            width: PET_SIZE,
+            height: PET_SIZE,
             touchAction: 'none'
           }}
           onMouseDown={handleMouseDown}
-        />
+        >
+          {renderShero()}
+        </div>
       )}
     </>
   )
