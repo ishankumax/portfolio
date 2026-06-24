@@ -1,19 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { useGLTF, Environment } from '@react-three/drei'
 
-const PET_SIZE = 50
+const PET_SIZE = 80 // Increased size for 3D model
 const HOUSE_SIZE = 80
 
-// CSS Animations
+// CSS Animations for the 2D elements (sleep Zzzs)
 const styles = `
-  @keyframes sheroWalk {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    25% { transform: translateY(-8px) rotate(-3deg); }
-    75% { transform: translateY(-4px) rotate(3deg); }
-  }
-  @keyframes sheroSleep {
-    0%, 100% { transform: scaleY(1) translateY(0); }
-    50% { transform: scaleY(0.9) translateY(4px); }
-  }
   @keyframes zzz {
     0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
     50% { opacity: 1; transform: translate(10px, -15px) scale(1); }
@@ -21,12 +14,61 @@ const styles = `
   }
 `
 
+// 3D Model Component
+function SheroModel({ state, facingRight }) {
+  // This will load the GLB file from your public folder.
+  // Note: You must place the downloaded shero.glb in the public/ folder!
+  const { scene } = useGLTF('/shero.glb')
+  const modelRef = useRef()
+
+  useFrame((rootState, delta) => {
+    if (!modelRef.current) return
+
+    const isWalking = state === 'walk'
+    const isSleeping = state === 'sleep'
+    const isDragging = state === 'drag'
+
+    // Walking animation (bobbing)
+    if (isWalking) {
+      modelRef.current.position.y = Math.abs(Math.sin(rootState.clock.elapsedTime * 15)) * 0.2
+      modelRef.current.rotation.z = Math.sin(rootState.clock.elapsedTime * 10) * 0.1
+    } 
+    // Sleeping animation (squish and breathe)
+    else if (isSleeping) {
+      const breathe = 0.9 + Math.sin(rootState.clock.elapsedTime * 2) * 0.05
+      modelRef.current.position.y = -0.2
+      modelRef.current.scale.set(1, breathe, 1)
+      modelRef.current.rotation.z = 0
+    } 
+    // Dragging animation
+    else if (isDragging) {
+      modelRef.current.position.y = 0.5
+      modelRef.current.rotation.z = Math.sin(rootState.clock.elapsedTime * 5) * 0.2
+      modelRef.current.scale.set(1, 1, 1)
+    }
+    // Idle/Sitting
+    else {
+      modelRef.current.position.y = 0
+      modelRef.current.rotation.z = 0
+      modelRef.current.scale.set(1, 1, 1)
+    }
+    
+    // Smoothly turn to face the correct direction
+    const targetRotY = facingRight ? Math.PI / 2 : -Math.PI / 2
+    modelRef.current.rotation.y += (targetRotY - modelRef.current.rotation.y) * 10 * delta
+  })
+
+  // We clone the scene so it can be re-mounted if needed, though useGLTF caches it.
+  return <primitive ref={modelRef} object={scene} scale={2} position={[0, -0.5, 0]} />
+}
+
 export default function VirtualPet() {
   const [pos, setPos] = useState({ x: 100, y: window.innerHeight - 150 })
   const [target, setTarget] = useState(null)
   const [state, setState] = useState('sit') // sit, stand, walk, drag, sleep
   const [facingRight, setFacingRight] = useState(true)
   const [inHouse, setInHouse] = useState(false)
+  const [modelError, setModelError] = useState(false)
   
   const houseRef = useRef(null)
   const isDragging = useRef(false)
@@ -158,88 +200,10 @@ export default function VirtualPet() {
     }
   }
 
-  // Shero SVG Rendering
-  const renderShero = () => {
-    const isSleeping = state === 'sleep'
-    const isWalking = state === 'walk'
-    const isDraggingLocal = state === 'drag'
-
-    return (
-      <div style={{
-        width: '100%', height: '100%',
-        position: 'relative',
-        transform: `scaleX(${facingRight ? -1 : 1})`,
-        transition: 'transform 0.3s ease',
-      }}>
-        {/* Sleeping Zzzs */}
-        {isSleeping && !inHouse && (
-          <div style={{ position: 'absolute', top: '-20px', right: '-10px', color: '#fff', fontSize: '14px', fontWeight: 'bold' }}>
-            <span style={{ animation: 'zzz 2s infinite linear', display: 'inline-block' }}>Z</span>
-            <span style={{ animation: 'zzz 2s infinite linear 0.6s', display: 'inline-block', position: 'absolute', left: '8px' }}>z</span>
-            <span style={{ animation: 'zzz 2s infinite linear 1.2s', display: 'inline-block', position: 'absolute', left: '16px' }}>z</span>
-          </div>
-        )}
-
-        <svg 
-          viewBox="0 0 100 100" 
-          style={{
-            width: '100%',
-            height: '100%',
-            filter: isDraggingLocal ? 'drop-shadow(0 15px 15px rgba(0,0,0,0.4))' : 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))',
-            animation: isWalking ? 'sheroWalk 0.4s infinite linear' : isSleeping ? 'sheroSleep 2s infinite ease-in-out' : 'none',
-            transform: isDraggingLocal ? 'translateY(-10px)' : 'none',
-            transition: 'transform 0.2s',
-            cursor: isDraggingLocal ? 'grabbing' : 'grab'
-          }}
-        >
-          {/* Fluffy Body (Cotton Candy shape) */}
-          <path 
-            d="M 30 50 C 30 35, 45 30, 50 30 C 65 30, 75 40, 75 50 C 85 50, 85 65, 75 75 C 75 85, 60 85, 50 85 C 35 85, 25 75, 30 65 C 20 60, 20 50, 30 50 Z" 
-            fill="#FFFFFF" 
-            stroke="#111" 
-            strokeWidth="3"
-            strokeLinejoin="round"
-          />
-
-          {/* Ears */}
-          <path d="M 35 45 C 25 40, 15 50, 25 60" fill="#FFFFFF" stroke="#111" strokeWidth="3" strokeLinecap="round" />
-          
-          {/* Eyes */}
-          {isSleeping ? (
-            <>
-              {/* Closed Eyes */}
-              <path d="M 58 45 Q 62 48 66 45" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
-              <path d="M 72 45 Q 76 48 80 45" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
-            </>
-          ) : (
-            <>
-              {/* Open Eyes */}
-              <circle cx="62" cy="45" r="3" fill="#111" />
-              <circle cx="76" cy="45" r="3" fill="#111" />
-            </>
-          )}
-
-          {/* Nose */}
-          <circle cx="70" cy="52" r="2.5" fill="#111" />
-
-          {/* Collar */}
-          <path d="M 55 60 Q 65 65 75 60" fill="none" stroke="#4B9CD3" strokeWidth="4" strokeLinecap="round" />
-
-          {/* Legs */}
-          {!isSleeping && (
-            <>
-              <line x1="45" y1="80" x2="45" y2="90" stroke="#111" strokeWidth="3" strokeLinecap="round" />
-              <line x1="60" y1="82" x2="60" y2="92" stroke="#111" strokeWidth="3" strokeLinecap="round" />
-            </>
-          )}
-        </svg>
-      </div>
-    )
-  }
-
   return (
     <>
       <style>{styles}</style>
+      
       {/* Dog House */}
       <div 
         ref={houseRef}
@@ -277,14 +241,13 @@ export default function VirtualPet() {
             borderTopRightRadius: '30px',
           }} />
 
-          {/* Shero sleeping inside */}
-          {inHouse && (
+          {/* Zzz when sleeping inside */}
+          {inHouse && !modelError && (
             <div style={{ position: 'absolute', bottom: '0', width: '50px', height: '50px', transform: 'translateY(10px)' }}>
-              <svg viewBox="0 0 100 100">
-                <path d="M 30 50 C 30 35, 45 30, 50 30 C 65 30, 75 40, 75 50 C 85 50, 85 65, 75 75 C 75 85, 60 85, 50 85 C 35 85, 25 75, 30 65 C 20 60, 20 50, 30 50 Z" fill="#FFFFFF" />
-                <path d="M 58 45 Q 62 48 66 45" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
-                <path d="M 72 45 Q 76 48 80 45" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
-              </svg>
+               <div style={{ position: 'absolute', top: '0', right: '0', color: '#fff', fontSize: '14px', fontWeight: 'bold' }}>
+                <span style={{ animation: 'zzz 2s infinite linear', display: 'inline-block' }}>Z</span>
+                <span style={{ animation: 'zzz 2s infinite linear 0.6s', display: 'inline-block', position: 'absolute', left: '8px' }}>z</span>
+              </div>
             </div>
           )}
         </div>
@@ -300,7 +263,7 @@ export default function VirtualPet() {
         }} />
       </div>
 
-      {/* The Pet */}
+      {/* The 3D Pet */}
       {!inHouse && (
         <div 
           className="virtual-pet-element fixed z-50 select-none"
@@ -309,11 +272,34 @@ export default function VirtualPet() {
             top: pos.y,
             width: PET_SIZE,
             height: PET_SIZE,
-            touchAction: 'none'
+            touchAction: 'none',
+            cursor: state === 'drag' ? 'grabbing' : 'grab'
           }}
           onMouseDown={handleMouseDown}
         >
-          {renderShero()}
+          {state === 'sleep' && (
+            <div style={{ position: 'absolute', top: '-20px', right: '-10px', color: '#fff', fontSize: '14px', fontWeight: 'bold', zIndex: 10 }}>
+              <span style={{ animation: 'zzz 2s infinite linear', display: 'inline-block' }}>Z</span>
+              <span style={{ animation: 'zzz 2s infinite linear 0.6s', display: 'inline-block', position: 'absolute', left: '8px' }}>z</span>
+              <span style={{ animation: 'zzz 2s infinite linear 1.2s', display: 'inline-block', position: 'absolute', left: '16px' }}>z</span>
+            </div>
+          )}
+          
+          {modelError ? (
+            <div className="flex items-center justify-center w-full h-full text-xs text-red-500 bg-red-500/10 rounded-full border border-red-500/30 p-2 text-center shadow-lg backdrop-blur">
+              Missing shero.glb in /public
+            </div>
+          ) : (
+            <div style={{ width: '100%', height: '100%', filter: state === 'drag' ? 'drop-shadow(0 15px 15px rgba(0,0,0,0.5))' : 'none' }}>
+              <Canvas camera={{ position: [0, 1, 5], fov: 40 }} gl={{ alpha: true }}>
+                <ambientLight intensity={1.5} />
+                <directionalLight position={[10, 10, 5]} intensity={2} />
+                <Suspense fallback={null}>
+                  <SheroModel state={state} facingRight={facingRight} />
+                </Suspense>
+              </Canvas>
+            </div>
+          )}
         </div>
       )}
     </>
