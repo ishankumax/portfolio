@@ -92,7 +92,7 @@ function Hero() {
   return (
     <section className="relative mb-12 md:mb-16">
       {/* Two-column layout: portrait image LEFT + text RIGHT */}
-      <div className="flex flex-col md:flex-row md:items-center gap-10">
+      <div className="flex flex-col md:flex-row md:items-stretch gap-8">
 
         {/* Profile Picture — portrait, left side */}
         <div className="flex-shrink-0 flex justify-center md:justify-start">
