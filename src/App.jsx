@@ -12,6 +12,7 @@ import { ContentProvider } from './ContentContext'
 import { AdminProvider } from './AdminContext'
 import RippleBackground from './components/RippleBackground'
 import ProjectSidebar from './components/ui/ProjectSidebar'
+import VirtualPet from './components/ui/VirtualPet'
 
 // Lazy load sub-pages to split bundle and speed up initial page load
 const Success = React.lazy(() => import('./components/Success'))
@@ -48,6 +49,9 @@ function AppInner() {
       <div className="min-h-screen scroll-smooth overflow-x-hidden" id="app-root" style={{ position: 'relative' }}>
         {/* Interactive dot-grid ripple canvas — fixed background layer */}
         <RippleBackground enabled={rippleEnabled} />
+
+        {/* Global Virtual Pet */}
+        <VirtualPet />
 
         {/* Global Sidebars */}
         <ProjectSidebar />
