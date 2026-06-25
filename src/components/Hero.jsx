@@ -46,7 +46,7 @@ const SOCIAL_LINKS = [
 
 function SocialRow({ socialLinks }) {
   return (
-    <div className="flex flex-wrap gap-4 text-[10px] font-mono uppercase tracking-widest items-center mt-6">
+    <div className="flex flex-wrap gap-4 text-[10px] font-mono uppercase tracking-widest items-center justify-center mt-6 pt-5 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
       {socialLinks.length > 0 ? socialLinks.map((link, idx) => (
         <React.Fragment key={link.id}>
           <SocialHoverCard
