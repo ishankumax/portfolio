@@ -79,7 +79,7 @@ export default function RippleBackground({ enabled }) {
       })
       const activeRipples = ripplesRef.current
 
-      // Static dot grid
+      // Generate static dot grid coordinates
       const spacing = CONFIG.dotSpacing
       const cols = Math.ceil(W / spacing) + 1
       const rows = Math.ceil(H / spacing) + 1
