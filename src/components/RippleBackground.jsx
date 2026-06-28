@@ -46,7 +46,7 @@ export default function RippleBackground({ enabled }) {
   const isAnimatingRef = useRef(false)
   const tickRef      = useRef(null)
   const { accentColor, theme } = useTheme()
-  const accentRgbRef = useRef(hexToRgb(accentColor))
+
 
   // Helper to start the animation loop if it's not already running
   const requestFrame = useCallback(() => {
@@ -59,11 +59,7 @@ export default function RippleBackground({ enabled }) {
 
 
 
-  // Sync accent color to ref whenever theme changes
-  useEffect(() => {
-    accentRgbRef.current = hexToRgb(accentColor)
-    requestFrame()
-  }, [accentColor, requestFrame])
+
 
   // Helper functions used by mouse/touch callbacks
 
@@ -101,7 +97,7 @@ export default function RippleBackground({ enabled }) {
 
       ctx.clearRect(0, 0, W, H)
 
-      const accent = accentRgbRef.current
+      const accent = hexToRgb(accentColor)
       const baseR = theme === 'light' ? 15 : 255
       const baseG = theme === 'light' ? 14 : 255
       const baseB = theme === 'light' ? 23 : 255
