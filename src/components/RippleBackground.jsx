@@ -224,6 +224,7 @@ export default function RippleBackground({ enabled }) {
     return () => {
       cancelAnimationFrame(rafRef.current)
       window.removeEventListener('resize', resize)
+      isAnimatingRef.current = false
     }
   }, [theme, requestFrame])
 
