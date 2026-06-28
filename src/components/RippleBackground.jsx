@@ -47,7 +47,6 @@ export default function RippleBackground({ enabled }) {
   const tickRef      = useRef(null)
   const { accentColor, theme } = useTheme()
   const accentRgbRef = useRef(hexToRgb(accentColor))
-  const enabledRef   = useRef(enabled)
 
   // Helper to start the animation loop if it's not already running
   const requestFrame = useCallback(() => {
@@ -58,10 +57,7 @@ export default function RippleBackground({ enabled }) {
     }
   }, [])
 
-  // Sync enabled state to ref
-  useEffect(() => {
-    enabledRef.current = enabled
-  }, [enabled])
+
 
   // Sync accent color to ref whenever theme changes
   useEffect(() => {
@@ -159,7 +155,7 @@ export default function RippleBackground({ enabled }) {
 
           // 2. Calculate hover displacement
           let hoverInfluence = 0
-          if (enabledRef.current) {
+          if (enabled) {
             const distToMouse = Math.hypot(bx - mouseRef.current.x, by - mouseRef.current.y)
             if (distToMouse < CONFIG.hoverRadius) {
               const hoverNorm = 1 - distToMouse / CONFIG.hoverRadius
@@ -203,7 +199,7 @@ export default function RippleBackground({ enabled }) {
       draw(now)
 
       const hasRipples = ripplesRef.current.length > 0
-      const mouseActive = enabledRef.current && (mouseRef.current.x !== -1000 || mouseRef.current.y !== -1000)
+      const mouseActive = enabled && (mouseRef.current.x !== -1000 || mouseRef.current.y !== -1000)
       const recentlyMoved = now - lastActiveTimeRef.current < 250
 
       if (hasRipples || (mouseActive && recentlyMoved)) {
