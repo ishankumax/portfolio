@@ -264,7 +264,14 @@ export default function TicTacToe() {
         </div>
 
         {/* Grid container */}
-        <div className="relative w-full aspect-square max-w-[320px] grid grid-cols-3 gap-3 p-3 rounded-2xl border bg-black/45" style={{ borderColor: 'var(--border-card)', boxShadow: theme === 'light' ? '0 8px 32px rgba(0,0,0,0.06)' : '0 8px 32px rgba(0,0,0,0.5)' }}>
+        <div 
+          className="relative w-full aspect-square max-w-[320px] grid grid-cols-3 gap-3 p-3 rounded-2xl border" 
+          style={{ 
+            borderColor: 'var(--border-card)', 
+            backgroundColor: theme === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(0, 0, 0, 0.45)',
+            boxShadow: theme === 'light' ? '0 8px 32px rgba(0,0,0,0.06)' : '0 8px 32px rgba(0,0,0,0.5)'
+          }}
+        >
           {board.map((cell, i) => {
             const isWinningCell = winningLine.includes(i)
             
