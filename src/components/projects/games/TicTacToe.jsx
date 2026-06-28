@@ -318,7 +318,7 @@ export default function TicTacToe() {
           {/* AI Thinking Indicator overlay */}
           {vsAI && !isXNext && !isGameOver && (
             <div className="absolute inset-0 bg-black/10 backdrop-blur-[0.5px] rounded-2xl flex items-center justify-center pointer-events-none">
-              <span className="bg-black/80 px-3 py-1.5 rounded-lg border text-[10px] tracking-[0.2em] animate-pulse uppercase" style={{ borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }}>
+              <span className="bg-black/80 px-3 py-1.5 rounded-lg border text-[10px] tracking-[0.2em] animate-pulse uppercase" style={{ borderColor: 'var(--border-subtle)', color: '#e5e7eb' }}>
                 AI THINKING...
               </span>
             </div>
