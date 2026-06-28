@@ -136,7 +136,7 @@ const getBestMove = (tempBoard) => {
 }
 
 export default function TicTacToe() {
-  const { accentColor } = useTheme()
+  const { accentColor, theme } = useTheme()
 
   const [board, setBoard] = useState(Array(9).fill(null))
   const [isXNext, setIsXNext] = useState(true)
@@ -264,7 +264,7 @@ export default function TicTacToe() {
         </div>
 
         {/* Grid container */}
-        <div className="relative w-full aspect-square max-w-[320px] grid grid-cols-3 gap-3 p-3 rounded-2xl border bg-black/45" style={{ borderColor: 'var(--border-card)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+        <div className="relative w-full aspect-square max-w-[320px] grid grid-cols-3 gap-3 p-3 rounded-2xl border bg-black/45" style={{ borderColor: 'var(--border-card)', boxShadow: theme === 'light' ? '0 8px 32px rgba(0,0,0,0.06)' : '0 8px 32px rgba(0,0,0,0.5)' }}>
           {board.map((cell, i) => {
             const isWinningCell = winningLine.includes(i)
             
