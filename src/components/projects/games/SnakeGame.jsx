@@ -59,7 +59,7 @@ const playSound = (type) => {
 }
 
 export default function SnakeGame() {
-  const { accentColor } = useTheme()
+  const { accentColor, theme } = useTheme()
   
   // Game states
   const [isPlaying, setIsPlaying] = useState(false)
@@ -409,8 +409,7 @@ export default function SnakeGame() {
           </div>
         </div>
 
-        {/* Screen container */}
-        <div className="relative border rounded-xl overflow-hidden aspect-square w-full max-w-[340px]" style={{ borderColor: 'var(--border-subtle)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+        <div className="relative border rounded-xl overflow-hidden aspect-square w-full max-w-[340px]" style={{ borderColor: 'var(--border-subtle)', boxShadow: theme === 'light' ? '0 8px 32px rgba(0,0,0,0.06)' : '0 8px 32px rgba(0,0,0,0.5)' }}>
           <canvas
             ref={canvasRef}
             width={GRID_SIZE * CELL_COUNT}
@@ -421,8 +420,8 @@ export default function SnakeGame() {
           {/* Overlay screens */}
           {!isPlaying && !isGameOver && (
             <div className="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
-              <h4 className="text-xl font-bold tracking-widest text-[color:var(--accent)] mb-3 animate-pulse">NEON SNAKE</h4>
-              <p className="text-xs max-w-[280px] leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
+              <h4 className="text-xl font-bold tracking-widest mb-3 animate-pulse" style={{ color: 'var(--accent)' }}>NEON SNAKE</h4>
+              <p className="text-xs max-w-[280px] leading-relaxed mb-6" style={{ color: '#e5e7eb' }}>
                 Guide the glowing snake using keyboard <span className="text-[color:var(--accent)] font-bold">W-A-S-D</span> or <span className="text-[color:var(--accent)] font-bold">Arrow Keys</span>.
               </p>
               <button 
@@ -451,7 +450,7 @@ export default function SnakeGame() {
           {isGameOver && (
             <div className="absolute inset-0 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in fade-in zoom-in duration-300">
               <h4 className="text-2xl font-bold tracking-widest text-red-500 mb-2">SYSTEM CRASH</h4>
-              <p className="text-xs uppercase tracking-wider mb-6" style={{ color: 'var(--text-muted)' }}>
+              <p className="text-xs uppercase tracking-wider mb-6" style={{ color: '#9ca3af' }}>
                 Final Score: <span className="text-[color:var(--accent)] font-bold">{score}</span>
               </p>
               <button 
