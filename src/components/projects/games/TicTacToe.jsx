@@ -286,7 +286,7 @@ export default function TicTacToe() {
                     ? 'var(--accent)' 
                     : cell 
                       ? 'var(--border-subtle)' 
-                      : 'rgba(255,255,255,0.05)',
+                      : theme === 'light' ? 'var(--border-subtle)' : 'rgba(255,255,255,0.05)',
                   backgroundColor: isWinningCell 
                     ? 'var(--accent-faint)' 
                     : 'var(--bg-navbar)',
