@@ -38,63 +38,33 @@ function gaussian(x, sigma) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function RippleBackground({ enabled }) {
-  const canvasRef    = useRef(null)
-  const ripplesRef   = useRef([])
-  const mouseRef     = useRef({ x: -1000, y: -1000 })
-  const rafRef       = useRef(null)
+  const canvasRef = useRef(null)
+  const ripplesRef = useRef([])
+  const mouseRef = useRef({ x: -1000, y: -1000 })
   const lastActiveTimeRef = useRef(0)
-  const isAnimatingRef = useRef(false)
-  const tickRef      = useRef(null)
+
   const { accentColor, theme } = useTheme()
 
-
-  // Helper to start the animation loop if it's not already running
-  const requestFrame = useCallback(() => {
-    lastActiveTimeRef.current = performance.now()
-    if (!isAnimatingRef.current && tickRef.current) {
-      isAnimatingRef.current = true
-      rafRef.current = requestAnimationFrame(tickRef.current)
-    }
-  }, [])
-
-
-
-
-
-  // Helper functions used by mouse/touch callbacks
-
-  // ── Spawn ripple ────────────────────────────────────────────────────────────
-  const spawnRipple = useCallback((x, y) => {
-    const now = performance.now()
-    const ripples = ripplesRef.current
-    // Throttle: ignore if same origin clicked < 80 ms ago
-    if (ripples.some(r => Math.hypot(r.x - x, r.y - y) < 12 && now - r.born < 80)) return
-    if (ripples.length >= CONFIG.maxRipples) ripples.splice(0, 1)
-    ripples.push({ x, y, born: now })
-  }, [])
-
-  // ── Render loop (running conditionally when there is active motion) ────────
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
 
+    // Handle high DPI screens for sharp dots
     const resize = () => {
-      canvas.width  = window.innerWidth
+      canvas.width = window.innerWidth
       canvas.height = window.innerHeight
-      requestFrame()
+      draw(performance.now())
     }
     
-    // Initial size
-    canvas.width  = window.innerWidth
+    canvas.width = window.innerWidth
     canvas.height = window.innerHeight
-
     window.addEventListener('resize', resize)
 
+    // Render loop drawing function
     const draw = (now) => {
       const W = canvas.width
       const H = canvas.height
-
       ctx.clearRect(0, 0, W, H)
 
       const accent = hexToRgb(accentColor)
@@ -109,18 +79,16 @@ export default function RippleBackground({ enabled }) {
       })
       const activeRipples = ripplesRef.current
 
-      // ── Static dot grid ──
+      // Static dot grid
       const spacing = CONFIG.dotSpacing
       const cols = Math.ceil(W / spacing) + 1
       const rows = Math.ceil(H / spacing) + 1
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
-          // Fixed grid anchored to top-left — never moves
           const bx = c * spacing
           const by = r * spacing
 
-          // ── Ripple & Hover displacement ─────────────────────────────────────
           let dx = 0, dy = 0
           let rippleInfluence = 0
 
@@ -133,14 +101,14 @@ export default function RippleBackground({ enabled }) {
               const ringRadius = CONFIG.rippleSpeed * age - ring * CONFIG.ringGap
               if (ringRadius < 0) continue
 
-              const delta    = dist - ringRadius
+              const delta = dist - ringRadius
               const envelope = gaussian(delta, CONFIG.waveWidth)
 
               const elapsed = age - ring * (CONFIG.ringGap / CONFIG.rippleSpeed)
               if (elapsed < 0) continue
-              const fadeIn  = Math.min(elapsed / CONFIG.fadeInDur, 1)
+              const fadeIn = Math.min(elapsed / CONFIG.fadeInDur, 1)
               const fadeOut = Math.max(0, 1 - Math.max(0, elapsed - CONFIG.fadeDuration) / 0.8)
-              const amp     = fadeIn * fadeOut * CONFIG.maxDisplace * (1 - ring * 0.28)
+              const amp = fadeIn * fadeOut * CONFIG.maxDisplace * (1 - ring * 0.28)
 
               const rdist = Math.max(dist, 0.01)
               dx += ((bx - rip.x) / rdist) * envelope * amp
@@ -155,10 +123,8 @@ export default function RippleBackground({ enabled }) {
             const distToMouse = Math.hypot(bx - mouseRef.current.x, by - mouseRef.current.y)
             if (distToMouse < CONFIG.hoverRadius) {
               const hoverNorm = 1 - distToMouse / CONFIG.hoverRadius
-              // Smoothstep-like easing for hover
               hoverInfluence = Math.pow(hoverNorm, 2) * CONFIG.hoverStrength
               
-              // Subtle push away from mouse
               const angle = Math.atan2(by - mouseRef.current.y, bx - mouseRef.current.x)
               dx += Math.cos(angle) * hoverInfluence * 4
               dy += Math.sin(angle) * hoverInfluence * 4
@@ -168,7 +134,7 @@ export default function RippleBackground({ enabled }) {
           const dotX = bx + dx
           const dotY = by + dy
 
-          // ── Compose color & opacity ────────────────────────────────────────
+          // Compose color & opacity
           const combinedInfluence = Math.max(rippleInfluence, hoverInfluence)
           const totalOpacity = Math.min(CONFIG.dotOpacity + combinedInfluence * 0.4, 0.95)
           const tint = Math.min(combinedInfluence * 1.4, 1)
@@ -185,9 +151,12 @@ export default function RippleBackground({ enabled }) {
       }
     }
 
+    let rafId = null
+    let isAnimating = false
+
     const tick = () => {
       if (!canvasRef.current) {
-        isAnimatingRef.current = false
+        isAnimating = false
         return
       }
 
@@ -199,82 +168,83 @@ export default function RippleBackground({ enabled }) {
       const recentlyMoved = now - lastActiveTimeRef.current < 250
 
       if (hasRipples || (mouseActive && recentlyMoved)) {
-        rafRef.current = requestAnimationFrame(tick)
+        rafId = requestAnimationFrame(tick)
       } else {
-        // Draw one final static frame to make sure it settles perfectly
         draw(now)
-        isAnimatingRef.current = false
+        isAnimating = false
       }
     }
 
-    // Set tick function to ref so requestFrame can access it
-    tickRef.current = tick
-
-    // Render initial static frame
-    draw(performance.now())
-
-    return () => {
-      cancelAnimationFrame(rafRef.current)
-      window.removeEventListener('resize', resize)
-      isAnimatingRef.current = false
-    }
-  }, [theme, requestFrame])
-
-  // ── Event listeners — only attached when enabled ───────────────────────────
-  useEffect(() => {
-    if (!enabled) {
-      // Clear any lingering ripples and hover when toggled off
-      ripplesRef.current = []
-      mouseRef.current = { x: -1000, y: -1000 }
-      requestFrame()
-      return
+    const startAnimation = () => {
+      lastActiveTimeRef.current = performance.now()
+      if (!isAnimating) {
+        isAnimating = true
+        rafId = requestAnimationFrame(tick)
+      }
     }
 
-    const canvas = canvasRef.current
     const getPos = (clientX, clientY) => {
-      if (!canvas) return { x: clientX, y: clientY }
       const rect = canvas.getBoundingClientRect()
       return { x: clientX - rect.left, y: clientY - rect.top }
+    }
+
+    const spawnRipple = (x, y) => {
+      const now = performance.now()
+      const ripples = ripplesRef.current
+      if (ripples.some(r => Math.hypot(r.x - x, r.y - y) < 12 && now - r.born < 80)) return
+      if (ripples.length >= CONFIG.maxRipples) ripples.splice(0, 1)
+      ripples.push({ x, y, born: now })
     }
 
     const onDocClick = e => {
       const { x, y } = getPos(e.clientX, e.clientY)
       spawnRipple(x, y)
-      requestFrame()
+      startAnimation()
     }
+
     const onDocTouch = e => {
       for (const t of e.changedTouches) {
         const { x, y } = getPos(t.clientX, t.clientY)
         spawnRipple(x, y)
       }
-      requestFrame()
+      startAnimation()
     }
 
     const onDocMouseMove = e => {
       const { x, y } = getPos(e.clientX, e.clientY)
       mouseRef.current = { x, y }
-      requestFrame()
+      startAnimation()
     }
+
     const onDocMouseLeave = () => {
       mouseRef.current = { x: -1000, y: -1000 }
-      requestFrame()
+      startAnimation()
     }
 
-    document.addEventListener('click',      onDocClick)
-    document.addEventListener('touchstart', onDocTouch, { passive: true })
-    document.addEventListener('mousemove',  onDocMouseMove)
-    document.addEventListener('mouseleave', onDocMouseLeave)
+    if (enabled) {
+      document.addEventListener('click',      onDocClick)
+      document.addEventListener('touchstart', onDocTouch, { passive: true })
+      document.addEventListener('mousemove',  onDocMouseMove)
+      document.addEventListener('mouseleave', onDocMouseLeave)
+    } else {
+      ripplesRef.current = []
+      mouseRef.current = { x: -1000, y: -1000 }
+    }
 
-    // Trigger one initial frame to ensure correct state when enabled
-    requestFrame()
+    // Render initial static frame
+    draw(performance.now())
 
     return () => {
-      document.removeEventListener('click',      onDocClick)
-      document.removeEventListener('touchstart', onDocTouch)
-      document.removeEventListener('mousemove',  onDocMouseMove)
-      document.removeEventListener('mouseleave', onDocMouseLeave)
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('resize', resize)
+      if (enabled) {
+        document.removeEventListener('click',      onDocClick)
+        document.removeEventListener('touchstart', onDocTouch)
+        document.removeEventListener('mousemove',  onDocMouseMove)
+        document.removeEventListener('mouseleave', onDocMouseLeave)
+      }
     }
-  }, [enabled, spawnRipple, requestFrame])
+  }, [enabled, theme, accentColor])
 
   return (
     <canvas
