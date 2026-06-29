@@ -136,7 +136,7 @@ const getBestMove = (tempBoard) => {
 }
 
 export default function TicTacToe() {
-  const { accentColor } = useTheme()
+  const { accentColor, theme } = useTheme()
 
   const [board, setBoard] = useState(Array(9).fill(null))
   const [isXNext, setIsXNext] = useState(true)
@@ -264,7 +264,14 @@ export default function TicTacToe() {
         </div>
 
         {/* Grid container */}
-        <div className="relative w-full aspect-square max-w-[320px] grid grid-cols-3 gap-3 p-3 rounded-2xl border bg-black/45" style={{ borderColor: 'var(--border-card)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+        <div 
+          className="relative w-full aspect-square max-w-[320px] grid grid-cols-3 gap-3 p-3 rounded-2xl border" 
+          style={{ 
+            borderColor: 'var(--border-card)', 
+            backgroundColor: theme === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(0, 0, 0, 0.45)',
+            boxShadow: theme === 'light' ? '0 8px 32px rgba(0,0,0,0.06)' : '0 8px 32px rgba(0,0,0,0.5)'
+          }}
+        >
           {board.map((cell, i) => {
             const isWinningCell = winningLine.includes(i)
             
@@ -279,7 +286,7 @@ export default function TicTacToe() {
                     ? 'var(--accent)' 
                     : cell 
                       ? 'var(--border-subtle)' 
-                      : 'rgba(255,255,255,0.05)',
+                      : theme === 'light' ? 'var(--border-subtle)' : 'rgba(255,255,255,0.05)',
                   backgroundColor: isWinningCell 
                     ? 'var(--accent-faint)' 
                     : 'var(--bg-navbar)',
@@ -311,7 +318,7 @@ export default function TicTacToe() {
           {/* AI Thinking Indicator overlay */}
           {vsAI && !isXNext && !isGameOver && (
             <div className="absolute inset-0 bg-black/10 backdrop-blur-[0.5px] rounded-2xl flex items-center justify-center pointer-events-none">
-              <span className="bg-black/80 px-3 py-1.5 rounded-lg border text-[10px] tracking-[0.2em] animate-pulse uppercase" style={{ borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }}>
+              <span className="bg-black/80 px-3 py-1.5 rounded-lg border text-[10px] tracking-[0.2em] animate-pulse uppercase" style={{ borderColor: 'var(--border-subtle)', color: '#e5e7eb' }}>
                 AI THINKING...
               </span>
             </div>

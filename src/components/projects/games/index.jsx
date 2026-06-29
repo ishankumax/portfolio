@@ -5,7 +5,7 @@ import TicTacToe from './TicTacToe';
 import { useTheme } from '../../../ThemeContext';
 
 export default function Games() {
-  const { accentColor } = useTheme();
+  const { accentColor, theme } = useTheme();
   const [activeTab, setActiveTab] = useState('snake'); // 'snake' or 'ttt'
 
   return (
@@ -61,8 +61,11 @@ export default function Games() {
 
           {/* Navigation Selector */}
           <div 
-            className="flex border rounded-xl p-1 bg-black/35 backdrop-blur w-fit" 
-            style={{ borderColor: 'var(--border-subtle)' }}
+            className="flex border rounded-xl p-1 backdrop-blur w-fit" 
+            style={{ 
+              borderColor: 'var(--border-subtle)',
+              backgroundColor: theme === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(0, 0, 0, 0.35)'
+            }}
           >
             <button
               onClick={() => setActiveTab('snake')}
