@@ -177,7 +177,9 @@ export default function SnakeGame() {
 
       if (!mutedRef.current) playSound('eat')
       
-      const foodColor = isSuperFoodRef.current ? '#e9ff1c' : accentColor
+      const foodColor = isSuperFoodRef.current 
+        ? (theme === 'light' ? '#ec4899' : '#e9ff1c') 
+        : (theme === 'light' ? '#16a34a' : accentColor)
       createExplosion(food.x, food.y, foodColor)
       generateFood()
     } else {
@@ -201,10 +203,17 @@ export default function SnakeGame() {
     const width = ctx.canvas.width
     const height = ctx.canvas.height
     
-    ctx.fillStyle = '#0a0a0c'
+    const isLight = theme === 'light'
+    const canvasBg = isLight ? '#ffffff' : '#0a0a0c'
+    const gridStroke = isLight ? '#e5e7eb' : '#18181f'
+    const snakeColor = isLight ? '#16a34a' : accentColor
+    const normalFoodColor = isLight ? '#b91c1c' : accentColor
+    const superFoodColor = isLight ? '#ec4899' : '#e9ff1c'
+
+    ctx.fillStyle = canvasBg
     ctx.fillRect(0, 0, width, height)
 
-    ctx.strokeStyle = '#18181f'
+    ctx.strokeStyle = gridStroke
     ctx.lineWidth = 0.5
     for (let i = 0; i <= CELL_COUNT; i++) {
       ctx.beginPath()
@@ -232,10 +241,10 @@ export default function SnakeGame() {
 
     const food = foodRef.current
     const isSuper = isSuperFoodRef.current
-    const foodColor = isSuper ? '#e9ff1c' : accentColor
+    const foodColor = isSuper ? superFoodColor : normalFoodColor
 
     ctx.save()
-    ctx.shadowBlur = 15
+    ctx.shadowBlur = isLight ? 6 : 15
     ctx.shadowColor = foodColor
     ctx.fillStyle = foodColor
     ctx.beginPath()
@@ -262,11 +271,11 @@ export default function SnakeGame() {
       ctx.save()
 
       if (isHead) {
-        ctx.shadowBlur = 18
-        ctx.shadowColor = accentColor
-        ctx.fillStyle = accentColor
+        ctx.shadowBlur = isLight ? 8 : 18
+        ctx.shadowColor = snakeColor
+        ctx.fillStyle = snakeColor
       } else {
-        ctx.fillStyle = accentColor
+        ctx.fillStyle = snakeColor
         ctx.globalAlpha = Math.max(0.3, 1 - index / snake.length)
       }
 
@@ -281,7 +290,7 @@ export default function SnakeGame() {
       ctx.fill()
 
       if (isHead) {
-        ctx.fillStyle = '#000000'
+        ctx.fillStyle = isLight ? '#ffffff' : '#000000'
         const eyeSize = 2.5
         const eyeOffset = 5
         const dir = dirRef.current
@@ -299,7 +308,7 @@ export default function SnakeGame() {
 
       ctx.restore()
     })
-  }, [accentColor])
+  }, [accentColor, theme])
 
   // Reset Game
   const resetGame = useCallback(() => {
@@ -419,10 +428,21 @@ export default function SnakeGame() {
 
           {/* Overlay screens */}
           {!isPlaying && !isGameOver && (
-            <div className="absolute inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center">
-              <h4 className="text-xl font-bold tracking-widest mb-3 animate-pulse" style={{ color: 'var(--accent)' }}>NEON SNAKE</h4>
-              <p className="text-xs max-w-[280px] leading-relaxed mb-6" style={{ color: '#e5e7eb' }}>
-                Guide the glowing snake using keyboard <span className="text-[color:var(--accent)] font-bold">W-A-S-D</span> or <span className="text-[color:var(--accent)] font-bold">Arrow Keys</span>.
+            <div 
+              className="absolute inset-0 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-300"
+              style={{ backgroundColor: theme === 'light' ? 'rgba(240, 238, 245, 0.85)' : 'rgba(0, 0, 0, 0.85)' }}
+            >
+              <h4 
+                className="text-xl font-bold tracking-widest mb-3 animate-pulse" 
+                style={{ color: theme === 'light' ? 'var(--accent-dim)' : 'var(--accent)' }}
+              >
+                NEON SNAKE
+              </h4>
+              <p 
+                className="text-xs max-w-[280px] leading-relaxed mb-6" 
+                style={{ color: theme === 'light' ? 'var(--text-secondary)' : '#e5e7eb' }}
+              >
+                Guide the glowing snake using keyboard <span className="font-bold" style={{ color: theme === 'light' ? 'var(--accent-dim)' : 'var(--accent)' }}>W-A-S-D</span> or <span className="font-bold" style={{ color: theme === 'light' ? 'var(--accent-dim)' : 'var(--accent)' }}>Arrow Keys</span>.
               </p>
               <button 
                 onClick={resetGame}
@@ -435,12 +455,15 @@ export default function SnakeGame() {
           )}
 
           {isPaused && (
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center">
-              <h4 className="text-2xl font-bold tracking-widest text-white mb-4">PAUSED</h4>
+            <div 
+              className="absolute inset-0 backdrop-blur-sm flex flex-col items-center justify-center"
+              style={{ backgroundColor: theme === 'light' ? 'rgba(240, 238, 245, 0.70)' : 'rgba(0, 0, 0, 0.60)' }}
+            >
+              <h4 className="text-2xl font-bold tracking-widest mb-4" style={{ color: 'var(--text-primary)' }}>PAUSED</h4>
               <button 
                 onClick={togglePause}
                 className="px-6 py-2.5 rounded-lg text-sm font-bold transition-all hover:scale-105" 
-                style={{ background: 'white', color: 'black' }}
+                style={{ background: theme === 'light' ? 'var(--text-primary)' : 'white', color: theme === 'light' ? 'var(--bg-elevated)' : 'black' }}
               >
                 RESUME
               </button>
@@ -448,10 +471,13 @@ export default function SnakeGame() {
           )}
 
           {isGameOver && (
-            <div className="absolute inset-0 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in fade-in zoom-in duration-300">
+            <div 
+              className="absolute inset-0 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in fade-in zoom-in duration-300"
+              style={{ backgroundColor: theme === 'light' ? 'rgba(240, 238, 245, 0.90)' : 'rgba(0, 0, 0, 0.90)' }}
+            >
               <h4 className="text-2xl font-bold tracking-widest text-red-500 mb-2">SYSTEM CRASH</h4>
-              <p className="text-xs uppercase tracking-wider mb-6" style={{ color: '#9ca3af' }}>
-                Final Score: <span className="text-[color:var(--accent)] font-bold">{score}</span>
+              <p className="text-xs uppercase tracking-wider mb-6" style={{ color: theme === 'light' ? 'var(--text-secondary)' : '#9ca3af' }}>
+                Final Score: <span className="font-bold" style={{ color: theme === 'light' ? 'var(--accent-dim)' : 'var(--accent)' }}>{score}</span>
               </p>
               <button 
                 onClick={resetGame}
