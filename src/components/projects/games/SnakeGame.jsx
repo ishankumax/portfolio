@@ -334,6 +334,29 @@ export default function SnakeGame() {
     setIsPaused(p => !p)
   }, [])
 
+  // On-screen movement controls
+  const handleMove = useCallback((direction) => {
+    if (!isPlaying || isPaused || isGameOver) return
+
+    const lastDir = lastDirRef.current
+    let nextDir = null
+
+    if (direction === 'up' && lastDir.y === 0) {
+      nextDir = { x: 0, y: -1 }
+    } else if (direction === 'down' && lastDir.y === 0) {
+      nextDir = { x: 0, y: 1 }
+    } else if (direction === 'left' && lastDir.x === 0) {
+      nextDir = { x: -1, y: 0 }
+    } else if (direction === 'right' && lastDir.x === 0) {
+      nextDir = { x: 1, y: 0 }
+    }
+
+    if (nextDir) {
+      dirRef.current = nextDir
+      if (!mutedRef.current) playSound('click')
+    }
+  }, [isPlaying, isPaused, isGameOver])
+
   // Effect to handle canvas sizing & rendering static/active states
   useEffect(() => {
     const canvas = canvasRef.current
@@ -489,10 +512,12 @@ export default function SnakeGame() {
             </div>
           )}
         </div>
+
+        {/* Left column content ends */}
       </div>
 
       {/* Right Column — Difficulty & Controls */}
-      <div className="w-full lg:w-[200px] flex flex-col justify-center gap-6 border-t lg:border-t-0 lg:border-l pt-6 lg:pt-0 lg:pl-6 mt-2 lg:mt-0" style={{ borderColor: 'var(--border-subtle)' }}>
+      <div className="w-full lg:w-[200px] flex flex-col justify-start gap-4 border-t lg:border-t-0 lg:border-l pt-6 lg:pt-0 lg:pl-6 mt-2 lg:mt-0" style={{ borderColor: 'var(--border-subtle)' }}>
         {/* Difficulty Controls */}
         <div className="flex flex-col gap-2 text-xs">
           <span style={{ color: 'var(--text-muted)' }}>SPEED MULTIPLIER:</span>
@@ -538,6 +563,68 @@ export default function SnakeGame() {
             >
               ABORT
             </button>
+          </div>
+        )}
+
+        {/* On-screen D-pad controls */}
+        {isPlaying && (
+          <div className="flex flex-col items-center mt-2 w-full animate-in fade-in duration-300">
+            <span style={{ color: 'var(--text-muted)' }} className="text-[10px] tracking-wider mb-2 uppercase">CONTROLS:</span>
+            <div className="grid grid-cols-3 gap-1.5 w-28 aspect-square" style={{ opacity: isPaused ? 0.5 : 1, transition: 'opacity 0.3s' }}>
+              <div></div>
+              <button 
+                onClick={() => handleMove('up')}
+                disabled={isPaused}
+                className="flex items-center justify-center w-8 h-8 rounded-lg border transition-all active:scale-90 active:bg-[color:var(--accent)] active:text-black disabled:opacity-50"
+                style={{ borderColor: 'var(--border-subtle)', background: 'var(--bg-elevated)', color: 'var(--text-primary)' }}
+                aria-label="Move Up"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                </svg>
+              </button>
+              <div></div>
+
+              <button 
+                onClick={() => handleMove('left')}
+                disabled={isPaused}
+                className="flex items-center justify-center w-8 h-8 rounded-lg border transition-all active:scale-90 active:bg-[color:var(--accent)] active:text-black disabled:opacity-50"
+                style={{ borderColor: 'var(--border-subtle)', background: 'var(--bg-elevated)', color: 'var(--text-primary)' }}
+                aria-label="Move Left"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+              </button>
+              <div className="flex items-center justify-center">
+                <div className="w-1.5 h-1.5 rounded-full bg-[color:var(--accent)] opacity-40 animate-pulse" />
+              </div>
+              <button 
+                onClick={() => handleMove('right')}
+                disabled={isPaused}
+                className="flex items-center justify-center w-8 h-8 rounded-lg border transition-all active:scale-90 active:bg-[color:var(--accent)] active:text-black disabled:opacity-50"
+                style={{ borderColor: 'var(--border-subtle)', background: 'var(--bg-elevated)', color: 'var(--text-primary)' }}
+                aria-label="Move Right"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+
+              <div></div>
+              <button 
+                onClick={() => handleMove('down')}
+                disabled={isPaused}
+                className="flex items-center justify-center w-8 h-8 rounded-lg border transition-all active:scale-90 active:bg-[color:var(--accent)] active:text-black disabled:opacity-50"
+                style={{ borderColor: 'var(--border-subtle)', background: 'var(--bg-elevated)', color: 'var(--text-primary)' }}
+                aria-label="Move Down"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </button>
+              <div></div>
+            </div>
           </div>
         )}
       </div>
