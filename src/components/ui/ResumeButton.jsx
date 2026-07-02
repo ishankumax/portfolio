@@ -1,9 +1,12 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { FileText } from 'lucide-react'
 
 export default function ResumeButton() {
   const navigate = useNavigate()
+  const location = useLocation()
+
+  if (location.pathname === '/resume') return null
 
   return (
     <button

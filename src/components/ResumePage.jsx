@@ -45,6 +45,9 @@ export default function ResumePage() {
   }, [selectedRole, mode]) // Syncs when in role mode
 
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
+
+  const downloadFilename = `Ishan_Kumar_Resume_${mode === 'role' ? selectedRole.replace(/\s+/g, '_') : 'Custom'}.pdf`
 
   return (
     <div className="min-h-screen pt-24 lg:pt-28 pb-24 lg:pb-16 px-4 lg:px-8 max-w-[1500px] mx-auto flex flex-col lg:flex-row gap-8 items-start">
@@ -57,12 +60,6 @@ export default function ResumePage() {
           <p className="text-sm opacity-70 mb-4" style={{ color: 'var(--text-secondary)' }}>
             Build role-specific resumes in real time.
           </p>
-          <div className="hidden lg:block">
-            <PDFExporter 
-              targetId="resume-pdf-container" 
-              filename={`Ishan_Kumar_Resume_${mode === 'role' ? selectedRole.replace(/\s+/g, '_') : 'Custom'}.pdf`} 
-            />
-          </div>
         </div>
 
         <ConfigurationPanel 
@@ -97,13 +94,47 @@ export default function ResumePage() {
           </button>
         </div>
 
-        <div className="w-full overflow-auto pt-6 pb-24 lg:pb-8 px-2 lg:px-0 rounded-xl no-scrollbar flex justify-center max-w-full">
-          <div className="min-w-[800px] flex justify-center bg-white shadow-2xl rounded-sm overflow-hidden border border-gray-200 transition-all duration-200" style={{ transform: 'scale(0.85) lg:scale(0.9)', transformOrigin: 'top center' }}>
+        {/* Fullscreen Overlay Mode (Box 1) */}
+        {isFullscreen && (
+          <div className="fixed inset-0 z-[60] bg-black/95 flex justify-center items-center overflow-y-auto p-4 lg:p-10 custom-scrollbar">
+            <button 
+              onClick={() => setIsFullscreen(false)}
+              className="fixed top-6 right-6 w-12 h-12 flex items-center justify-center bg-gray-800 rounded-full text-white shadow-lg hover:bg-gray-700 z-[70] transition-colors"
+            >
+              ✕
+            </button>
+            <div className="relative">
+              <div className="min-w-[800px] bg-white shadow-2xl rounded-sm overflow-hidden border border-gray-200">
+                <ResumePreview 
+                  resumeData={resumeData} 
+                  selectedRole={selectedRole}
+                  mode={mode}
+                  customSelections={customSelections}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="w-full overflow-auto pt-6 pb-24 lg:pb-8 px-2 lg:px-0 custom-scrollbar flex justify-center max-w-full relative group">
+          <div 
+            onClick={() => setIsFullscreen(true)}
+            className="min-w-[800px] flex justify-center bg-white shadow-2xl rounded-sm overflow-hidden border border-gray-200 transition-all duration-300 cursor-zoom-in hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:border-gray-400" 
+            style={{ transform: 'scale(0.85) lg:scale(0.9)', transformOrigin: 'top center' }}
+          >
             <ResumePreview 
               resumeData={resumeData} 
               selectedRole={selectedRole}
               mode={mode}
               customSelections={customSelections}
+            />
+          </div>
+
+          {/* Download Button on Bottom Right of Preview (Box 2) */}
+          <div className="absolute bottom-10 right-4 lg:right-10 z-20 transition-transform hover:scale-105 hidden lg:block">
+            <PDFExporter 
+              targetId="resume-pdf-container" 
+              filename={downloadFilename} 
             />
           </div>
         </div>
@@ -112,7 +143,7 @@ export default function ResumePage() {
         <div className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-20">
           <PDFExporter 
             targetId="resume-pdf-container" 
-            filename={`Ishan_Kumar_Resume_${mode === 'role' ? selectedRole.replace(/\s+/g, '_') : 'Custom'}.pdf`} 
+            filename={downloadFilename} 
           />
         </div>
       </div>

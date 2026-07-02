@@ -37,7 +37,7 @@ export default function ConfigurationPanel({
       {/* Content based on Mode */}
       <div className="flex-1 overflow-hidden flex flex-col">
         {mode === 'role' ? (
-          <div className="animate-fade-in overflow-y-auto no-scrollbar pb-8">
+          <div className="animate-fade-in overflow-y-auto custom-scrollbar pb-8 pr-2">
             <RoleSidebar 
               roles={roles} 
               selectedRole={selectedRole} 
