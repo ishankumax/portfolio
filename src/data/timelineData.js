@@ -37,8 +37,9 @@ export const timelineData = [
         website: 'https://www.chitkara.edu.in/harvard/',
         date: 'Jan 2026',
         images: [
-          { src: '/pfp.jpg', caption: 'At the Event' },
-          { src: '/banner.jpg', caption: 'YLC Coordination' }
+          { src: '/HYLC.jpeg', caption: 'At the Event' },
+          { src: '/HYLC3.jpeg', caption: 'YLC Coordination' },
+          { src: '/HYLC2.jpeg', caption: 'YLC Coordination' },
         ],
         bullets: [
           'Driving innovation and packaging excellence',
@@ -79,8 +80,8 @@ export const timelineData = [
         date: 'NOV 2024 - JUL 2025',
         images: [
           { src: '/ACM Marketing Head.jpg', caption: 'ACM Marketing Head' },
-          { src: '/pfp.jpg', caption: 'Leading the Team' },
-          { src: '/banner.jpg', caption: 'Lady Ada Event' }
+          { src: '/ACM3.jpg', caption: 'Leading the Team' },
+          { src: '/ACM2.jpg', caption: 'Lady Ada Event' }
         ],
         bullets: [
           'Organised Annual ACM-W India Lady Ada',

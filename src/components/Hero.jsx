@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaLinkedin, FaXTwitter, FaGithub, FaInstagram, FaGlobe } from 'react-icons/fa6'
+import { FaLinkedin, FaXTwitter, FaGithub, FaInstagram, FaGlobe, FaWhatsapp } from 'react-icons/fa6'
 import { useContent } from '../ContentContext'
 import EditableText from './admin/EditableText'
 
@@ -8,6 +8,7 @@ const ICON_MAP = {
   linkedin: <FaLinkedin size={12} />,
   twitter: <FaXTwitter size={12} />,
   instagram: <FaInstagram size={12} />,
+  whatsapp: <FaWhatsapp size={12} />,
 }
 
 /**
@@ -120,6 +121,10 @@ function Hero() {
             <span className="opacity-20">/</span>
             <a href="https://twitter.com/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
               <FaXTwitter size={12} /> TWITTER 
+            </a>
+            <span className="opacity-20">/</span>
+            <a href="https://wa.me/message/ishankumax" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
+              <FaWhatsapp size={12} /> whatsapp
             </a>
           </>
         )}
