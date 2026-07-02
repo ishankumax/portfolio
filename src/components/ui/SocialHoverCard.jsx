@@ -185,12 +185,13 @@ function TwitterCard() {
       </div>
       <p className="text-[11px] mb-2.5 leading-relaxed" style={{ color: '#9ca3af' }}>{s.bio}</p>
       <div
-        className="grid grid-cols-2 gap-2 border-t pt-2.5"
+        className="grid grid-cols-3 gap-2 border-t pt-2.5"
         style={{ borderColor: 'rgba(255,255,255,0.06)' }}
       >
         {[
           { label: 'Followers', value: s.followers },
           { label: 'Following', value: s.following },
+          { label: 'Posts', value: s.posts },
         ].map(stat => (
           <div key={stat.label} className="flex flex-col">
             <span className="text-sm font-bold leading-none" style={{ color: '#fff' }}>{stat.value}</span>
@@ -261,8 +262,9 @@ export default function SocialHoverCard({ platform, href, children }) {
           .catch(() => null),
       ])
         .then(([profile, contribs]) => {
-          const yearKey = contribs?.total
-            ? Object.keys(contribs.total)[0]
+          // API returns total as { "lastYear": N } or { "2026": N }
+          const contribTotal = contribs?.total
+            ? (contribs.total.lastYear ?? Object.values(contribs.total)[0] ?? null)
             : null
           setGhData({
             name: profile.name || 'Ishan Kumar',
@@ -273,11 +275,11 @@ export default function SocialHoverCard({ platform, href, children }) {
             repos: profile.public_repos,
             followers: profile.followers,
             following: profile.following,
-            contributions_total: yearKey ? contribs.total[yearKey] : null,
+            contributions_total: contribTotal,
             contributions: contribs?.contributions ?? [],
           })
         })
-        .catch(() => {})
+        .catch((err) => { console.error('[SocialHoverCard] GitHub fetch failed:', err) })
         .finally(() => setGhLoading(false))
     }
   }
