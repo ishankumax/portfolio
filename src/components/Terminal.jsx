@@ -56,7 +56,6 @@ const FILES = {
     'linkedin:  linkedin.com/in/ishankumax',
     'twitter:   @ishankumax',
     'instagram: @ishankumax',
-    'whatsapp:  wa.me/message/ishankumax',
     'github:    github.com/ishankumax',
     '',
     "run 'open /network' to visit the network page.",

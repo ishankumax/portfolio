@@ -1,12 +1,11 @@
 import React from 'react'
-import { FaLinkedin, FaXTwitter, FaGithub, FaInstagram, FaWhatsapp } from 'react-icons/fa6'
+import { FaLinkedin, FaXTwitter, FaGithub, FaInstagram } from 'react-icons/fa6'
 
 const LINKS = [
   { id: 'github',    label: 'github',    href: 'https://github.com/ishankumax',    icon: FaGithub },
   { id: 'linkedin',  label: 'linkedin',  href: 'https://linkedin.com/in/ishankumax',  icon: FaLinkedin },
   { id: 'x',         label: 'x.com',     href: 'https://x.com/ishankumax',         icon: FaXTwitter },
   { id: 'instagram', label: 'instagram', href: 'https://instagram.com/ishankumax', icon: FaInstagram },
-  { id: 'whatsapp', label: 'whatsapp', href: 'https://wa.me/message/ishankumax', icon: FaWhatsapp },
 ]
 
 /**
