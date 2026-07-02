@@ -24,6 +24,9 @@ const LinkShortener = React.lazy(() => import('./components/projects/link-shorte
 const Games = React.lazy(() => import('./components/projects/games'))
 const AdminPage = React.lazy(() => import('./components/admin/AdminPage'))
 const ShortLinkRedirect = React.lazy(() => import('./components/ShortLinkRedirect'))
+const ResumePage = React.lazy(() => import('./components/ResumePage'))
+
+import ResumeButton from './components/ui/ResumeButton'
 
 // Monospace page-level loader matching portfolio styling
 function PageLoader() {
@@ -48,6 +51,9 @@ function AppInner() {
       <div className="min-h-screen scroll-smooth overflow-x-hidden" id="app-root" style={{ position: 'relative' }}>
         {/* Interactive dot-grid ripple canvas — fixed background layer */}
         <RippleBackground enabled={rippleEnabled} />
+
+        {/* Global Action Buttons */}
+        <ResumeButton />
 
         {/* Global Sidebars */}
         <ProjectSidebar />
@@ -74,6 +80,7 @@ function AppInner() {
                     <Route path="/link" element={<LinkShortener />} />
                     <Route path="/games" element={<Games />} />
                     <Route path="/admin" element={<AdminPage />} />
+                    <Route path="/resume" element={<ResumePage />} />
                     <Route path="/s/:slug" element={<ShortLinkRedirect />} />
                   </Routes>
                 </React.Suspense>
