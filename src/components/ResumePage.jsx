@@ -50,9 +50,9 @@ export default function ResumePage() {
   const downloadFilename = `Ishan_Kumar_Resume_${mode === 'role' ? selectedRole.replace(/\s+/g, '_') : 'Custom'}.pdf`
 
   return (
-    <div className="min-h-screen pt-24 lg:pt-28 pb-24 lg:pb-16 px-4 lg:px-8 max-w-[1500px] mx-auto flex flex-col lg:flex-row gap-8 items-start">
-      {/* Configuration Panel - 32% width on desktop, scrolls */}
-      <div className="w-full lg:w-[32%] flex-shrink-0 flex flex-col gap-6">
+    <div className="min-h-screen pt-24 lg:pt-28 pb-24 lg:pb-16 px-4 lg:px-16 max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
+      {/* Configuration Panel - fixed width on desktop, scrolls */}
+      <div className="w-full lg:w-[320px] flex-shrink-0 flex flex-col gap-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight mb-2" style={{ color: 'var(--text-primary)' }}>
             Resume Builder
@@ -74,11 +74,11 @@ export default function ResumePage() {
         />
       </div>
 
-      {/* Main Resume Content - 68% width on desktop, sticky */}
+      {/* Main Resume Content - fills remaining space on desktop, sticky */}
       {/* Hidden on mobile unless drawer is open, visible on tablet/desktop */}
       <div className={`
         fixed inset-0 z-50 bg-black/90 lg:bg-transparent lg:static
-        lg:w-[68%] lg:sticky lg:top-28 lg:h-[calc(100vh-140px)] 
+        flex-1 lg:sticky lg:top-28 lg:h-[calc(100vh-140px)] 
         flex flex-col justify-start lg:justify-center items-center overflow-y-auto lg:overflow-visible
         transition-transform duration-250 ease-out
         ${isMobileDrawerOpen ? 'translate-y-0' : 'translate-y-full lg:translate-y-0'}
