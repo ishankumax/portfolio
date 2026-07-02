@@ -54,12 +54,16 @@ export default function ResumePreview({ resumeData, selectedRole, mode, customSe
   return (
     <div 
       id="resume-pdf-container" 
-      className="bg-white text-black p-8 sm:p-12 shadow-2xl rounded-xl mx-auto border relative overflow-hidden transition-all duration-200"
+      className="bg-white p-8 sm:p-12 shadow-2xl rounded-xl mx-auto border relative overflow-hidden transition-all duration-200"
       style={{
         width: '100%',
         maxWidth: '210mm', // A4 Width
         minHeight: '297mm', // A4 Height
-        borderColor: 'var(--border-card)'
+        borderColor: 'var(--border-card)',
+        '--text-primary': '#111827',     // Force dark ink for h1, h2, h3
+        '--text-secondary': '#374151',   // Force dark ink for p
+        '--text-muted': '#4b5563',       // Force dark ink for muted text
+        color: '#111827'                 // Default text color
       }}
     >
       {/* Header */}
