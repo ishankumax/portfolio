@@ -116,22 +116,27 @@ export default function ResumePage() {
           </div>
         )}
 
-        <div className="w-full overflow-auto pt-6 pb-24 lg:pb-8 px-2 lg:px-0 custom-scrollbar flex justify-center max-w-full relative group">
+        <div className="w-full overflow-auto pt-6 pb-24 lg:pb-8 px-2 lg:px-0 custom-scrollbar flex justify-center lg:justify-start max-w-full relative group">
           <div 
             onClick={() => setIsFullscreen(true)}
-            className="min-w-[800px] flex justify-center bg-white shadow-2xl rounded-sm overflow-hidden border border-gray-200 transition-all duration-300 cursor-zoom-in hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:border-gray-400" 
-            style={{ transform: 'scale(0.85) lg:scale(0.9)', transformOrigin: 'top center' }}
+            className="flex justify-center transition-all duration-300 cursor-zoom-in group-hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover:border-gray-400 origin-top-left scale-[0.85] lg:scale-[0.65] -mr-[120px] lg:-mr-[280px] -mb-[170px] lg:-mb-[395px]" 
+            style={{ 
+              width: '800px',
+              height: '1131px', // 800 * 1.414 (A4 ratio)
+            }}
           >
-            <ResumePreview 
-              resumeData={resumeData} 
-              selectedRole={selectedRole}
-              mode={mode}
-              customSelections={customSelections}
-            />
+            <div className="w-[800px] bg-white shadow-2xl rounded-sm overflow-hidden border border-gray-200">
+              <ResumePreview 
+                resumeData={resumeData} 
+                selectedRole={selectedRole}
+                mode={mode}
+                customSelections={customSelections}
+              />
+            </div>
           </div>
 
           {/* Download Button on Bottom Right of Preview (Box 2) */}
-          <div className="absolute bottom-10 right-4 lg:right-10 z-20 transition-transform hover:scale-105 hidden lg:block">
+          <div className="absolute bottom-10 lg:bottom-4 right-4 lg:right-4 z-20 transition-transform hover:scale-105 hidden lg:block">
             <PDFExporter 
               targetId="resume-pdf-container" 
               filename={downloadFilename} 
