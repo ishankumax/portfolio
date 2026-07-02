@@ -44,37 +44,55 @@ const SOCIAL_LINKS = [
   },
 ]
 
-function StaticSocialLinks() {
+function SocialRow({ socialLinks }) {
   return (
-    <>
-      {SOCIAL_LINKS.map((link, idx) => (
+    <div className="flex flex-wrap gap-4 text-[10px] font-mono uppercase tracking-widest items-center mt-6">
+      {socialLinks.length > 0 ? socialLinks.map((link, idx) => (
         <React.Fragment key={link.id}>
-          <SocialHoverCard platform={link.platform} href={link.href}>
+          <SocialHoverCard
+            platform={link.label.toLowerCase()}
+            href={link.url}
+          >
             <span className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5 cursor-pointer">
-              {link.icon} {link.label}
+              {ICON_MAP[link.label.toLowerCase()] || <FaGlobe size={12} />}
+              {link.label.toLowerCase()}
             </span>
           </SocialHoverCard>
-          {idx < SOCIAL_LINKS.length - 1 && (
-            <span className="opacity-20">/</span>
-          )}
+          {idx < socialLinks.length - 1 && <span className="opacity-20">/</span>}
         </React.Fragment>
-      ))}
-    </>
+      )) : (
+        <>
+          {SOCIAL_LINKS.map((link, idx) => (
+            <React.Fragment key={link.id}>
+              <SocialHoverCard platform={link.platform} href={link.href}>
+                <span className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5 cursor-pointer">
+                  {link.icon} {link.label}
+                </span>
+              </SocialHoverCard>
+              {idx < SOCIAL_LINKS.length - 1 && (
+                <span className="opacity-20">/</span>
+              )}
+            </React.Fragment>
+          ))}
+        </>
+      )}
+    </div>
   )
 }
 
 /**
  * Hero Component
- * Follows the normalized left-aligned header pattern.
+ * Social links now sit directly under the description paragraph,
+ * inside the right column — matching the layout reference.
  */
 function Hero() {
   const { getLinksByCategory } = useContent()
   const socialLinks = getLinksByCategory('social')
 
   return (
-    <section className="relative mb-24 md:mb-32">
+    <section className="relative mb-12 md:mb-16">
       {/* Two-column layout: portrait image LEFT + text RIGHT */}
-      <div className="flex flex-col md:flex-row md:items-center gap-10 mb-10">
+      <div className="flex flex-col md:flex-row md:items-center gap-10">
 
         {/* Profile Picture — portrait, left side */}
         <div className="flex-shrink-0 flex justify-center md:justify-start">
@@ -136,28 +154,11 @@ function Hero() {
             className="text-base md:text-lg leading-relaxed max-w-2xl block"
             style={{ color: 'var(--text-secondary)' }}
           />
+
+          {/* Social links sit directly under the intro paragraph */}
+          <SocialRow socialLinks={socialLinks} />
         </div>
 
-      </div>
-
-      {/* Social Links / CTA — hover reveals platform preview card */}
-      <div className="flex flex-wrap gap-4 text-[10px] font-mono uppercase tracking-widest items-center">
-        {socialLinks.length > 0 ? socialLinks.map((link, idx) => (
-          <React.Fragment key={link.id}>
-            <SocialHoverCard
-              platform={link.label.toLowerCase()}
-              href={link.url}
-            >
-              <span className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5 cursor-pointer">
-                {ICON_MAP[link.label.toLowerCase()] || <FaGlobe size={12} />}
-                {link.label.toLowerCase()}
-              </span>
-            </SocialHoverCard>
-            {idx < socialLinks.length - 1 && <span className="opacity-20">/</span>}
-          </React.Fragment>
-        )) : (
-          <StaticSocialLinks />
-        )}
       </div>
     </section>
   )

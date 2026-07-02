@@ -25,8 +25,11 @@ function Home() {
   return (
     <div className="relative z-10">
       <Hero />
-      <div className="space-y-32 md:space-y-40">
+      {/* FounderOf sits immediately below Hero — visible on first load */}
+      <div className="mb-24 md:mb-32">
         <FounderOf />
+      </div>
+      <div className="space-y-32 md:space-y-40">
         <TechStack />
         <GitHubActivity />
         <MicroProjects />
