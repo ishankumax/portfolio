@@ -71,11 +71,10 @@ function GitHubCard({ data, loading }) {
           <div className="w-10 h-10 rounded-full animate-pulse" style={{ background: 'rgba(255,255,255,0.08)' }} />
         ) : (
           <img
-            src={data?.avatar || '/profile.jpeg'}
+            src="/profile.jpeg"
             alt={data?.name || 'Ishan Kumar'}
             className="w-10 h-10 rounded-full border object-cover"
             style={{ borderColor: 'rgba(57,255,20,0.25)' }}
-            onError={e => { e.currentTarget.src = '/profile.jpeg' }}
           />
         )}
         <div>
