@@ -5,8 +5,33 @@ import { useGLTF, Environment } from '@react-three/drei'
 const PET_SIZE = 80 // Increased size for 3D model
 const HOUSE_SIZE = 80
 
-// CSS Animations for the 2D elements (sleep Zzzs)
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true }
+  }
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback
+    }
+    return this.props.children
+  }
+}
+
+// CSS Animations for the 2D elements
 const styles = `
+  @keyframes sheroWalk {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(-3deg); }
+    75% { transform: translateY(-4px) rotate(3deg); }
+  }
+  @keyframes sheroSleep {
+    0%, 100% { transform: scaleY(1) translateY(0); }
+    50% { transform: scaleY(0.9) translateY(4px); }
+  }
   @keyframes zzz {
     0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
     50% { opacity: 1; transform: translate(10px, -15px) scale(1); }
@@ -285,11 +310,48 @@ export default function VirtualPet() {
             </div>
           )}
           
-          {modelError ? (
-            <div className="flex items-center justify-center w-full h-full text-xs text-red-500 bg-red-500/10 rounded-full border border-red-500/30 p-2 text-center shadow-lg backdrop-blur">
-              Missing shero.glb in /public
+          <ErrorBoundary fallback={
+            <div style={{
+              width: '100%', height: '100%',
+              position: 'relative',
+              transform: `scaleX(${facingRight ? -1 : 1})`,
+              transition: 'transform 0.3s ease',
+            }}>
+              <svg 
+                viewBox="0 0 100 100" 
+                style={{
+                  width: '100%', height: '100%',
+                  filter: state === 'drag' ? 'drop-shadow(0 15px 15px rgba(0,0,0,0.4))' : 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))',
+                  animation: state === 'walk' ? 'sheroWalk 0.4s infinite linear' : state === 'sleep' ? 'sheroSleep 2s infinite ease-in-out' : 'none',
+                  transform: state === 'drag' ? 'translateY(-10px)' : 'none',
+                  transition: 'transform 0.2s',
+                }}
+              >
+                {/* 2D Fallback Shero */}
+                <path d="M 30 50 C 30 35, 45 30, 50 30 C 65 30, 75 40, 75 50 C 85 50, 85 65, 75 75 C 75 85, 60 85, 50 85 C 35 85, 25 75, 30 65 C 20 60, 20 50, 30 50 Z" fill="#FFFFFF" stroke="#111" strokeWidth="3" strokeLinejoin="round"/>
+                <path d="M 35 45 C 25 40, 15 50, 25 60" fill="#FFFFFF" stroke="#111" strokeWidth="3" strokeLinecap="round" />
+                {state === 'sleep' ? (
+                  <>
+                    <path d="M 58 45 Q 62 48 66 45" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
+                    <path d="M 72 45 Q 76 48 80 45" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
+                  </>
+                ) : (
+                  <>
+                    <circle cx="62" cy="45" r="3" fill="#111" />
+                    <circle cx="76" cy="45" r="3" fill="#111" />
+                  </>
+                )}
+                <circle cx="70" cy="52" r="2.5" fill="#111" />
+                <path d="M 55 60 Q 65 65 75 60" fill="none" stroke="#4B9CD3" strokeWidth="4" strokeLinecap="round" />
+                {state !== 'sleep' && (
+                  <>
+                    <line x1="45" y1="80" x2="45" y2="90" stroke="#111" strokeWidth="3" strokeLinecap="round" />
+                    <line x1="60" y1="82" x2="60" y2="92" stroke="#111" strokeWidth="3" strokeLinecap="round" />
+                  </>
+                )}
+              </svg>
             </div>
-          ) : (
+          }>
             <div style={{ width: '100%', height: '100%', filter: state === 'drag' ? 'drop-shadow(0 15px 15px rgba(0,0,0,0.5))' : 'none' }}>
               <Canvas camera={{ position: [0, 1, 5], fov: 40 }} gl={{ alpha: true }}>
                 <ambientLight intensity={1.5} />
@@ -299,7 +361,7 @@ export default function VirtualPet() {
                 </Suspense>
               </Canvas>
             </div>
-          )}
+          </ErrorBoundary>
         </div>
       )}
     </>
