@@ -12,9 +12,10 @@ const MainLayout = ({ children, onOpenTerminal }) => {
   
   // The experience and games pages have sidebars/multi-column layouts, so we give them more breathing room
   const isExperiencePage = location.pathname === '/experience'
-  const isLargePage = isExperiencePage || location.pathname === '/games'
   const isResumePage = location.pathname === '/resume'
-  const maxWidth = isResumePage ? "max-w-full" : isLargePage ? "max-w-6xl" : "max-w-4xl"
+  const isLargePage = isExperiencePage || location.pathname === '/games' || isResumePage
+  
+  const maxWidth = isLargePage ? "max-w-6xl" : "max-w-4xl"
 
   return (
     <div className="min-h-screen flex flex-col text-[var(--text-primary)] font-mono selection:bg-[var(--selection-bg)] selection:text-[var(--selection-text)]">

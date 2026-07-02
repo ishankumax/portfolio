@@ -50,7 +50,7 @@ export default function ResumePage() {
   const downloadFilename = `Ishan_Kumar_Resume_${mode === 'role' ? selectedRole.replace(/\s+/g, '_') : 'Custom'}.pdf`
 
   return (
-    <div className="min-h-screen pt-24 lg:pt-28 pb-24 lg:pb-16 px-4 lg:px-16 max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
+    <div className="min-h-screen pt-24 lg:pt-28 pb-24 lg:pb-16 px-4 md:px-6 w-full mx-auto flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
       {/* Configuration Panel - fixed width on desktop, scrolls */}
       <div className="w-full lg:w-[320px] flex-shrink-0 flex flex-col gap-6">
         <div>
