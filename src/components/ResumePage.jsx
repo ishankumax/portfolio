@@ -116,10 +116,10 @@ export default function ResumePage() {
           </div>
         )}
 
-        <div className="w-full overflow-auto pt-6 pb-24 lg:pb-8 px-2 lg:px-0 custom-scrollbar flex justify-center lg:justify-start max-w-full relative group">
+        <div className="w-full overflow-auto pt-6 pb-24 lg:pb-8 px-2 lg:px-0 custom-scrollbar flex justify-center items-start max-w-full relative group">
           <div 
             onClick={() => setIsFullscreen(true)}
-            className="flex justify-center transition-all duration-300 cursor-zoom-in group-hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover:border-gray-400 origin-top-left scale-[0.85] lg:scale-[0.65] -mr-[120px] lg:-mr-[280px] -mb-[170px] lg:-mb-[395px]" 
+            className="flex justify-center transition-all duration-300 cursor-zoom-in group-hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover:border-gray-400 origin-top scale-[0.85] lg:scale-[0.55] -mb-[170px] lg:-mb-[508px] lg:-mx-[180px]" 
             style={{ 
               width: '800px',
               height: '1131px', // 800 * 1.414 (A4 ratio)
