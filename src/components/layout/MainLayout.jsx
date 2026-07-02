@@ -22,7 +22,7 @@ const MainLayout = ({ children, onOpenTerminal }) => {
       <Navbar onOpenTerminal={onOpenTerminal} />
 
       {/* Main Content Area */}
-      <main className={`flex-1 w-full ${maxWidth} mx-auto ${isExperiencePage ? 'px-4 md:px-6' : 'px-6'} ${isResumePage ? 'pt-8 lg:pt-12 pb-12' : 'pt-36 md:pt-40 pb-20'} transition-all duration-300`}>
+      <main className={`flex-1 w-full ${maxWidth} mx-auto ${isExperiencePage ? 'px-4 md:px-6' : 'px-6'} ${isResumePage ? 'pt-24 lg:pt-28 pb-12' : 'pt-36 md:pt-40 pb-20'} transition-all duration-300`}>
         {children}
       </main>
 
