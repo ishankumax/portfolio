@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FaInstagram, FaLinkedin, FaXTwitter, FaGithub, FaEnvelope, FaWhatsapp } from 'react-icons/fa6'
+import { FaInstagram, FaLinkedin, FaXTwitter, FaGithub, FaEnvelope } from 'react-icons/fa6'
 import { RiGlobalLine, RiMailLine, RiGithubLine, RiTwitterXLine, RiLinkedinBoxLine, RiInstagramLine } from 'react-icons/ri'
 import { useContent } from '../ContentContext'
 
@@ -12,7 +12,6 @@ const getIcon = (name) => {
   if (lowerName.includes('instagram')) return <FaInstagram size={15} />
   if (lowerName.includes('github')) return <FaGithub size={15} />
   if (lowerName.includes('mail') || lowerName.includes('envelope')) return <FaEnvelope size={15} />
-  if (lowerName.includes('whatsapp')) return <FaWhatsapp size={15} />
   return <RiGlobalLine size={15} />
 }
 
@@ -51,13 +50,6 @@ const DEFAULT_LINKS = [
     href: 'https://instagram.com/ishankumax',
     icon: <FaInstagram size={15} />,
     desc: 'my visual journey'
-  },
-  {
-    label: 'whatsapp',
-    value: 'ishankumax',
-    href: 'https://wa.me/message/ishankumax',
-    icon: <FaWhatsapp size={15} />,
-    desc: 'drop me a message'
   }
 ]
 

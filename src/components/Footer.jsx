@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FaInstagram, FaLinkedin, FaXTwitter, FaGithub, FaWhatsapp } from 'react-icons/fa6'
+import { FaInstagram, FaLinkedin, FaXTwitter, FaGithub } from 'react-icons/fa6'
 
 function Footer() {
   const year = new Date().getFullYear()
@@ -41,10 +41,6 @@ function Footer() {
             <a href="https://www.instagram.com/ishankumax/" target="_blank" rel="noopener noreferrer"
               className="footer-social-link" title="Instagram">
               <FaInstagram size={16} />
-            </a>
-            <a href="https://wa.me/message/ishankumax" target="_blank" rel="noopener noreferrer"
-              className="footer-social-link" title="WhatsApp">
-              <FaWhatsapp size={16} />
             </a>
           </div>
         </div>
