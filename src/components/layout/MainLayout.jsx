@@ -12,9 +12,8 @@ const MainLayout = ({ children, onOpenTerminal }) => {
   
   // The experience and games pages have sidebars/multi-column layouts, so we give them more breathing room
   const isExperiencePage = location.pathname === '/experience'
+  const isLargePage = isExperiencePage || location.pathname === '/games'
   const isResumePage = location.pathname === '/resume'
-  const isLargePage = isExperiencePage || location.pathname === '/games' || isResumePage
-  
   const maxWidth = isLargePage ? "max-w-6xl" : "max-w-4xl"
 
   return (
@@ -23,7 +22,7 @@ const MainLayout = ({ children, onOpenTerminal }) => {
       <Navbar onOpenTerminal={onOpenTerminal} />
 
       {/* Main Content Area */}
-      <main className={`flex-1 w-full ${maxWidth} mx-auto ${isResumePage ? 'px-0 pt-0 pb-0' : `${isExperiencePage ? 'px-4 md:px-6' : 'px-6'} pt-36 md:pt-40 pb-20`} transition-all duration-300`}>
+      <main className={`flex-1 w-full ${maxWidth} mx-auto ${isExperiencePage ? 'px-4 md:px-6' : 'px-6'} ${isResumePage ? 'pt-8 lg:pt-12 pb-12' : 'pt-36 md:pt-40 pb-20'} transition-all duration-300`}>
         {children}
       </main>
 
