@@ -46,7 +46,7 @@ const SOCIAL_LINKS = [
 
 function SocialRow({ socialLinks }) {
   return (
-    <div className="flex flex-wrap gap-4 text-[10px] font-mono uppercase tracking-widest items-center justify-center mt-6 pt-5 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
+    <div className="flex flex-wrap gap-4 text-[10px] font-mono uppercase tracking-widest items-center justify-center mt-6">
       {socialLinks.length > 0 ? socialLinks.map((link, idx) => (
         <React.Fragment key={link.id}>
           <SocialHoverCard
@@ -133,7 +133,7 @@ function Hero() {
         </div>
 
         {/* Header Pattern — right side */}
-        <div className="flex-1 border rounded-xl p-6 md:p-8" style={{ borderColor: 'var(--border-card)', backgroundColor: 'var(--bg-card)' }}>
+        <div className="flex-1">
           <p className="text-[10px] uppercase tracking-[0.3em] font-mono mb-4 opacity-50" style={{ color: 'var(--text-primary)' }}>
             portfolio / home
           </p>
