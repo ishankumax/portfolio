@@ -1,47 +1,87 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import resumeData from '../data/resumeData.json'
-import RoleSidebar from './resume/RoleSidebar'
+import ConfigurationPanel from './resume/ConfigurationPanel'
 import ResumePreview from './resume/ResumePreview'
 import PDFExporter from './resume/PDFExporter'
+import { filterAndSortByRole } from '../utils/resumeFilter'
 
 export default function ResumePage() {
   const roles = Object.keys(resumeData.summaries)
   const [selectedRole, setSelectedRole] = useState(roles[0])
+  
+  // Custom Mode State
+  const [mode, setMode] = useState('role')
+  const [customSelections, setCustomSelections] = useState({
+    skills: [],
+    projects: [],
+    experience: [],
+    certs: []
+  })
+
+  // Initialize Custom Selections from the selected role on first load
+  useEffect(() => {
+    if (mode === 'role') {
+      const skills = filterAndSortByRole(resumeData.skills, selectedRole).flatMap(g => g.items).map(s => `skill_${s}`)
+      const projects = filterAndSortByRole(resumeData.projects, selectedRole).map(p => `proj_${p.name}`)
+      
+      const experience = []
+      resumeData.experience.forEach(e => {
+        const matchingBullets = filterAndSortByRole(e.bullets, selectedRole)
+        if (matchingBullets.length > 0) {
+          experience.push(`exp_${e.company}`)
+        }
+      })
+      
+      // Select all certs by default for the role
+      const certs = resumeData.certifications.map(c => `cert_${c}`)
+
+      setCustomSelections({
+        skills,
+        projects,
+        experience,
+        certs
+      })
+    }
+  }, [selectedRole, mode]) // Syncs when in role mode
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4 md:px-8 max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
-      {/* Sidebar Navigation */}
-      <RoleSidebar 
-        roles={roles} 
-        selectedRole={selectedRole} 
-        onSelectRole={setSelectedRole} 
-      />
-
-      {/* Main Resume Content */}
-      <div className="flex-1 max-w-full overflow-hidden">
-        {/* Top Controls */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight mb-1" style={{ color: 'var(--text-primary)' }}>
-              Resume Builder
-            </h1>
-            <p className="text-sm opacity-70" style={{ color: 'var(--text-secondary)' }}>
-              Tailored for <strong className="text-[var(--accent)] font-semibold">{selectedRole}</strong>
-            </p>
-          </div>
-          
+    <div className="min-h-screen pt-24 md:pt-28 pb-16 px-4 md:px-8 max-w-[1500px] mx-auto flex flex-col md:flex-row gap-8 items-start">
+      {/* Configuration Panel - 32% width on desktop, scrolls */}
+      <div className="w-full md:w-[32%] flex-shrink-0 flex flex-col gap-6">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight mb-2" style={{ color: 'var(--text-primary)' }}>
+            Resume Builder
+          </h1>
+          <p className="text-sm opacity-70 mb-4" style={{ color: 'var(--text-secondary)' }}>
+            Build role-specific resumes in real time.
+          </p>
           <PDFExporter 
             targetId="resume-pdf-container" 
-            filename={`Ishan_Kumar_Resume_${selectedRole.replace(/\s+/g, '_')}.pdf`} 
+            filename={`Ishan_Kumar_Resume_${mode === 'role' ? selectedRole.replace(/\s+/g, '_') : 'Custom'}.pdf`} 
           />
         </div>
 
-        {/* Scrollable Container for the A4 Preview */}
-        <div className="overflow-x-auto pb-8 rounded-xl no-scrollbar">
-          <div className="min-w-[800px] flex justify-center">
+        <ConfigurationPanel 
+          roles={roles} 
+          selectedRole={selectedRole} 
+          onSelectRole={setSelectedRole} 
+          mode={mode}
+          setMode={setMode}
+          resumeData={resumeData}
+          customSelections={customSelections}
+          setCustomSelections={setCustomSelections}
+        />
+      </div>
+
+      {/* Main Resume Content - 68% width on desktop, sticky */}
+      <div className="w-full md:w-[68%] sticky top-28 h-[calc(100vh-140px)] flex justify-center">
+        <div className="overflow-auto pb-8 rounded-xl no-scrollbar flex justify-center w-full max-w-full">
+          <div className="min-w-[800px] flex justify-center bg-white shadow-2xl rounded-sm overflow-hidden border border-gray-200" style={{ transform: 'scale(0.9)', transformOrigin: 'top center' }}>
             <ResumePreview 
               resumeData={resumeData} 
-              selectedRole={selectedRole} 
+              selectedRole={selectedRole}
+              mode={mode}
+              customSelections={customSelections}
             />
           </div>
         </div>

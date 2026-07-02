@@ -2,29 +2,59 @@ import React from 'react'
 import SkillList from './SkillList'
 import { filterAndSortByRole } from '../../utils/resumeFilter'
 
-export default function ResumePreview({ resumeData, selectedRole }) {
+export default function ResumePreview({ resumeData, selectedRole, mode, customSelections }) {
   // 1. Determine Summary
   const summary = resumeData.summaries[selectedRole] || resumeData.summaries['Business Analyst']
 
+  // Helper to check if item is selected in custom mode
+  const isSelected = (category, id) => {
+    if (mode === 'role') return true; // Handled by filterAndSortByRole later
+    return customSelections[category]?.includes(id)
+  }
+
   // 2. Filter/Reorder Experience Bullets
-  const experience = resumeData.experience.map(job => ({
-    ...job,
-    bullets: filterAndSortByRole(job.bullets, selectedRole)
-  }))
+  let experience = []
+  if (mode === 'role') {
+    experience = resumeData.experience.map(job => ({
+      ...job,
+      bullets: filterAndSortByRole(job.bullets, selectedRole)
+    })).filter(job => job.bullets.length > 0)
+  } else {
+    experience = resumeData.experience.filter(job => isSelected('experience', `exp_${job.company}`))
+  }
 
   // 3. Filter/Reorder Projects
-  const projects = filterAndSortByRole(resumeData.projects, selectedRole).map(p => ({
-    ...p,
-    bullets: filterAndSortByRole(p.bullets, selectedRole)
-  }))
+  let projects = []
+  if (mode === 'role') {
+    projects = filterAndSortByRole(resumeData.projects, selectedRole).map(p => ({
+      ...p,
+      bullets: filterAndSortByRole(p.bullets, selectedRole)
+    }))
+  } else {
+    projects = resumeData.projects.filter(p => isSelected('projects', `proj_${p.name}`))
+  }
 
   // 4. Filter/Reorder Skills
-  const skills = filterAndSortByRole(resumeData.skills, selectedRole)
+  let skills = []
+  if (mode === 'role') {
+    skills = filterAndSortByRole(resumeData.skills, selectedRole)
+  } else {
+    // Reconstruct skills object based on selected individual skills
+    skills = resumeData.skills.map(group => {
+      const activeItems = group.items.filter(item => isSelected('skills', `skill_${item}`))
+      return { ...group, items: activeItems }
+    }).filter(group => group.items.length > 0)
+  }
+
+  // 5. Certifications
+  const certifications = mode === 'role' 
+    ? resumeData.certifications 
+    : resumeData.certifications.filter(c => isSelected('certs', `cert_${c}`))
 
   return (
     <div 
       id="resume-pdf-container" 
-      className="bg-white text-black p-8 sm:p-12 shadow-2xl rounded-xl mx-auto border relative overflow-hidden"
+      className="bg-white text-black p-8 sm:p-12 shadow-2xl rounded-xl mx-auto border relative overflow-hidden transition-all duration-200"
       style={{
         width: '100%',
         maxWidth: '210mm', // A4 Width
@@ -139,18 +169,20 @@ export default function ResumePreview({ resumeData, selectedRole }) {
       <SkillList skills={skills} />
 
       {/* Certifications & Achievements */}
-      <section className="mb-4">
-        <h2 className="text-lg font-bold border-b border-gray-300 pb-1 mb-3 text-gray-800 uppercase">
-          Certifications & Achievements
-        </h2>
-        <ul className="list-disc pl-5 space-y-1.5 text-[13px] text-gray-800 leading-snug">
-          {resumeData.certifications.map((cert, idx) => (
-            <li key={idx} className="text-justify">
-              {cert}
-            </li>
-          ))}
-        </ul>
-      </section>
+      {(certifications && certifications.length > 0) && (
+        <section className="mb-4">
+          <h2 className="text-lg font-bold border-b border-gray-300 pb-1 mb-3 text-gray-800 uppercase">
+            Certifications & Achievements
+          </h2>
+          <ul className="list-disc pl-5 space-y-1.5 text-[13px] text-gray-800 leading-snug">
+            {certifications.map((cert, idx) => (
+              <li key={idx} className="text-justify">
+                {cert}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   )
 }
