@@ -9,36 +9,55 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  const client_id = process.env.SPOTIFY_CLIENT_ID;
-  const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-  const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
+  const sp_dc = process.env.SPOTIFY_SP_DC;
+  let access_token = '';
 
-  if (!client_id || !client_secret || !refresh_token) {
-    return res.status(500).json({ error: 'Spotify credentials are not configured in environment variables.' });
+  try {
+    if (sp_dc) {
+      access_token = await getAccessTokenFromCookie(sp_dc);
+    }
+  } catch (err) {
+    console.error('Failed to get access token from sp_dc cookie:', err);
+  }
+
+  // Fallback to client credentials if cookie auth wasn't configured or failed
+  if (!access_token) {
+    const client_id = process.env.SPOTIFY_CLIENT_ID;
+    const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+    const refresh_token = process.env.SPOTIFY_REFRESH_TOKEN;
+
+    if (!client_id || !client_secret || !refresh_token) {
+      return res.status(500).json({ error: 'Spotify credentials (either SPOTIFY_SP_DC or SPOTIFY_CLIENT_ID/SECRET/REFRESH_TOKEN) are not configured.' });
+    }
+
+    try {
+      const basic = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
+      const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${basic}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token,
+        }),
+      });
+
+      if (!tokenResponse.ok) {
+        const errorText = await tokenResponse.text();
+        return res.status(500).json({ error: `Failed to exchange token: ${errorText}` });
+      }
+
+      const tokenData = await tokenResponse.json();
+      access_token = tokenData.access_token;
+    } catch (error) {
+      console.error('Error fetching standard access token:', error);
+      return res.status(500).json({ error: error.message || 'Internal Server Error' });
+    }
   }
 
   try {
-    // 1. Exchange refresh token for access token
-    const basic = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
-    const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${basic}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        grant_type: 'refresh_token',
-        refresh_token,
-      }),
-    });
-
-    if (!tokenResponse.ok) {
-      const errorText = await tokenResponse.text();
-      return res.status(500).json({ error: `Failed to exchange token: ${errorText}` });
-    }
-
-    const tokenData = await tokenResponse.json();
-    const access_token = tokenData.access_token;
 
     // 2. Fetch currently playing track
     const nowPlayingResponse = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
@@ -103,3 +122,25 @@ async function getRecentlyPlayed(accessToken, res) {
 
   return res.status(200).json({ isPlaying: false });
 }
+
+// Helper to retrieve an access token using a user's sp_dc cookie
+async function getAccessTokenFromCookie(spDc) {
+  const response = await fetch('https://open.spotify.com/get_access_token?reason=transport&productType=web_player', {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      Cookie: `sp_dc=${spDc}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to retrieve access token: ${response.status} ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  if (!data.accessToken) {
+    throw new Error('Access token missing from Spotify token response.');
+  }
+
+  return data.accessToken;
+}
+
