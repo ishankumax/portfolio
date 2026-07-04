@@ -27,6 +27,7 @@ const ShortLinkRedirect = React.lazy(() => import('./components/ShortLinkRedirec
 const ResumePage = React.lazy(() => import('./components/ResumePage'))
 
 import ResumeButton from './components/ui/ResumeButton'
+import SpotifyPlayer from './components/ui/SpotifyPlayer'
 
 // Monospace page-level loader matching portfolio styling
 function PageLoader() {
@@ -54,6 +55,7 @@ function AppInner() {
 
         {/* Global Action Buttons */}
         <ResumeButton />
+        <SpotifyPlayer />
 
         {/* Global Sidebars */}
         <ProjectSidebar />
