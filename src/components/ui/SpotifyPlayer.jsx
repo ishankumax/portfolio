@@ -14,17 +14,6 @@ export default function SpotifyPlayer() {
   const [imgError, setImgError] = useState(false)
 
   useEffect(() => {
-    const loadMockData = () => {
-      setSong({
-        isPlaying: true,
-        title: 'Stairway to Heaven',
-        artist: 'Led Zeppelin',
-        album: 'Led Zeppelin IV',
-        albumImageUrl: 'https://i.scdn.co/image/ab67616d0000b273c08202c50371e234d20caf62',
-        songUrl: 'https://open.spotify.com/track/5CQ3hkBLGtyPcr26RIvJ1C',
-      })
-    }
-
     const fetchNowPlaying = async () => {
       try {
         const res = await fetch('/api/now-playing')
@@ -33,26 +22,17 @@ export default function SpotifyPlayer() {
           const text = await res.text()
           if (text.startsWith('<')) {
             // It's the Vite dev server index.html fallback
-            loadMockData()
+            setSong({ isPlaying: false })
             return
           }
           const data = JSON.parse(text)
           setSong(data)
         } else {
-          // If we got a 404/500, but we are in local dev, show mock data
-          if (import.meta.env.DEV) {
-            loadMockData()
-          } else {
-            setSong({ isPlaying: false })
-          }
-        }
-      } catch (error) {
-        console.warn('Spotify API not configured/accessible, using offline fallback.')
-        if (import.meta.env.DEV) {
-          loadMockData()
-        } else {
           setSong({ isPlaying: false })
         }
+      } catch (error) {
+        console.warn('Spotify API not configured/accessible.')
+        setSong({ isPlaying: false })
       } finally {
         setIsLoading(false)
       }
