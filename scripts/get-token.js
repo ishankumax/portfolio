@@ -1,3 +1,4 @@
+/** Helper script to perform Spotify OAuth authorization and write .env.local */
 import http from 'http'
 import fs from 'fs'
 import path from 'path'
