@@ -32,6 +32,7 @@ export default function SpotifyPlayer() {
         }
       } catch (error) {
         console.warn('Spotify API not configured/accessible.')
+        // Default to inactive state when API is offline or unconfigured
         setSong({ isPlaying: false })
       } finally {
         setIsLoading(false)
