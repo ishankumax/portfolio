@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       {
         name: 'vite-api-now-playing',
+        // Execute Vercel serverless functions locally during npm run dev
         configureServer(server) {
           server.middlewares.use('/api/now-playing', async (req, res) => {
             if (!res.status) {
