@@ -1060,7 +1060,7 @@ p {
 .spotify-equalizer__bar {
   width: 2px;
   height: 100%;
-  background-color: var(--accent);
+  background-color: #1DB954;
   border-radius: 1px;
   transform-origin: bottom;
   animation: spotify-bounce 1s ease-in-out infinite alternate;
