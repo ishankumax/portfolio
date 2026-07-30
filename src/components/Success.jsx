@@ -190,7 +190,7 @@ export default function Success() {
 
   const handleTabChange = (key) => {
     setActiveTab(key)
-    setActiveItem(successData[key][0])
+    setActiveItem(successData[key]?.[0] || null)
   }
 
   const currentLabel =

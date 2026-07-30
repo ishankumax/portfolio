@@ -97,6 +97,23 @@ export const successData = {
       images: ['/registered my startup.jpg', '/ITB Reg..jpg'],
     },
   ],
+
+  research: [
+    {
+      id: 'r1',
+      title: 'Research Paper & Publications',
+      description:
+        'Ongoing research exploring scalable systems, AI applications, and human-computer interactions. Documenting technical methodologies, experimental results, and peer-reviewed work.',
+      images: ['/pfp.jpg'],
+    },
+    {
+      id: 'r2',
+      title: 'Technical Case Studies & Experiments',
+      description:
+        'In-depth technical papers and empirical studies conducted during university research programs, focusing on performance optimization, architecture design, and algorithm analysis.',
+      images: ['/pfp.jpg'],
+    },
+  ],
 }
 
 export const TAB_LABELS = [
@@ -104,4 +121,5 @@ export const TAB_LABELS = [
   { key: 'awards',       label: 'Awards'        },
   { key: 'certificates', label: 'Certificates'  },
   { key: 'letters',      label: 'Letters'       },
+  { key: 'research',     label: 'Research'      },
 ]
