@@ -242,15 +242,35 @@ function InstagramCard() {
 // ─── Main hover wrapper ───────────────────────────────────────────────────────
 export default function SocialHoverCard({ platform, href, children }) {
   const [visible, setVisible] = useState(false)
+  const [placement, setPlacement] = useState('top') // 'top' or 'bottom'
   const [ghData, setGhData] = useState(null)
   const [ghLoading, setGhLoading] = useState(false)
+  const wrapperRef = useRef(null)
   const hideTimer = useRef(null)
+
+  const normPlatform = (platform || '').toLowerCase().trim()
+  const isGitHub = normPlatform.includes('github')
+  const isLinkedIn = normPlatform.includes('linkedin')
+  const isTwitter = normPlatform.includes('twitter') || normPlatform.includes('x')
+  const isInstagram = normPlatform.includes('instagram') || normPlatform.includes('insta')
 
   const show = () => {
     clearTimeout(hideTimer.current)
+
+    // Calculate whether card should pop up or pop down based on screen boundary
+    if (wrapperRef.current) {
+      const rect = wrapperRef.current.getBoundingClientRect()
+      // If link is near the top of the viewport (< 250px), render card below link
+      if (rect.top < 250) {
+        setPlacement('bottom')
+      } else {
+        setPlacement('top')
+      }
+    }
+
     setVisible(true)
 
-    if (platform === 'github' && !ghData && !ghLoading) {
+    if (isGitHub && !ghData && !ghLoading) {
       setGhLoading(true)
 
       // Fetch profile + contribution totals in parallel
@@ -261,7 +281,6 @@ export default function SocialHoverCard({ platform, href, children }) {
           .catch(() => null),
       ])
         .then(([profile, contribs]) => {
-          // API returns total as { "lastYear": N } or { "2026": N }
           const contribTotal = contribs?.total
             ? (contribs.total.lastYear ?? Object.values(contribs.total)[0] ?? null)
             : null
@@ -290,18 +309,21 @@ export default function SocialHoverCard({ platform, href, children }) {
   useEffect(() => () => clearTimeout(hideTimer.current), [])
 
   const renderCard = () => {
-    if (platform === 'github') return <GitHubCard data={ghData} loading={ghLoading} />
-    if (platform === 'linkedin') return <LinkedInCard />
-    if (platform === 'twitter' || platform === 'x.com') return <TwitterCard />
-    if (platform === 'instagram') return <InstagramCard />
+    if (isGitHub) return <GitHubCard data={ghData} loading={ghLoading} />
+    if (isLinkedIn) return <LinkedInCard />
+    if (isTwitter) return <TwitterCard />
+    if (isInstagram) return <InstagramCard />
     return null
   }
 
   const card = renderCard()
   if (!card) return <>{children}</>
 
+  const isTop = placement === 'top'
+
   return (
     <div
+      ref={wrapperRef}
       className="relative inline-flex"
       onMouseEnter={show}
       onMouseLeave={hide}
@@ -310,11 +332,15 @@ export default function SocialHoverCard({ platform, href, children }) {
       <div
         style={{
           position: 'absolute',
-          bottom: 'calc(100% + 14px)',
+          ...(isTop
+            ? { bottom: 'calc(100% + 12px)' }
+            : { top: 'calc(100% + 12px)' }),
           left: '50%',
           transform: visible
             ? 'translateX(-50%) translateY(0)'
-            : 'translateX(-50%) translateY(8px)',
+            : isTop
+            ? 'translateX(-50%) translateY(8px)'
+            : 'translateX(-50%) translateY(-8px)',
           opacity: visible ? 1 : 0,
           pointerEvents: visible ? 'auto' : 'none',
           transition: 'opacity 0.18s ease, transform 0.18s ease',
@@ -328,14 +354,16 @@ export default function SocialHoverCard({ platform, href, children }) {
         <div
           style={{
             position: 'absolute',
-            bottom: -6,
+            ...(isTop ? { bottom: -6 } : { top: -6 }),
             left: '50%',
             transform: 'translateX(-50%)',
             width: 0,
             height: 0,
             borderLeft: '6px solid transparent',
             borderRight: '6px solid transparent',
-            borderTop: '6px solid var(--bg-elevated)',
+            ...(isTop
+              ? { borderTop: '6px solid var(--bg-elevated)' }
+              : { borderBottom: '6px solid var(--bg-elevated)' }),
           }}
         />
         {/* Card body */}

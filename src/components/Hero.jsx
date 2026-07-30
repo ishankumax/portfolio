@@ -47,20 +47,23 @@ const SOCIAL_LINKS = [
 function SocialRow({ socialLinks }) {
   return (
     <div className="flex flex-wrap gap-4 text-[10px] font-mono uppercase tracking-widest items-center justify-center mt-6">
-      {socialLinks.length > 0 ? socialLinks.map((link, idx) => (
-        <React.Fragment key={link.id}>
-          <SocialHoverCard
-            platform={link.label.toLowerCase()}
-            href={link.url}
-          >
-            <span className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5 cursor-pointer">
-              {ICON_MAP[link.label.toLowerCase()] || <FaGlobe size={12} />}
-              {link.label.toLowerCase()}
-            </span>
-          </SocialHoverCard>
-          {idx < socialLinks.length - 1 && <span className="opacity-20">/</span>}
-        </React.Fragment>
-      )) : (
+      {socialLinks.length > 0 ? socialLinks.map((link, idx) => {
+        const plat = (link.platform || link.label || link.url || '').toLowerCase()
+        return (
+          <React.Fragment key={link.id || idx}>
+            <SocialHoverCard
+              platform={plat}
+              href={link.url || link.href}
+            >
+              <span className="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5 cursor-pointer">
+                {ICON_MAP[plat] || <FaGlobe size={12} />}
+                {(link.label || link.platform || '').toLowerCase()}
+              </span>
+            </SocialHoverCard>
+            {idx < socialLinks.length - 1 && <span className="opacity-20">/</span>}
+          </React.Fragment>
+        )
+      }) : (
         <>
           {SOCIAL_LINKS.map((link, idx) => (
             <React.Fragment key={link.id}>
