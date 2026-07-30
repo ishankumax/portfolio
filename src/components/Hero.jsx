@@ -153,7 +153,7 @@ function Hero() {
             as="p"
             id="hero_description"
             section="hero"
-            defaultText="20-year-old CS undergrad building software for the next billion users."
+            defaultText="21-year-old CS undergrad building software for the next billion users."
             className="text-base md:text-lg leading-relaxed max-w-2xl block"
             style={{ color: 'var(--text-secondary)' }}
           />
