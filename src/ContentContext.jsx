@@ -34,11 +34,17 @@ export const ContentProvider = ({ children }) => {
       setLinks(dbLinks || []);
       setBlogs(dbBlogs || []);
       
-      setContent(prev => ({
-        ...prev,
-        hero: { ...prev.hero, ...(dbHero || {}) },
-        about: { ...prev.about, ...(dbAbout || {}) }
-      }));
+      setContent(prev => {
+        const h = { ...prev.hero, ...(dbHero || {}) };
+        if (typeof h.description === 'string' && h.description.includes('20-year-old')) {
+          h.description = h.description.replace(/20-year-old/g, '21-year-old');
+        }
+        return {
+          ...prev,
+          hero: h,
+          about: { ...prev.about, ...(dbAbout || {}) }
+        };
+      });
     } catch (error) {
       console.error('Error fetching content:', error);
     }

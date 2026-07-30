@@ -18,8 +18,13 @@ export default function EditableText({ id, section, defaultText, as: Component =
         const docRef = doc(db, 'content_blocks', id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setContent(docSnap.data().content);
-          setDraft(docSnap.data().content);
+          let textVal = docSnap.data().content;
+          if (typeof textVal === 'string' && textVal.includes('20-year-old')) {
+            textVal = textVal.replace(/20-year-old/g, '21-year-old');
+            setDoc(docRef, { content: textVal }, { merge: true }).catch(() => {});
+          }
+          setContent(textVal);
+          setDraft(textVal);
         }
       } catch (err) {
         console.error("Failed to fetch content block:", id, err);
