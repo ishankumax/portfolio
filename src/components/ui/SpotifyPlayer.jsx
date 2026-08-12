@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaSpotify } from 'react-icons/fa6'
+import { FaSpotify, FaMusic } from 'react-icons/fa6'
 
 export default function SpotifyPlayer() {
   const [song, setSong] = useState({
@@ -11,6 +11,7 @@ export default function SpotifyPlayer() {
     songUrl: '',
   })
   const [isLoading, setIsLoading] = useState(true)
+  const [imgError, setImgError] = useState(false)
 
   useEffect(() => {
     const loadMockData = () => {
@@ -19,7 +20,7 @@ export default function SpotifyPlayer() {
         title: 'Stairway to Heaven',
         artist: 'Led Zeppelin',
         album: 'Led Zeppelin IV',
-        albumImageUrl: 'https://i.scdn.co/image/ab67616d0000b273c8b444df09aa9188d07019f5',
+        albumImageUrl: 'https://i.scdn.co/image/ab67616d0000b273c08202c50371e234d20caf62',
         songUrl: 'https://open.spotify.com/track/5CQ3hkBLGtyPcr26RIvJ1C',
       })
     }
@@ -62,6 +63,11 @@ export default function SpotifyPlayer() {
     const interval = setInterval(fetchNowPlaying, 30000)
     return () => clearInterval(interval)
   }, [])
+
+  // Reset image error state whenever song image URL changes
+  useEffect(() => {
+    setImgError(false)
+  }, [song.albumImageUrl])
 
   if (isLoading) return null
 
@@ -113,14 +119,19 @@ export default function SpotifyPlayer() {
         {hasTrack ? (
           <>
             {/* Album Cover Art */}
-            {song.albumImageUrl && (
+            {song.albumImageUrl && !imgError ? (
               <img
                 src={song.albumImageUrl}
-                alt={song.album}
+                alt={song.album || song.title}
+                onError={() => setImgError(true)}
                 className={`w-7 h-7 rounded-md object-cover border border-white/10 ${
                   song.isPlaying ? 'animate-[spin_8s_linear_infinite]' : ''
                 }`}
               />
+            ) : (
+              <div className="w-7 h-7 rounded-md bg-white/10 flex items-center justify-center border border-white/10 flex-shrink-0">
+                <FaMusic className="text-[11px] text-[#1DB954]" />
+              </div>
             )}
             
             {/* Track metadata */}
@@ -160,3 +171,4 @@ export default function SpotifyPlayer() {
     </a>
   )
 }
+
